@@ -18,7 +18,7 @@
             echo "
             <div class=\"row justify-content-evenly\">
 
-                <diV class=\"col-5\">
+                <diV class=\"col-10 col-sm-5\">
                     <div class=\"card text-bg-success\">
                       <div class=\"card-body fs-1 text-center\">
                         <b>$num1</b>
@@ -26,7 +26,7 @@
                     </div> 
                 </div>
 
-                <div class=\"col-5\">
+                <div class=\"col-10 col-sm-5\">
                     <div class=\"card text-bg-danger\">
                       <div class=\"card-body text-center\">
                         $num2
@@ -39,7 +39,7 @@
             echo "
             <div class=\"row justify-content-evenly\">
 
-                <div class=\"col-5\">
+                <div class=\"col-10 col-sm-5\">
                     <div class=\"card text-bg-danger\">
                       <div class=\"card-body text-center\">
                         $num1
@@ -47,7 +47,7 @@
                     </div> 
                 </div>
 
-                <diV class=\"col-5\">
+                <diV class=\"col-10 col-sm-5\">
                     <div class=\"card text-bg-success\">
                       <div class=\"card-body fs-1 text-center\">
                         <b>$num2</b>
