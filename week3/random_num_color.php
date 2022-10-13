@@ -13,8 +13,6 @@
         <?php 
         $num1 = rand(100, 200);
         $num2 = rand(100, 200);
-        $sum = $num1 + $num2;
-        $multiple = $num1 * $num2;
 
         if ($num1 > $num2) {
             echo "
