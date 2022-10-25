@@ -47,118 +47,121 @@
             </div>
         </nav>
     </header>
-    
+
     <main>
 
-    <!-- container -->
-    <div class="container mt-5">
-        <div class="page-header">
-            <h1>Create Product</h1>
-        </div>
+        <!-- container -->
+        <div class="container mt-5">
+            <div class="page-header">
+                <h1>Create Product</h1>
+            </div>
 
-        <!-- html form to create product will be here -->
-        <?php
-        if ($_POST) {
-            $name = $_POST['name'];
-            $description = $_POST['description'];
-            $price = $_POST['price'];
-            $promotion_price = $_POST['promotion_price'];
-            $manufacture_date = $_POST['manufacture_date'];
-            $expired_date = $_POST['expired_date'];
+            <!-- html form to create product will be here -->
+            <?php
+            if ($_POST) {
+                $name = $_POST['name'];
+                $description = $_POST['description'];
+                $price = $_POST['price'];
+                $promotion_price = $_POST['promotion_price'];
+                $manufacture_date = $_POST['manufacture_date'];
+                $expired_date = $_POST['expired_date'];
 
-            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" || $expired_date == "") {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
-            } else {
-                if ($promotion_price > $price) {
-                    echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
-                } else if ($expired_date < $manufacture_date) {
-                    echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" || $expired_date == "") {
+                    echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                 } else {
-                    // include database connection
-                    include 'config/database.php';
-                    try {
-                        // insert query
-                        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
-                        // prepare query for execution
-                        $stmt = $con->prepare($query);
-                        $name = $_POST['name'];
-                        $description = $_POST['description'];
-                        $price = $_POST['price'];
-                        $promotion_price = $_POST['promotion_price'];
-                        $manufacture_date = $_POST['manufacture_date'];
-                        $expired_date = $_POST['expired_date'];
-                        // bind the parameters
-                        $stmt->bindParam(':name', $name);
-                        $stmt->bindParam(':description', $description);
-                        $stmt->bindParam(':price', $price);
-                        $stmt->bindParam(':promotion_price', $promotion_price);
-                        $stmt->bindParam(':manufacture_date', $manufacture_date);
-                        $stmt->bindParam(':expired_date', $expired_date);
-                        $created = date('Y-m-d H:i:s'); // get the current date and time
-                        $stmt->bindParam(':created', $created);
-                        // Execute the query
-                        if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was saved.</div>";
-                        } else {
-                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    if ($promotion_price > $price) {
+                        echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
+                    } else if ($expired_date < $manufacture_date) {
+                        echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                    } else {
+                        // include database connection
+                        include 'config/database.php';
+                        try {
+                            // insert query
+                            $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
+                            // prepare query for execution
+                            $stmt = $con->prepare($query);
+                            $name = $_POST['name'];
+                            $description = $_POST['description'];
+                            $price = $_POST['price'];
+                            $promotion_price = $_POST['promotion_price'];
+                            $manufacture_date = $_POST['manufacture_date'];
+                            $expired_date = $_POST['expired_date'];
+                            // bind the parameters
+                            $stmt->bindParam(':name', $name);
+                            $stmt->bindParam(':description', $description);
+                            $stmt->bindParam(':price', $price);
+                            $stmt->bindParam(':promotion_price', $promotion_price);
+                            $stmt->bindParam(':manufacture_date', $manufacture_date);
+                            $stmt->bindParam(':expired_date', $expired_date);
+                            $created = date('Y-m-d H:i:s'); // get the current date and time
+                            $stmt->bindParam(':created', $created);
+                            // Execute the query
+                            if ($stmt->execute()) {
+                                echo "<div class='alert alert-success'>Record was saved.</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                            }
                         }
-                    }
-                    // show error
-                    catch (PDOException $exception) {
-                        die('ERROR: ' . $exception->getMessage());
+                        // show error
+                        catch (PDOException $exception) {
+                            die('ERROR: ' . $exception->getMessage());
+                        }
                     }
                 }
             }
-        }
-        ?>
+            ?>
 
-        <!-- PHP insert code will be here -->
+            <!-- PHP insert code will be here -->
 
-        <!-- html form here where the product information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Name</td>
-                    <td><input type='text' name='name' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td><textarea type='text' name='description' rows="5" class='form-control' ></textarea></td>
-                </tr>
-                <tr>
-                    <td>Price</td>
-                    <td><input type='text' name='price' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Promotion Price</td>
-                    <td><input type='text' name='promotion_price' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Manufacture Date</td>
-                    <td><input type='date' name='manufacture_date' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Expired Date</td>
-                    <td><input type='date' name='expired_date' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <!-- end .container -->
+            <!-- html form here where the product information will be entered -->
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                <table class='table table-hover table-responsive table-bordered'>
+                    <tr>
+                        <td>Name</td>
+                        <td><input type='text' name='name' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td><textarea type='text' name='description' rows="5" class='form-control'></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td><input type='text' name='price' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Promotion Price</td>
+                        <td><input type='text' name='promotion_price' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Manufacture Date</td>
+                        <td><input type='date' name='manufacture_date' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Expired Date</td>
+                        <td><input type='date' name='expired_date' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type='submit' value='Save' class='btn btn-primary' />
+                            <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <!-- end .container -->
 
-    <hr class="featurette-divider">
+        <hr class="featurette-divider">
 
         <!-- FOOTER -->
         <footer class="container">
-            <p class="float-end"><a href="#">Back to top</a></p>
-            <p>&copy; 2022 Chia Yeu Shyang &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
+            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
+                <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
+                <a class="text-decoration-none fw-bold" href="#">Terms</a>
+            </p>
         </footer>
     </main>
 
