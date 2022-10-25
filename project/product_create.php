@@ -4,7 +4,7 @@
 <head>
     <title>PDO - Create a Record - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 
 <body>
@@ -20,48 +20,54 @@
             $name = $_POST['name'];
             $description = $_POST['description'];
             $price = $_POST['price'];
-            $promotion = $_POST['promotion_price'];
+            $promotion_price = $_POST['promotion_price'];
             $manufacture_date = $_POST['manufacture_date'];
             $expired_date = $_POST['expired_date'];
 
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" || $expired_date == "") {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>"; 
+                echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
             } else {
-            // include database connection
-            include 'config/database.php';
-            try {
-                // insert query
-                $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :cexpired_date, created=:created";
-                // prepare query for execution
-                $stmt = $con->prepare($query);
-                $name = $_POST['name'];
-                $description = $_POST['description'];
-                $price = $_POST['price'];
-                $promotion = $_POST['promotion_price'];
-                $manufacture_date = $_POST['manufacture_date'];
-                $expired_date = $_POST['expired_date'];
-                // bind the parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':description', $description);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':promotion_price', $promotion);
-                $stmt->bindParam(':manufacture_date', $manufacture_date);
-                $stmt->bindParam(':expired_date', $expired_date);
-                $created = date('Y-m-d H:i:s'); // get the current date and time
-                $stmt->bindParam(':created', $created);
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                if ($promotion_price > $price) {
+                    echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
+                } else if ($expired_date < $manufacture_date) {
+                    echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    // include database connection
+                    include 'config/database.php';
+                    try {
+                        // insert query
+                        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
+                        // prepare query for execution
+                        $stmt = $con->prepare($query);
+                        $name = $_POST['name'];
+                        $description = $_POST['description'];
+                        $price = $_POST['price'];
+                        $promotion_price = $_POST['promotion_price'];
+                        $manufacture_date = $_POST['manufacture_date'];
+                        $expired_date = $_POST['expired_date'];
+                        // bind the parameters
+                        $stmt->bindParam(':name', $name);
+                        $stmt->bindParam(':description', $description);
+                        $stmt->bindParam(':price', $price);
+                        $stmt->bindParam(':promotion_price', $promotion_price);
+                        $stmt->bindParam(':manufacture_date', $manufacture_date);
+                        $stmt->bindParam(':expired_date', $expired_date);
+                        $created = date('Y-m-d H:i:s'); // get the current date and time
+                        $stmt->bindParam(':created', $created);
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                        }
+                    }
+                    // show error
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
                 }
             }
-            // show error
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
-            }
         }
-    }
         ?>
 
         <!-- PHP insert code will be here -->
