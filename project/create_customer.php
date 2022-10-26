@@ -80,13 +80,7 @@
                             $query = "INSERT INTO customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, registration_date_time=:registration_date_time, account_status=:account_status";
                             // prepare query for execution
                             $stmt = $con->prepare($query);
-                            $username = $_POST['username'];
-                            $password = $_POST['password'];
-                            $first_name = $_POST['first_name'];
-                            $last_name = $_POST['last_name'];
-                            $gender = $_POST['gender'];
-                            $date_of_birth = $_POST['date_of_birth'];
-                            $account_status = $_POST['account_status'];
+                            
                             // bind the parameters
                             $stmt->bindParam(':username', $username);
                             $stmt->bindParam(':password', $password);

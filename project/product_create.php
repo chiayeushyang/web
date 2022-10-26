@@ -81,12 +81,7 @@
                             $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
                             // prepare query for execution
                             $stmt = $con->prepare($query);
-                            $name = $_POST['name'];
-                            $description = $_POST['description'];
-                            $price = $_POST['price'];
-                            $promotion_price = $_POST['promotion_price'];
-                            $manufacture_date = $_POST['manufacture_date'];
-                            $expired_date = $_POST['expired_date'];
+                            
                             // bind the parameters
                             $stmt->bindParam(':name', $name);
                             $stmt->bindParam(':description', $description);
