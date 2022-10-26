@@ -31,7 +31,7 @@
                 <div class="collapse navbar-collapse d-md-flex justify-content-end" id="navbarCollapse">
                     <ul class="navbar-nav mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="home.html">Home</a>
+                            <a class="nav-link" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="product_create.php">Create Product</a>
@@ -40,7 +40,7 @@
                             <a class="nav-link" href="create_customer.php">Create Customer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact Us</a>
+                            <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
                     </ul>
                 </div>
@@ -145,7 +145,7 @@
                         <td></td>
                         <td>
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                            <a href='index.php' class='btn btn-danger'>Back to home</a>
                         </td>
                     </tr>
                 </table>
