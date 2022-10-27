@@ -68,13 +68,17 @@
 
                 $validated = true;
 
-                if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" || $expired_date == "") {
+                if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" ) {
                     echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                     $validated = false;
                 }
 
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
+                }
+
+                if ($expired_date == "") {
+                    $expired_date = NULL;
                 }
 
                 if (!is_numeric($price)) {
