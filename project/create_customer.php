@@ -58,8 +58,8 @@
 
             <!-- html form to create product will be here -->
             <?php
-            if ($_POST) {
-                $username = $_POST['username'];
+            if ($_POST) { 
+                $username = trim( $_POST['username']);
                 $password = $_POST['password'];
                 $confirm_password = $_POST['confirm_password'];
                 $first_name = $_POST['first_name'];
@@ -81,7 +81,7 @@
                     $validation = false;
                 }
 
-                var_dump($username);
+                // var_dump($username);
 
                 // if(strpos($username, " ") !== false) {
                 if (preg_match("/[\s]/", $username)) {
