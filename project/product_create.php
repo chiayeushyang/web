@@ -82,8 +82,10 @@
                 } else if ($price > 1000) {
                     echo "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
                     $validated = false;
+                } else if ($price < 0) {
+                    echo "<div class='alert alert-danger'>Price cannot be negative</div>";
+                    $validated = false;
                 }
-
                 if ($promotion_price > $price) {
                     echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                     $validated = false;
