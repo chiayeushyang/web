@@ -61,47 +61,81 @@
             if ($_POST) {
                 $username = $_POST['username'];
                 $password = $_POST['password'];
+                $confirm_password = $_POST['confirm_password'];
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
                 $gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
                 $account_status = $_POST['account_status'];
 
+                $today = date('Y-m-d');
+
+                $date1 = date_create($date_of_birth);
+                $date2 = date_create($today);
+                $age = date_diff($date1, $date2);
+
+                $validation = true;
+
                 if ($username == "" || $password == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
                     echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
-                } else {
-                    if ($date_of_birth > date('Y-m-d')) {
-                        echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
-                    } else {
-                        // include database connection
-                        include 'config/database.php';
-                        try {
-                            // insert query
-                            $query = "INSERT INTO customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, registration_date_time=:registration_date_time, account_status=:account_status";
-                            // prepare query for execution
-                            $stmt = $con->prepare($query);
-                            
-                            // bind the parameters
-                            $stmt->bindParam(':username', $username);
-                            $stmt->bindParam(':password', $password);
-                            $stmt->bindParam(':first_name', $first_name);
-                            $stmt->bindParam(':last_name', $last_name);
-                            $stmt->bindParam(':gender', $gender);
-                            $stmt->bindParam(':date_of_birth', $date_of_birth);
-                            $registration_date_time = date('Y-m-d H:i:s'); // get the current date and time
-                            $stmt->bindParam(':registration_date_time', $registration_date_time);
-                            $stmt->bindParam(':account_status', $account_status);
-                            // Execute the query
-                            if ($stmt->execute()) {
-                                echo "<div class='alert alert-success'>Record was saved.</div>";
-                            } else {
-                                echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                            }
+                    $validation = false;
+                }
+
+                if (preg_match("/[\s]/", $username)) {
+                    echo "<div class='alert alert-danger'>No space is allowed in username</div>";
+                    $validation = false;
+                } else if (strlen($username) < 6) {
+                    echo "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
+                    $validation = false;
+                }
+
+                if (!preg_match("/[0-9]/", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password) || strlen($password) < 8) {
+                    echo "<div class='alert alert-danger'>Please enter password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
+                    $validation = false;
+                } else if ($confirm_password !== $password) {
+                    echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
+                    $validation = false;
+                }
+
+                if ($date_of_birth > date('Y-m-d')) {
+                    echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
+                    $validation = false;
+                } else if ($age->format("%y") < 18) {
+                    echo "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
+                    $validation = false;
+                }
+
+                if ($validation == true) {
+                    // include database connection
+                    include 'config/database.php';
+
+                    try {
+                        // insert query
+                        $query = "INSERT INTO customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, registration_date_time=:registration_date_time, account_status=:account_status";
+                        // prepare query for execution
+                        $stmt = $con->prepare($query);
+
+                        // bind the parameters
+                        $stmt->bindParam(':username', $username);
+                        $stmt->bindParam(':password', $password);
+                        $stmt->bindParam(':first_name', $first_name);
+                        $stmt->bindParam(':last_name', $last_name);
+                        $stmt->bindParam(':gender', $gender);
+                        $stmt->bindParam(':date_of_birth', $date_of_birth);
+                        $registration_date_time = date('Y-m-d H:i:s'); // get the current date and time
+                        $stmt->bindParam(':registration_date_time', $registration_date_time);
+                        $stmt->bindParam(':account_status', $account_status);
+                        // Execute the query
+
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
-                        // show error
-                        catch (PDOException $exception) {
-                            die('ERROR: ' . $exception->getMessage());
-                        }
+                    }
+                    // show error
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
                     }
                 }
             }
@@ -117,27 +151,31 @@
                         <td>
                             <div class="input-group input-group-lg mb-3">
                                 <span class="input-group-text" id="basic-addon1">@</span>
-                                <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+                                <input type="text" class="form-control" name="username" placeholder="Username" value="TestName" aria-label="Username" aria-describedby="basic-addon1" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td><input type='text' name='password' class='form-control' /></td>
+                        <td><input type='password' name='password' value="hkHjkh809809" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm Password</td>
+                        <td><input type='password' name='confirm_password' value="hkHjkh809809" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>First name</td>
-                        <td><input type='text' name='first_name' class='form-control' /></td>
+                        <td><input type='text' name='first_name' value="Test First Name" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Last name</td>
-                        <td><input type='text' name='last_name' class='form-control' /></td>
+                        <td><input type='text' name='last_name' value="Test Last Name" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Gender</td>
                         <td class="d-flex">
                             <div class="form-check mx-3">
-                                <input class="form-check-input" type="radio" name="gender" value="Male" id="Male" required>
+                                <input class="form-check-input" type="radio" name="gender" value="Male" id="Male" required checked>
                                 <label class="form-check-label" for="Male">
                                     Male
                                 </label>
@@ -164,7 +202,7 @@
                         <td>Account status</td>
                         <td class="d-flex">
                             <div class="form-check mx-3">
-                                <input class="form-check-input" type="radio" name="account_status" value="Active" id="Active" required>
+                                <input class="form-check-input" type="radio" name="account_status" value="Active" id="Active" required checked>
                                 <label class="form-check-label" for="Active">
                                     Active
                                 </label>
