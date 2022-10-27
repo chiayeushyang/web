@@ -69,6 +69,11 @@
                 if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" || $expired_date == "") {
                     echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                 } else {
+                    
+                    if ($promotion_price == "") {
+                        $promotion_price = NULL;
+                    } 
+                    
                     if ($promotion_price > $price) {
                         echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                     } else if ($expired_date < $manufacture_date) {
