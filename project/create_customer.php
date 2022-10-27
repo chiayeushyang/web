@@ -85,8 +85,8 @@
                 // var_dump($username);
 
                 // Check Username
-                // if(strpos($username, " ") !== false) {
-                if (preg_match("/[\s]/", $username)) {
+                if(strpos($username, " ") !== false) {
+                // if (preg_match("/[\s]/", $username)) {
                     echo "<div class='alert alert-danger'>No space is allowed in username</div>";
                     $validation = false;
                 } else if (strlen($username) < 6) {
