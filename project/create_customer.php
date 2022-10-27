@@ -76,6 +76,7 @@
 
                 $validation = true;
 
+                // Check Empty
                 if ($username == "" || $password == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
                     echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                     $validation = false;
@@ -83,6 +84,7 @@
 
                 // var_dump($username);
 
+                // Check Username
                 // if(strpos($username, " ") !== false) {
                 if (preg_match("/[\s]/", $username)) {
                     echo "<div class='alert alert-danger'>No space is allowed in username</div>";
@@ -92,6 +94,7 @@
                     $validation = false;
                 }
 
+                // Check password
                 if (!preg_match("/[0-9]/", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password) || strlen($password) < 8) {
                     echo "<div class='alert alert-danger'>Please enter password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
                     $validation = false;
@@ -100,6 +103,7 @@
                     $validation = false;
                 }
 
+                // Check birthday
                 if ($date_of_birth > date('Y-m-d')) {
                     echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
                     $validation = false;
