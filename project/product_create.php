@@ -79,6 +79,9 @@
 
                 if ($expired_date == "") {
                     $expired_date = NULL;
+                } else if ($expired_date < $manufacture_date) {
+                    echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                    $validated = false;
                 }
 
                 if (!is_numeric($price)) {
@@ -95,10 +98,7 @@
                     $validated = false;
                 } 
                 
-                if ($expired_date < $manufacture_date) {
-                    echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
-                    $validated = false;
-                }
+                
 
                 if ($validated) {
                     // include database connection
