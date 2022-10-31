@@ -94,7 +94,89 @@
     <main class="mt-5">
 
         <!-- Content Start-->
+        <!-- container -->
+        <div class="container">
+            <div class="page-header">
+                <h1>Read Customers</h1>
+            </div>
 
+            <!-- PHP code to read records will be here -->
+            <?php
+            // include database connection
+            include 'config/database.php';
+
+            // delete message prompt will be here
+
+            // select all data
+            $query = "SELECT id, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers ORDER BY id ASC";
+            $stmt = $con->prepare($query);
+            $stmt->execute();
+
+            // this is how to get number of rows returned
+            $num = $stmt->rowCount();
+
+            // link to create record form
+            echo "<a href='product_create.php' class='btn btn-primary mb-3'>Create New Customer</a>";
+
+            //check if more than 0 record found
+            if ($num > 0) {
+
+                echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+
+                //creating our table heading
+                echo "<tr>";
+                echo "<th>ID</th>";
+                echo "<th>Username</th>";
+                echo "<th>Passowrd</th>";
+                echo "<th>First Name</th>";
+                echo "<th>Last Name</th>";
+                echo "<th>Gender</th>";
+                echo "<th>Date of Birth</th>";
+                echo "<th>Registration Date</th>";
+                echo "<th>Account Status</th>";
+                echo "<th>Action</th>";
+                echo "</tr>";
+
+                // retrieve our table contents
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // extract row
+                    // this will make $row['firstname'] to just $firstname only
+                    extract($row);
+                    // creating new table row per record
+                    echo "<tr>";
+                    echo "<td>{$id}</td>";
+                    echo "<td>{$username}</td>";
+                    echo "<td>{$password}</td>";
+                    echo "<td>{$first_name}</td>";
+                    echo "<td>{$last_name}</td>";
+                    echo "<td>{$gender}</td>";
+                    echo "<td>{$date_of_birth}</td>";
+                    echo "<td>{$registration_date_time}</td>";
+                    echo "<td>{$account_status}</td>";
+                    echo "<td>";
+                    // read one record
+                    echo "<a href='customer_read_one.php?id={$id}' class='btn btn-info me-1'>Read</a>";
+
+                    // we will use this links on next part of this post
+                    echo "<a href='customer_update.php?id={$id}' class='btn btn-primary me-1'>Edit</a>";
+
+                    // we will use this links on next part of this post
+                    echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+
+
+                // end table
+                echo "</table>";
+            } else {
+                echo "<div class='alert alert-danger'>No records found.</div>";
+            }
+            ?>
+
+        </div> <!-- end .container -->
+
+        <!-- confirm delete record will be here -->
 
         <!-- Content End -->
 

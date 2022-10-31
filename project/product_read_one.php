@@ -86,7 +86,7 @@
         <!-- Content Start-->
         <div class="container mt-5">
             <div class="page-header">
-                <h1>Enter the ID</h1>
+                <h1>Enter an ID</h1>
             </div>
             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
                 <table class='table table-hover table-responsive table-bordered'>

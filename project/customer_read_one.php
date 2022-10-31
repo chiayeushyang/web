@@ -89,10 +89,121 @@
     </header>
     <!-- NAVBAR END -->
 
-    <main class="mt-5">
+  <!-- Content Start-->
+  <div class="container mt-5">
+            <div class="page-header">
+                <h1>Enter an ID</h1>
+            </div>
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
+                <table class='table table-hover table-responsive table-bordered'>
+                    <tr>
+                        <td>ID</td>
+                        <td><input type='text' name='id' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type='submit' value='Save' class='btn btn-primary' />
+                        </td>
+                    </tr>
+                </table>
+            </form>
 
-        <!-- Content Start-->
+            <hr class="featurette-divider">
 
+            <div class="page-header">
+                <h1>Read Customers</h1>
+            </div>
+
+            <?php
+            // get passed parameter value, in this case, the record ID
+            // isset() is a PHP function used to verify if a value is there or not
+            $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+
+            //include database connection
+            include 'config/database.php';
+
+            // read current record's data
+            try {
+                // prepare select query
+                $query = "SELECT id, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers";
+                $stmt = $con->prepare($query);
+
+                // Bind the parameter
+                $stmt->bindParam(":id", $id);
+
+                // execute our query
+                $stmt->execute();
+
+                // store retrieved row to a variable
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // values to fill up our form
+                $username = $row['username'];
+                $password = $row['password'];
+                $first_name = $row['first_name'];
+                $last_name = $row['last_name'];
+                $gender = $row['gender'];
+                $date_of_birth = $row['date_of_birth'];
+                $registration_date_time = $row['registration_date_time'];
+                $account_status = $row['account_status'];
+                // shorter way to do that is extract($row)
+
+            }
+
+            // show error
+            catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+            ?>
+
+            <!--we have our html table here where the record will be displayed-->
+            <table class='table table-hover table-responsive table-bordered'>
+                <tr>
+                    <td>ID</td>
+                    <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><?php echo htmlspecialchars($password, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td>Registration Date Time</td>
+                    <td><?php echo htmlspecialchars($registration_date_time, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td>Account</td>
+                    <td><?php echo htmlspecialchars($account_status, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
 
         <!-- Content End -->
 
