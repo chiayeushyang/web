@@ -108,7 +108,7 @@
         <?php
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $CustomerID = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
         //include database connection
         include 'config/database.php';
@@ -116,11 +116,11 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE id = :id ";
+            $query = "SELECT CustomerID, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE CustomerID = :CustomerID ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
-            $stmt->bindParam(":id", $id);
+            $stmt->bindParam(":CustomerID", $CustomerID);
 
             // execute our query
             $stmt->execute();
@@ -131,10 +131,6 @@
             // store retrieved row to a variable
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            echo count($row);
-            echo $row[0];
-
-            
                 // values to fill up our form
                 $username = $row['username'];
                 $password = $row['password'];
@@ -160,7 +156,7 @@
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
                 <td>ID</td>
-                <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td>Username</td>

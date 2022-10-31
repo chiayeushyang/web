@@ -108,7 +108,7 @@
             // delete message prompt will be here
 
             // select all data
-            $query = "SELECT id, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers ORDER BY id ASC";
+            $query = "SELECT CustomerID, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers ORDER BY CustomerID ASC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -144,7 +144,7 @@
                     extract($row);
                     // creating new table row per record
                     echo "<tr>";
-                    echo "<td>{$id}</td>";
+                    echo "<td>{$CustomerID}</td>";
                     echo "<td>{$username}</td>";
                     echo "<td>{$password}</td>";
                     echo "<td>{$first_name}</td>";
@@ -155,13 +155,13 @@
                     echo "<td>{$account_status}</td>";
                     echo "<td>";
                     // read one record
-                    echo "<a href='customer_read_one.php?id={$id}' class='btn btn-info me-1'>Read</a>";
+                    echo "<a href='customer_read_one.php?id={$CustomerID}' class='btn btn-info me-1'>Read</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='customer_update.php?id={$id}' class='btn btn-primary me-1'>Edit</a>";
+                    echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary me-1'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                    echo "<a href='#' onclick='delete_product({$CustomerID});'  class='btn btn-danger'>Delete</a>";
                     echo "</td>";
                     echo "</tr>";
                 }

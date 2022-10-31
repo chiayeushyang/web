@@ -9,26 +9,48 @@
 
     <link rel="stylesheet" href="css/styles.css" />
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
     <!-- Fontawesome -->
     <script src="https://kit.fontawesome.com/e0e2f315c7.js" crossorigin="anonymous"></script>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
-        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
+    <!-- Database ---
+
+    CREATE TABLE IF NOT EXISTS `order_summary` (
+        `OrderID` varchar(128) NOT NULL,
+        CustomerID` int(11) NOT NULL,
+        `total_price` double NOT NULL,
+        `total_item` int NOT NULL,
+        `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (OrderID),
+        FOREIGN KEY (CustomerID) REFERENCES customers(CustomerID)
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+    CREATE TABLE IF NOT EXISTS `order_detail` (     
+        `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT, 
+        `OrderID` varchar(11) NOT NULL, 
+        `ProductID` int(11) NOT NULL,
+        `quantity` int(11) NOT NULL,
+        `unit_price` double NOT NULL, 
+        PRIMARY KEY (OrderDetailID),
+        FOREIGN KEY (OrderID) REFERENCES order_summary(OrderID), 
+        FOREIGN KEY (ProductID) REFERENCES products(ProductID) 
+       ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+    --- Database.END -->
+
+
+
+
     <!-- NAVBAR -->
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -39,8 +61,7 @@
                     Eshop
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -50,8 +71,7 @@
                             <a class="nav-link" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Product
                             </a>
                             <ul class="dropdown-menu">
@@ -61,8 +81,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Customer
                             </a>
                             <ul class="dropdown-menu">
@@ -72,8 +91,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Order
                             </a>
                             <ul class="dropdown-menu">
@@ -101,8 +119,8 @@
         <hr class="featurette-divider">
 
     </main>
-     <!-- FOOTER -->
-     <footer class="container">
+    <!-- FOOTER -->
+    <footer class="container">
         <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
         <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
             <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
