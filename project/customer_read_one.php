@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+    <title>Read One Customer</title>
 
     <link rel="stylesheet" href="css/styles.css" />
 
@@ -33,12 +33,10 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-xl d-flex justify-content-between">
-
                 <a class="navbar-brand " href="#">
                     <i class="fa-solid fa-shop fa-xl text-light me-2 "></i>
                     Eshop
                 </a>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -111,5 +109,3 @@
     </footer>
     <!-- FOOTER END -->
 </body>
-
-</html>

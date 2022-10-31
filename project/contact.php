@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+    <title>Contact</title>
 
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/contact.css" />
@@ -68,7 +68,7 @@
                                 Order
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="new_order_create">Create New Order</a></li>
+                                <li><a class="dropdown-item" href="new_order_create.php">Create New Order</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">

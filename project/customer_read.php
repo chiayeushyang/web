@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+    <title>Read Customer</title>
 
     <link rel="stylesheet" href="css/styles.css" />
 
@@ -111,5 +111,3 @@
     </footer>
     <!-- FOOTER END -->
 </body>
-
-</html>
