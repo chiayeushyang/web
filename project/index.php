@@ -39,7 +39,7 @@
         <div class="collapse navbar-collapse d-md-flex justify-content-end" id="navbarCollapse">
           <ul class="navbar-nav mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="index.php">Home</a>
+              <a class="nav-link active" aria-current="page" href="index.php">Home</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,7 +70,7 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="contact.php">Contact Us</a>
+              <a class="nav-link" href="contact.php">Contact Us</a>
             </li>
 
           </ul>

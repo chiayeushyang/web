@@ -54,7 +54,7 @@
                                 Product
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="product_create.php">Create Product</a></li>
+                                <li><a class="dropdown-item active" href="product_create.php">Create Product</a></li>
                                 <li><a class="dropdown-item" href="product_read.php">Read Product</a></li>
                                 <li><a class="dropdown-item" href="product_read_one.php">Read One Product</a></li>
                             </ul>
@@ -80,7 +80,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="contact.php">Contact Us</a>
+                            <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
 
                     </ul>

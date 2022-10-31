@@ -77,11 +77,11 @@
                                 Order
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="new_order_create">Create New Order</a></li>
+                                <li><a class="dropdown-item active" href="new_order_create">Create New Order</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="contact.php">Contact Us</a>
+                            <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
 
                     </ul>

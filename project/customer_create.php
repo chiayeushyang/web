@@ -56,7 +56,7 @@
                                 Customer
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="customer_create.php">Create Customer</a></li>
+                                <li><a class="dropdown-item active" href="customer_create.php">Create Customer</a></li>
                                 <li><a class="dropdown-item" href="customer_read.php">Read Customer</a></li>
                                 <li><a class="dropdown-item" href="customer_read_one.php">Read One Customer</a></li>
                             </ul>
@@ -70,7 +70,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="contact.php">Contact Us</a>
+                            <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
 
                     </ul>

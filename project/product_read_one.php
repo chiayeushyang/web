@@ -50,7 +50,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="product_create.php">Create Product</a></li>
                                     <li><a class="dropdown-item" href="product_read.php">Read Product</a></li>
-                                    <li><a class="dropdown-item" href="product_read_one.php">Read One Product</a></li>
+                                    <li><a class="dropdown-item active" href="product_read_one.php">Read One Product</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
@@ -72,16 +72,14 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="contact.php">Contact Us</a>
+                                <a class="nav-link" href="contact.php">Contact Us</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
         <!-- NAVBAR END -->
-
 
         <!-- Content Start-->
         <div class="container mt-5">
@@ -132,23 +130,28 @@
                 // store retrieved row to a variable
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                // values to fill up our form
-                $name = $row['name'];
-                $description = $row['description'];
-                $price = $row['price'];
-                $promotion_price = $row['promotion_price'];
-                $manufacture_date = $row['manufacture_date'];
-                $expired_date = $row['expired_date'];
-                // shorter way to do that is extract($row)
+                echo count($row);
 
-                if ($expired_date == Null) {
-                    $expired_date = "-";
-                }
-    
-                if ($promotion_price == Null) {
-                    $promotion_price = "-";
-                }
+                if ($row) {
+                    // values to fill up our form
+                    $name = $row['name'];
+                    $description = $row['description'];
+                    $price = $row['price'];
+                    $promotion_price = $row['promotion_price'];
+                    $manufacture_date = $row['manufacture_date'];
+                    $expired_date = $row['expired_date'];
+                    // shorter way to do that is extract($row)
 
+                    if ($expired_date == Null) {
+                        $expired_date = "-";
+                    }
+
+                    if ($promotion_price == Null) {
+                        $promotion_price = "-";
+                    }
+                } else {
+                    die('ERROR: Record ID not found.');
+                }
             }
 
             // show error
