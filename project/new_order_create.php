@@ -311,6 +311,7 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                 }
                 }else {
                     $price_one = 0;
+                    $first_quantity = 0;
                 }
 
                 // Second Price
@@ -327,6 +328,7 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                 }
                 }else {
                     $price_two = 0;
+                    $second_quantity = 0;
                 }
 
                 // Third Price
@@ -343,17 +345,45 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                 }
                 }else {
                     $price_three = 0;
+                    $third_quantity = 0;
                 }
                 $total_price =  $price_one + $price_two + $price_three;
-                echo $total_price;
-            }
-            // show error
-            catch (PDOException $exception) {
+                $total_item = $first_quantity + $second_quantity + $third_quantity;
+            }catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
-        }
-        ?>
 
+
+            try {
+                $query_order_summary = "INSERT INTO order_summary SET OrderID=:OrderID, CustomerID=:CustomerID, total_price=:total_price, total_item=:total_item";
+                // prepare query for execution
+                $stmt_order_summary = $con->prepare($query_order_summary);
+
+                echo $OrderID;
+                $stmt_order_summary->bindParam(':OrderID', $OrderID);
+                echo "<br>";
+                echo $CustomerID;
+                $stmt_order_summary->bindParam(':CustomerID', $CustomerID);
+                echo "<br>";
+                echo $total_price;
+                $stmt_order_summary->bindParam(':total_price', $total_price);
+                echo "<br>";
+                echo $total_item;
+                $stmt_order_summary->bindParam(':total_item', $total_item);
+   
+                if ($stmt_order_summary->execute()) {
+                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                }
+            } catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+
+        }
+
+       
+        ?>
         </table>
         <!-- FOOTER -->
         <footer class="container">
