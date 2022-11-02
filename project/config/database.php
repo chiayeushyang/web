@@ -1,6 +1,6 @@
 <?php
 // used to connect to the database
-$host = "localhost";
+$host = "";
 $db_name = "eshop";
 $username1 = "eshop";
 $password1 = "O(NQHcnvp8cV-h0C";

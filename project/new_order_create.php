@@ -20,6 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
 
+    <script src="js/order.js"></script>
 </head>
 
 <body>
@@ -38,17 +39,26 @@
     CREATE TABLE IF NOT EXISTS `order_detail` (     
         `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT, 
         `OrderID` varchar(11) NOT NULL, 
-        `ProductID` int(11) NOT NULL,
-        `quantity` int(11) NOT NULL,
-        `unit_price` double NOT NULL, 
+        `FirstProductID` int(11) NOT NULL,
+        `first_quantity` int(11) NOT NULL,
+        `SecondProductID` int(11) NOT NULL,
+        `second_quantity` int(11) NOT NULL,
+        `ThirdProductID` int(11) NOT NULL,
+        `third_quantity` int(11) NOT NULL,
         PRIMARY KEY (OrderDetailID),
         FOREIGN KEY (OrderID) REFERENCES order_summary(OrderID), 
-        FOREIGN KEY (ProductID) REFERENCES products(ProductID) 
+        FOREIGN KEY (FirstProductID) REFERENCES products(ProductID), 
+     	FOREIGN KEY (SecondProductID) REFERENCES products(ProductID), 
+        FOREIGN KEY (ThirdProductID) REFERENCES products(ProductID) 
        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
     --- Database.END -->
 
-
+    <!-- SELECT * FROM order_details
+LEFT JOIN order_summary ON order_details.OrderID = order_summary.OrderID
+UNION
+SELECT * FROM order_details
+RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
 
 
     <!-- NAVBAR -->
@@ -116,7 +126,7 @@
         </div>
 
         <!-- html form here where the product information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <div class="row">
                 <div class="col-10 col-sm-6 m-auto">
                     <label for="OrderID" class="form-label">Order ID</label>
@@ -169,7 +179,7 @@
                         ?>
                     </select>
                 </div>
-                <div class="mt-5 mb-2">
+                <div class="mt-5 text-center">
                     <label class="form-label">--- Select Product Here ---</label>
                 </div>
 
@@ -182,8 +192,8 @@
                 // this is how to get number of rows returned
                 $num = $stmt->rowCount();
                 ?>
-                <div class="col-10 col-sm-3 m-auto">
-                    <select class="form-select" name="first_order_product" aria-label="OrderID">
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <select class="form-select" name="FirstProductID" aria-label="OrderID">
                         <option selected>Open this select menu</option>
                         <?php
                         if ($num > 0) {
@@ -197,20 +207,15 @@
                         ?>
                     </select>
                 </div>
-                <div class="col-10 col-sm-3 m-auto">
-                    <input type='number' name='first_order_number' value="0" class='form-control' />
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='number' name='first_quantity' value="0" class='form-control' min="0" />
                 </div>
-                <div class="col-10 col-sm-3 m-auto">
-                    <input type='text' name='first_unit_price' class='form-control' readonly />
-                </div>
-                <div class="col-10 col-sm-3 m-auto">
-                    <input type='text' name='first_total_price' class='form-control' readonly />
-                </div>
+                <div class="col-5 m-auto mt-4"></div>
                 <!-- First product.END -->
 
                 <!-- Second product -->
                 <div class="col-10 col-sm-3 m-auto mt-4">
-                    <select class="form-select" name="second_order_product" aria-label="OrderID">
+                    <select class="form-select" name="SecondProductID" aria-label="OrderID">
                         <option selected>Open this select menu</option>
                         <?php
                         $stmt->execute();
@@ -230,19 +235,14 @@
                     </select>
                 </div>
                 <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='number' name='second_order_number' value="0" class='form-control' />
+                    <input type='number' name='second_quantity' value="0" class='form-control' min="0" />
                 </div>
-                <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='text' name='second_unit_price' class='form-control' readonly />
-                </div>
-                <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='text' name='second_total_price' class='form-control' readonly />
-                </div>
+                <div class="col-5 m-auto mt-4"></div>
                 <!-- Second product.END -->
 
                 <!-- Third product -->
                 <div class="col-10 col-sm-3 m-auto mt-4">
-                    <select class="form-select" name="third_order_product" aria-label="OrderID">
+                    <select class="form-select" name="ThirdProductID" aria-label="OrderID">
                         <option selected>Open this select menu</option>
                         <?php
                         $stmt->execute();
@@ -262,15 +262,10 @@
                     </select>
                 </div>
                 <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='number' name='third_order_number' value="0" class='form-control' />
+                    <input type='number' name='third_quantity' value="0" class='form-control' min="0" />
                 </div>
-                <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='text' name='third_unit_price' class='form-control' readonly />
-                </div>
-                <div class="col-10 col-sm-3 m-auto mt-4">
-                    <input type='text' name='third_total_price' class='form-control' readonly />
-                </div>
-                <div>
+                <div class="col-5 m-auto mt-4"></div>
+                <div class="ms-3">
                     <input type='submit' value='Save' class='btn btn-primary mt-3' />
                 </div>
                 <!-- Third product.END -->
@@ -280,6 +275,86 @@
 
         <hr class="featurette-divider">
 
+        <?php
+        if ($_POST) {
+            $OrderID = ($_POST['OrderID']);
+            $CustomerID = $_POST['CustomerID'];
+            $FirstProductID = $_POST['FirstProductID'];
+            $first_quantity = $_POST['first_quantity'];
+            $SecondProductID = $_POST['SecondProductID'];
+            $second_quantity = $_POST['second_quantity'];
+            $ThirdProductID = $_POST['ThirdProductID'];
+            $third_quantity = $_POST['third_quantity'];
+
+            // include database connection
+            include 'config/database.php';
+
+            try {
+
+                // insert query
+                $query = "SELECT price FROM products where ProductID = :ProductID";
+               
+                // prepare query for execution
+                $stmt = $con->prepare($query);
+
+                // First Price
+                $stmt->bindParam(":ProductID", $FirstProductID);
+                $stmt->execute();
+
+                $num = $stmt->rowCount();
+
+                if ($num > 0) {
+                     // retrieve our table contents
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    $price_one = $price * $first_quantity;
+                }
+                }else {
+                    $price_one = 0;
+                }
+
+                // Second Price
+                $stmt->bindParam(":ProductID", $SecondProductID);
+                $stmt->execute();
+
+                $num = $stmt->rowCount();
+
+                if ($num > 0) {
+                     // retrieve our table contents
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    $price_two = $price * $second_quantity;
+                }
+                }else {
+                    $price_two = 0;
+                }
+
+                // Third Price
+                $stmt->bindParam(":ProductID", $ThirdProductID);
+                $stmt->execute();
+
+                $num = $stmt->rowCount();
+
+                if ($num > 0) {
+                     // retrieve our table contents
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    $price_three = $price * $third_quantity;
+                }
+                }else {
+                    $price_three = 0;
+                }
+                $total_price =  $price_one + $price_two + $price_three;
+                echo $total_price;
+            }
+            // show error
+            catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+        }
+        ?>
+
+        </table>
         <!-- FOOTER -->
         <footer class="container">
             <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
