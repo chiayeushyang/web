@@ -358,20 +358,38 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                 $query_order_summary = "INSERT INTO order_summary SET OrderID=:OrderID, CustomerID=:CustomerID, total_price=:total_price, total_item=:total_item";
                 // prepare query for execution
                 $stmt_order_summary = $con->prepare($query_order_summary);
-
-                echo $OrderID;
+      
                 $stmt_order_summary->bindParam(':OrderID', $OrderID);
-                echo "<br>";
-                echo $CustomerID;
                 $stmt_order_summary->bindParam(':CustomerID', $CustomerID);
-                echo "<br>";
-                echo $total_price;
                 $stmt_order_summary->bindParam(':total_price', $total_price);
-                echo "<br>";
-                echo $total_item;
                 $stmt_order_summary->bindParam(':total_item', $total_item);
    
                 if ($stmt_order_summary->execute()) {
+                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                }
+            } catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+
+            try {
+                $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, FirstProductID=:FirstProductID, first_quantity=:first_quantity, SecondProductID=:SecondProductID, second_quantity=:second_quantity, ThirdProductID=:ThirdProductID, third_quantity=:third_quantity";
+                // prepare query for execution
+                $stmt_order_detail = $con->prepare($query_order_detail);
+
+
+                $stmt_order_detail->bindParam(':OrderID', $OrderID);   
+                $stmt_order_detail->bindParam(':FirstProductID',$FirstProductID);
+                $stmt_order_detail->bindParam(':first_quantity',$first_quantity);
+                $stmt_order_detail->bindParam(':SecondProductID',$SecondProductID);
+                $stmt_order_detail->bindParam(':second_quantity',$second_quantity);
+                $stmt_order_detail->bindParam(':ThirdProductID', $ThirdProductID);
+                $stmt_order_detail->bindParam(':third_quantity', $third_quantity);
+        
+        
+   
+                if ($stmt_order_detail->execute()) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
