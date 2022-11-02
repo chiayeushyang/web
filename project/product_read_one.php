@@ -142,13 +142,18 @@
                     $expired_date = $row['expired_date'];
                     // shorter way to do that is extract($row)
 
-                    if ($expired_date == Null) {
-                        $expired_date = "-";
-                    }
-
                     if ($promotion_price == Null) {
                         $promotion_price = "-";
                     }
+
+                    if ($manufacture_date == Null) {
+                        $manufacture_date = "-";
+                    }
+
+                    if ($expired_date == Null) {
+                        $expired_date = "-";
+                    }
+                   
                 } else {
                     die('ERROR: Record ID not found.');
                 }

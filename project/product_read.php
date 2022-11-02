@@ -127,13 +127,26 @@
                     // extract row
                     // this will make $row['firstname'] to just $firstname only
                     extract($row);
+
+                    if ($promotion_price == Null) {
+                        $promotion_price = "-";
+                    }
+
+                    if ($manufacture_date == Null) {
+                        $manufacture_date = "-";
+                    }
+
+                    if ($expired_date == Null) {
+                        $expired_date = "-";
+                    }
+
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$ProductID}</td>";
                     echo "<td>{$name}</td>";
                     echo "<td>{$description}</td>";
-                    echo "<td>{$price}</td>";
-                    echo "<td>{$promotion_price}</td>";
+                    echo "<td>RM {$price}</td>";
+                    echo "<td>RM {$promotion_price}</td>";
                     echo "<td>{$manufacture_date}</td>";
                     echo "<td>{$expired_date}</td>";
                     echo "<td>";

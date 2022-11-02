@@ -109,23 +109,174 @@
     </header>
     <!-- NAVBAR END -->
 
-    <main class="mt-5">
+    <!-- Content Start-->
+    <div class="container mt-5">
+        <div class="page-header">
+            <h1>New Order</h1>
+        </div>
 
-        <!-- Content Start-->
+        <!-- html form here where the product information will be entered -->
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
+            <div class="row">
+                <div class="col-10 col-sm-6 m-auto">
+                    <label for="OrderID" class="form-label">Order ID</label>
+                    <?php
+                    include 'config/database.php';
 
+                    // select all data
+                    $query = "SELECT OrderID FROM order_summary ORDER BY OrderID DESC LIMIT 1";
+                    $stmt = $con->prepare($query);
+                    $stmt->execute();
 
+                    // this is how to get number of rows returned
+                    $num = $stmt->rowCount();
+
+                    //check if more than 0 record found
+                    if ($num > 0) {
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            extract($row);
+
+                            $newOrderID = $OrderID + 1;
+                            echo "<input class='form-control bg-light' type='text' name=\"OrderID\" value='$newOrderID' readonly>";
+                        }
+                    }
+                    ?>
+
+                </div>
+                <div class="col-10 col-sm-6 m-auto">
+                    <label for="CustomerID" class="form-label">Customer ID</label>
+                    <select class="form-select" name='CustomerID' aria-label="OrderID">
+                        <option selected>Select a customer</option>
+                        <?php
+
+                        // select all data
+                        $query = "SELECT CustomerID, username FROM customers ORDER BY CustomerID ASC";
+                        $stmt = $con->prepare($query);
+                        $stmt->execute();
+
+                        // this is how to get number of rows returned
+                        $num = $stmt->rowCount();
+
+                        //check if more than 0 record found
+                        if ($num > 0) {
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+                                echo "<option value=\"$CustomerID\">$username</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="mt-5 mb-2">
+                    <label class="form-label">--- Select Product Here ---</label>
+                </div>
+
+                <!-- First product -->
+                <?php
+                $query = "SELECT * FROM products ORDER BY ProductID ASC";
+                $stmt = $con->prepare($query);
+                $stmt->execute();
+
+                // this is how to get number of rows returned
+                $num = $stmt->rowCount();
+                ?>
+                <div class="col-10 col-sm-3 m-auto">
+                    <select class="form-select" name="first_order_product" aria-label="OrderID">
+                        <option selected>Open this select menu</option>
+                        <?php
+                        if ($num > 0) {
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+
+                                echo "<option value=\"$ProductID\">$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-10 col-sm-3 m-auto">
+                    <input type='number' name='first_order_number' value="0" class='form-control' />
+                </div>
+                <div class="col-10 col-sm-3 m-auto">
+                    <input type='text' name='first_unit_price' class='form-control' readonly />
+                </div>
+                <div class="col-10 col-sm-3 m-auto">
+                    <input type='text' name='first_total_price' class='form-control' readonly />
+                </div>
+                <!-- First product.END -->
+
+                <!-- Second product -->
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                        <select class="form-select" name="first_order_product" aria-label="OrderID">
+                            <option selected>Open this select menu</option>
+                            <?php
+                            $stmt->execute();
+
+                            // this is how to get number of rows returned
+                            $num = $stmt->rowCount();
+
+                            if ($num > 0) {
+
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row);
+
+                                    echo "<option value=\"$ProductID\">$name</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='number' name='second_order_number' value="0" class='form-control' />
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='text' name='second_unit_price' class='form-control' readonly />
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='text' name='second_total_price' class='form-control' readonly />
+                    </div>
+                    <!-- Second product.END -->
+
+                    <!-- Third product -->
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <select class="form-select" aria-label="OrderID">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='number' name='third_order_number' value="0" class='form-control' />
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='text' name='third_unit_price' class='form-control' readonly />
+                    </div>
+                    <div class="col-10 col-sm-3 m-auto mt-4">
+                        <input type='text' name='third_total_price' class='form-control' readonly />
+                    </div>
+                    <div>
+                        <input type='submit' value='Save' class='btn btn-primary mt-3' />
+                    </div>
+                    <!-- Third product.END -->
+                </div>
+        </form>
         <!-- Content End -->
 
         <hr class="featurette-divider">
 
-    </main>
-    <!-- FOOTER -->
-    <footer class="container">
-        <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-        <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-            <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-            <a class="text-decoration-none fw-bold" href="#">Terms</a>
-        </p>
-    </footer>
-    <!-- FOOTER END -->
+        <!-- FOOTER -->
+        <footer class="container">
+            <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
+            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
+                <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
+                <a class="text-decoration-none fw-bold" href="#">Terms</a>
+            </p>
+        </footer>
+        <!-- FOOTER END -->
 </body>
+
+</html>
