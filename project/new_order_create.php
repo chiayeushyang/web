@@ -210,59 +210,71 @@
 
                 <!-- Second product -->
                 <div class="col-10 col-sm-3 m-auto mt-4">
-                        <select class="form-select" name="first_order_product" aria-label="OrderID">
-                            <option selected>Open this select menu</option>
-                            <?php
-                            $stmt->execute();
+                    <select class="form-select" name="second_order_product" aria-label="OrderID">
+                        <option selected>Open this select menu</option>
+                        <?php
+                        $stmt->execute();
 
-                            // this is how to get number of rows returned
-                            $num = $stmt->rowCount();
+                        // this is how to get number of rows returned
+                        $num = $stmt->rowCount();
 
-                            if ($num > 0) {
+                        if ($num > 0) {
 
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    extract($row);
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
 
-                                    echo "<option value=\"$ProductID\">$name</option>";
-                                }
+                                echo "<option value=\"$ProductID\">$name</option>";
                             }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='number' name='second_order_number' value="0" class='form-control' />
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='text' name='second_unit_price' class='form-control' readonly />
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='text' name='second_total_price' class='form-control' readonly />
-                    </div>
-                    <!-- Second product.END -->
-
-                    <!-- Third product -->
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <select class="form-select" aria-label="OrderID">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='number' name='third_order_number' value="0" class='form-control' />
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='text' name='third_unit_price' class='form-control' readonly />
-                    </div>
-                    <div class="col-10 col-sm-3 m-auto mt-4">
-                        <input type='text' name='third_total_price' class='form-control' readonly />
-                    </div>
-                    <div>
-                        <input type='submit' value='Save' class='btn btn-primary mt-3' />
-                    </div>
-                    <!-- Third product.END -->
+                        }
+                        ?>
+                    </select>
                 </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='number' name='second_order_number' value="0" class='form-control' />
+                </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='text' name='second_unit_price' class='form-control' readonly />
+                </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='text' name='second_total_price' class='form-control' readonly />
+                </div>
+                <!-- Second product.END -->
+
+                <!-- Third product -->
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <select class="form-select" name="third_order_product" aria-label="OrderID">
+                        <option selected>Open this select menu</option>
+                        <?php
+                        $stmt->execute();
+
+                        // this is how to get number of rows returned
+                        $num = $stmt->rowCount();
+
+                        if ($num > 0) {
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+
+                                echo "<option value=\"$ProductID\">$name</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='number' name='third_order_number' value="0" class='form-control' />
+                </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='text' name='third_unit_price' class='form-control' readonly />
+                </div>
+                <div class="col-10 col-sm-3 m-auto mt-4">
+                    <input type='text' name='third_total_price' class='form-control' readonly />
+                </div>
+                <div>
+                    <input type='submit' value='Save' class='btn btn-primary mt-3' />
+                </div>
+                <!-- Third product.END -->
+            </div>
         </form>
         <!-- Content End -->
 
