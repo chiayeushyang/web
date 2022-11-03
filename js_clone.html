@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Create Order</title>
+</head>
+
+<body>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <th>Products</th>
+                <th>Quantity</th>
+            </tr>
+
+            <tr class="pRow">
+                <td>
+                    <select name="product[]">
+                        <option>Prod 1</option>
+                        <option>Prod 2</option>
+                        <option>Prod 3</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="quantity[]">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="button" value="Add More Product" class="add_one" />
+                    <input type="button" value="Delete" class="delete_one" />
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Save" />
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        document.addEventListener('mouseover', function (event) {
+            if (event.target.matches('.add_one')) {
+                var element = document.querySelector('.pRow');
+                var clone = element.cloneNode(true);
+                element.after(clone);
+            }
+            if (event.target.matches('.delete_one')) {
+                var total = document.querySelectorAll('.pRow').length;
+                if (total > 1) {
+                    var element = document.querySelector('.pRow');
+                    element.remove(element);
+                }
+            }
+        }, false);
+    </script>
+</body>
+
+</html>

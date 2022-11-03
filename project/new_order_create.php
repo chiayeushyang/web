@@ -26,39 +26,25 @@
 <body>
     <!-- Database ---
 
-    CREATE TABLE IF NOT EXISTS `order_summary` (
-        `OrderID` varchar(128) NOT NULL,
-        CustomerID` int(11) NOT NULL,
-        `total_price` double NOT NULL,
-        `total_item` int NOT NULL,
-        `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY (OrderID),
-        FOREIGN KEY (CustomerID) REFERENCES customers(CustomerID)
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    CREATE TABLE IF NOT EXISTS `order_summary` ( 
+        `OrderID` int(11) NOT NULL AUTO_INCREMENT,
+         `CustomerID` int(11) NOT NULL, 
+         `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          PRIMARY KEY (OrderID), 
+          FOREIGN KEY (CustomerID) REFERENCES customers(CustomerID)
+           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
     CREATE TABLE IF NOT EXISTS `order_detail` (     
         `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT, 
-        `OrderID` varchar(11) NOT NULL, 
-        `FirstProductID` int(11) NOT NULL,
-        `first_quantity` int(11) NOT NULL,
-        `SecondProductID` int(11) NOT NULL,
-        `second_quantity` int(11) NOT NULL,
-        `ThirdProductID` int(11) NOT NULL,
-        `third_quantity` int(11) NOT NULL,
+        `OrderID` int(11) NOT NULL, 
+        `ProductID` int(11) NOT NULL,
+        `quantity` int(11) NOT NULL,
         PRIMARY KEY (OrderDetailID),
         FOREIGN KEY (OrderID) REFERENCES order_summary(OrderID), 
-        FOREIGN KEY (FirstProductID) REFERENCES products(ProductID), 
-     	FOREIGN KEY (SecondProductID) REFERENCES products(ProductID), 
-        FOREIGN KEY (ThirdProductID) REFERENCES products(ProductID) 
+        FOREIGN KEY (ProductID) REFERENCES products(ProductID)
        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
     --- Database.END -->
-
-    <!-- SELECT * FROM order_details
-LEFT JOIN order_summary ON order_details.OrderID = order_summary.OrderID
-UNION
-SELECT * FROM order_details
-RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
 
 
     <!-- NAVBAR -->
@@ -127,95 +113,38 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
 
         <?php
         if ($_POST) {
-            $OrderID = ($_POST['OrderID']);
             $CustomerID = $_POST['CustomerID'];
-            $FirstProductID = $_POST['FirstProductID'];
-            $first_quantity = $_POST['first_quantity'];
-            $SecondProductID = $_POST['SecondProductID'];
-            $second_quantity = $_POST['second_quantity'];
-            $ThirdProductID = $_POST['ThirdProductID'];
-            $third_quantity = $_POST['third_quantity'];
 
             // include database connection
             include 'config/database.php';
 
             try {
+                $query_order_summary = "INSERT INTO order_summary SET CustomerID=:CustomerID";
 
-                // insert query
-                $query = "SELECT price FROM products where ProductID = :ProductID";
-
-                // prepare query for execution
-                $stmt = $con->prepare($query);
-
-                // First Price
-                $stmt->bindParam(":ProductID", $FirstProductID);
-                $stmt->execute();
-
-                $num = $stmt->rowCount();
-
-                if ($num > 0) {
-                    // retrieve our table contents
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                        $price_one = $price * $first_quantity;
-                    }
-                } else {
-                    $price_one = 0;
-                    $first_quantity = 0;
-                }
-
-                // Second Price
-                $stmt->bindParam(":ProductID", $SecondProductID);
-                $stmt->execute();
-
-                $num = $stmt->rowCount();
-
-                if ($num > 0) {
-                    // retrieve our table contents
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                        $price_two = $price * $second_quantity;
-                    }
-                } else {
-                    $price_two = 0;
-                    $second_quantity = 0;
-                }
-
-                // Third Price
-                $stmt->bindParam(":ProductID", $ThirdProductID);
-                $stmt->execute();
-
-                $num = $stmt->rowCount();
-
-                if ($num > 0) {
-                    // retrieve our table contents
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                        $price_three = $price * $third_quantity;
-                    }
-                } else {
-                    $price_three = 0;
-                    $third_quantity = 0;
-                }
-                $total_price =  $price_one + $price_two + $price_three;
-                $total_item = $first_quantity + $second_quantity + $third_quantity;
-            } catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
-            }
-
-
-            try {
-                $query_order_summary = "INSERT INTO order_summary SET OrderID=:OrderID, CustomerID=:CustomerID, total_price=:total_price, total_item=:total_item";
                 // prepare query for execution
                 $stmt_order_summary = $con->prepare($query_order_summary);
 
-                $stmt_order_summary->bindParam(':OrderID', $OrderID);
                 $stmt_order_summary->bindParam(':CustomerID', $CustomerID);
-                $stmt_order_summary->bindParam(':total_price', $total_price);
-                $stmt_order_summary->bindParam(':total_item', $total_item);
 
                 if ($stmt_order_summary->execute()) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
+
+                    // prepare select query
+                    $query = "SELECT OrderID FROM order_summary ORDER BY OrderID DESC LIMIT 1";
+                    $stmt = $con->prepare($query);
+
+                    // execute our query
+                    $stmt->execute();
+
+                    $num = $stmt->rowCount();
+
+                    if ($num > 0) {
+                        // store retrieved row to a variable
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        extract($row);
+                    } else {
+                        die('ERROR: Record ID not found.');
+                    }
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
@@ -223,29 +152,25 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                 die('ERROR: ' . $exception->getMessage());
             }
 
-            try {
-                $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, FirstProductID=:FirstProductID, first_quantity=:first_quantity, SecondProductID=:SecondProductID, second_quantity=:second_quantity, ThirdProductID=:ThirdProductID, third_quantity=:third_quantity";
-                // prepare query for execution
-                $stmt_order_detail = $con->prepare($query_order_detail);
+            for ($count = 0; $count < count($_POST['ProductID']) - 1; $count++) {
+                try {
+                    $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, ProductID=:ProductID, quantity=:quantity";
+                    // prepare query for execution
+                    $stmt_order_detail = $con->prepare($query_order_detail);
 
+                    $stmt_order_detail->bindParam(':OrderID', $OrderID);
+                    $stmt_order_detail->bindParam(':ProductID', $_POST['ProductID'][$count]);
+                    $stmt_order_detail->bindParam(':quantity', $_POST['quantity'][$count]);
 
-                $stmt_order_detail->bindParam(':OrderID', $OrderID);
-                $stmt_order_detail->bindParam(':FirstProductID', $FirstProductID);
-                $stmt_order_detail->bindParam(':first_quantity', $first_quantity);
-                $stmt_order_detail->bindParam(':SecondProductID', $SecondProductID);
-                $stmt_order_detail->bindParam(':second_quantity', $second_quantity);
-                $stmt_order_detail->bindParam(':ThirdProductID', $ThirdProductID);
-                $stmt_order_detail->bindParam(':third_quantity', $third_quantity);
-
-
-
-                if ($stmt_order_detail->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    $record_number = $count + 1;
+                    if ($stmt_order_detail->execute()) {
+                        echo "<div class='alert alert-success'>Record $record_number was saved.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    }
+                } catch (PDOException $exception) {
+                    die('ERROR: ' . $exception->getMessage());
                 }
-            } catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
@@ -253,32 +178,7 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <div class="row">
-                <div class="col-10 col-sm-6 m-auto">
-                    <label for="OrderID" class="form-label">Order ID</label>
-                    <?php
-                    include 'config/database.php';
-
-                    // select all data
-                    $query = "SELECT OrderID FROM order_summary ORDER BY CAST(OrderID as SIGNED INTEGER) DESC limit 1";
-                    $stmt = $con->prepare($query);
-                    $stmt->execute();
-
-                    // this is how to get number of rows returned
-                    $num = $stmt->rowCount();
-
-                    //check if more than 0 record found
-                    if ($num > 0) {
-
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-
-                            $newOrderID = $OrderID + 1;
-                            echo "<input class='form-control bg-light' type='text' name=\"OrderID\" value='$newOrderID' readonly>";
-                        }
-                    }
-                    ?>
-
-                </div>
+                <?php include 'config/database.php'; ?>
                 <div class="col-10 col-sm-6 m-auto">
                     <label for="CustomerID" class="form-label">Customer ID</label>
                     <select class="form-select" name='CustomerID' aria-label="OrderID">
@@ -308,110 +208,66 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
                     <label class="form-label">--- Select Product Here ---</label>
                 </div>
 
-                <!-- First product -->
                 <?php
                 $query = "SELECT * FROM products ORDER BY ProductID ASC";
-                $stmt = $con->prepare($query);
-                $stmt->execute();
-
-                // this is how to get number of rows returned
-                $num = $stmt->rowCount();
                 ?>
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
-                        <th>#</th>
+                        <th class="text-center">#</th>
                         <th>Products</th>
                         <th>Quantity</th>
                     </tr>
-                    <!-- First Product -->
-                    <tr>
-                        <td class="d-flex justify-content-center">
-                            <p class="mb-0 mt-2">1</p>
-                        </td>
-                        <td>
-                            <select class="form-select" name="FirstProductID" aria-label="OrderID">
-                                <option selected>Open this select menu</option>
-                                <?php
-                                if ($num > 0) {
 
-                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        extract($row);
+                    <?php
+                    $stmt = $con->prepare($query);
+                    $stmt->execute();
 
-                                        echo "<option value=\"$ProductID\">$name</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type='number' name='first_quantity' value="0" class='form-control' min="0" />
-                        </td>
-                    </tr>
-                    <!-- First.END -->
-                    <!-- Second Product -->
-                    <tr>
-                        <td class="d-flex justify-content-center">
-                            <p class="mb-0 mt-2">1</p>
-                        </td>
-                        <td>
-                            <select class="form-select" name="SecondProductID" aria-label="OrderID">
-                                <option selected>Open this select menu</option>
-                                <?php
-                                $stmt->execute();
+                    // this is how to get number of rows returned
+                    $num = $stmt->rowCount();
+                    echo "<tr class=\"pRow\">";
+                    echo "<td class=\"d-flex justify-content-center\">";
+                    echo "<p class=\"mb-0 mt-2 number\">1</p>";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<select class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
+                    echo "<option selected>Open this select menu</option>";
 
-                                // this is how to get number of rows returned
-                                $num = $stmt->rowCount();
+                    if ($num > 0) {
 
-                                if ($num > 0) {
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            extract($row);
 
-                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        extract($row);
+                            echo "<option value=\"$ProductID\">$name</option>";
+                        }
+                    }
+                    echo   "</select>";
+                    echo   "</td>";
+                    echo   "<td>";
+                    echo   "<input type='number' name='quantity[]' value=\"0\" class='form-control' min=\"0\" />";
+                    echo   "</td>";
+                    echo   "</tr>";
+                    ?>
 
-                                        echo "<option value=\"$ProductID\">$name</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type='number' name='second_quantity' value="0" class='form-control' min="0" />
-                        </td>
-                    </tr>
-                    <!-- Second.END -->
-                    <!-- Third Product -->
-                    <tr>
-                        <td class="d-flex justify-content-center">
-                            <p class="mb-0 mt-2">1</p>
-                        </td>
-                        <td>
-                            <select class="form-select" name="ThirdProductID" aria-label="OrderID">
-                                <option selected>Open this select menu</option>
-                                <?php
-                                $stmt->execute();
-
-                                // this is how to get number of rows returned
-                                $num = $stmt->rowCount();
-
-                                if ($num > 0) {
-
-                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        extract($row);
-
-                                        echo "<option value=\"$ProductID\">$name</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type='number' name='third_quantity' value="0" class='form-control' min="0" />
-                        </td>
-                    </tr>
-                    <!-- Third.END -->
                 </table>
-                    <input type='submit' value='Save' class='btn btn-primary mt-3 m-auto col-10 col-md-5' />
+                <div class="d-flex justify-content-between">
+                    <input type='submit' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' />
+                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
+                    <input type="button" value="Delete" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                </div>
             </div>
         </form>
+
+        <hr class="featurette-divider">
+
+        <?php
+        if ($_POST) {
+        }
+        try {
+        } catch (PDOException $exception) {
+            die('ERROR: ' . $exception->getMessage());
+        }
+
+        ?>
         <!-- Content End -->
 
         <hr class="featurette-divider">
@@ -425,6 +281,22 @@ RIGHT JOIN order_summary ON order_details.OrderID = order_summary.OrderID -->
             </p>
         </footer>
         <!-- FOOTER END -->
+        <script>
+            document.addEventListener('click', function(event) {
+                if (event.target.matches('.add_one')) {
+                    var element = document.querySelector('.pRow');
+                    var clone = element.cloneNode(true);
+                    element.after(clone);
+                }
+                if (event.target.matches('.delete_one')) {
+                    var total = document.querySelectorAll('.pRow').length;
+                    if (total > 1) {
+                        var element = document.querySelector('.pRow');
+                        element.remove(element);
+                    }
+                }
+            }, false);
+        </script>
 </body>
 
 </html>
