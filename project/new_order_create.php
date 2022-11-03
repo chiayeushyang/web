@@ -152,7 +152,7 @@
                 die('ERROR: ' . $exception->getMessage());
             }
 
-            for ($count = 0; $count < count($_POST['ProductID']) - 1; $count++) {
+            for ($count = 0; $count < count($_POST['ProductID']) ; $count++) {
                 try {
                     $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, ProductID=:ProductID, quantity=:quantity";
                     // prepare query for execution
@@ -211,7 +211,7 @@
                 <?php
                 $query = "SELECT * FROM products ORDER BY ProductID ASC";
                 ?>
-                <table class='table table-hover table-responsive table-bordered'>
+                <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
                         <th>Products</th>
@@ -224,9 +224,10 @@
 
                     // this is how to get number of rows returned
                     $num = $stmt->rowCount();
+
                     echo "<tr class=\"pRow\">";
                     echo "<td class=\"d-flex justify-content-center\">";
-                    echo "<p class=\"mb-0 mt-2 number\">1</p>";
+                    echo "<p class=\"mb-0 mt-2\">1</p>";
                     echo "</td>";
                     echo "<td>";
                     echo "<select class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
@@ -294,6 +295,13 @@
                         var element = document.querySelector('.pRow');
                         element.remove(element);
                     }
+                }
+                var total = document.querySelectorAll('.pRow').length;
+           
+                var row = document.getElementById('order').rows;
+                for (var i = 1; i <= total; i++) {
+                    row[i].cells[0].innerHTML = i ;
+                 
                 }
             }, false);
         </script>
