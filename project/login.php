@@ -34,40 +34,68 @@
 <body class="text-center">
 
     <?php
-    include 'config/database.php';
 
-    try {
-        // prepare select query
-        $query = "SELECT username, password FROM customers WHERE CustomerID = :CustomerID ";
-        $stmt = $con->prepare($query);
 
-        // execute our query
-        $stmt->execute();
+    if ($_POST) {
+        $username = trim($_POST['username']);
+        $pass = trim($_POST['password']);
 
-        $num = $stmt->rowCount(); 
+        $validate = true;
 
-        if ($num > 0) {
-        // store retrieved row to a variable
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-            $username = $row['username'];
-            $password = $row['password'];
-            $first_name = $row['first_name'];
-            $last_name = $row['last_name'];
-            $gender = $row['gender'];
-            $date_of_birth = $row['date_of_birth'];
-            $registration_date_time = $row['registration_date_time'];
-            $account_status = $row['account_status'];
-            // shorter way to do that is extract($row)
-        } else {
-            die('ERROR: Record ID not found.');
+        if ($username == "") {
+            echo "<div class='alert alert-danger align-item-center'>Please enter your username</div>";
+            $validate = false;
         }
-    }
 
-    // show error
-    catch (PDOException $exception) {
-        die('ERROR: ' . $exception->getMessage());
+        if ($pass == "") {
+            echo "<div class='alert alert-danger align-item-center'>Please enter your password</div>";
+            $validate = false;
+        }
+
+        if ($validate) {
+            include 'config/database.php';
+            try {
+
+                // prepare select query
+                $query = "SELECT username, password, account_status FROM customers WHERE username = :username";
+                $stmt = $con->prepare($query);
+
+                $stmt->bindParam(':username', $username);
+                // execute our query
+                $stmt->execute();
+
+                $num = $stmt->rowCount();
+
+                if ($num > 0) {
+                    // store retrieved row to a variable
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    extract($row);
+
+                    if ($pass == $password) {
+                        switch ($account_status) {
+                            case "Inactive":
+                                echo "<div class='alert alert-danger align-item-center'>Your Account is suspended</div>";
+                                break;
+                            case "Active":
+                                header("Location: index.php");
+                                break;
+                            default:
+                                echo "<div class='alert alert-danger align-item-center'>No account status stated</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger align-item-center mt-5'>Incorrect Password</div>";
+                    }
+                } else {
+                    echo "<div class='alert alert-danger align-item-center mt-5'>User not found (Invalid Account)</div>";
+                }
+            }
+
+            // show error
+            catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+        }
     }
     ?>
 
@@ -75,7 +103,7 @@
     <main class="form-signin w-100 m-auto px-3 py-5 rounded">
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <i class="fa-solid fa-shop fa-xl fs-1 text-light mb-4" width="72" height="57"></i>
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 fw-normal fw-bold">Please sign in</h1>
 
             <div class="form-floating">
                 <input type="text" class="form-control" name="username" placeholder="Username">
@@ -92,7 +120,7 @@
                 </label>
             </div>
             <input type='submit' value='Save' class='w-100 btn btn-lg btn-primary' />
-            <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+            <p class="mt-5 mb-3 text-muted">&copy; 2022 Chia Yeu Shyang</p>
         </form>
     </main>
 
