@@ -114,63 +114,89 @@
         <?php
         if ($_POST) {
             $CustomerID = $_POST['CustomerID'];
+            $ProductID = $_POST['ProductID'];
 
-            // include database connection
-            include 'config/database.php';
+            $validation = true;
+            $product_error = 0;
 
-            try {
-                $query_order_summary = "INSERT INTO order_summary SET CustomerID=:CustomerID";
-
-                // prepare query for execution
-                $stmt_order_summary = $con->prepare($query_order_summary);
-
-                $stmt_order_summary->bindParam(':CustomerID', $CustomerID);
-
-                if ($stmt_order_summary->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
-
-                    // prepare select query
-                    $query = "SELECT OrderID FROM order_summary ORDER BY OrderID DESC LIMIT 1";
-                    $stmt = $con->prepare($query);
-
-                    // execute our query
-                    $stmt->execute();
-
-                    $num = $stmt->rowCount();
-
-                    if ($num > 0) {
-                        // store retrieved row to a variable
-                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                        extract($row);
-                    } else {
-                        die('ERROR: Record ID not found.');
-                    }
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                }
-            } catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
+            if ($CustomerID == 0) {
+                echo "<div class='alert alert-danger'>Please choose a customer</div>";
+                $validation = false;
             }
 
-            for ($count = 0; $count < count($_POST['ProductID']) ; $count++) {
+            for ($count = 0; $count < count($ProductID); $count++) {
+                if ($ProductID[$count] == 0) {
+                    $product_error++;
+                }
+            }
+
+            if ($product_error > 0) {
+                echo "<div class='alert alert-danger'>Please choose product for all blank</div>";
+                $validation = false;
+            }
+
+            if ($validation) {
                 try {
-                    $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, ProductID=:ProductID, quantity=:quantity";
+                    // include database connection
+                    include 'config/database.php';
+
+                    $query_order_summary = "INSERT INTO order_summary SET CustomerID=:CustomerID";
+
                     // prepare query for execution
-                    $stmt_order_detail = $con->prepare($query_order_detail);
+                    $stmt_order_summary = $con->prepare($query_order_summary);
 
-                    $stmt_order_detail->bindParam(':OrderID', $OrderID);
-                    $stmt_order_detail->bindParam(':ProductID', $_POST['ProductID'][$count]);
-                    $stmt_order_detail->bindParam(':quantity', $_POST['quantity'][$count]);
+                    $stmt_order_summary->bindParam(':CustomerID', $CustomerID);
 
-                    $record_number = $count + 1;
-                    if ($stmt_order_detail->execute()) {
-                        echo "<div class='alert alert-success'>Record $record_number was saved.</div>";
+                    if ($stmt_order_summary->execute()) {
+
+                        // prepare select query
+                        $query = "SELECT OrderID FROM order_summary ORDER BY OrderID DESC LIMIT 1";
+                        $stmt = $con->prepare($query);
+
+                        // execute our query
+                        $stmt->execute();
+
+                        $num = $stmt->rowCount();
+
+                        if ($num > 0) {
+                            // store retrieved row to a variable
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            extract($row);
+                            echo "<div class='alert alert-success'>Your order ID is <b class=\"fs-4 ms-2 mt-3\">$OrderID</b></div>";
+                        } else {
+                            die('ERROR: Record ID not found.');
+                        }
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
                 } catch (PDOException $exception) {
                     die('ERROR: ' . $exception->getMessage());
                 }
+
+                $record_saved = 0;
+
+                for ($count = 0; $count < count($ProductID); $count++) {
+                    try {
+                        $query_order_detail = "INSERT INTO order_detail SET OrderID=:OrderID, ProductID=:ProductID, quantity=:quantity";
+                        // prepare query for execution
+                        $stmt_order_detail = $con->prepare($query_order_detail);
+
+                        $stmt_order_detail->bindParam(':OrderID', $OrderID);
+                        $stmt_order_detail->bindParam(':ProductID', $ProductID[$count]);
+                        $stmt_order_detail->bindParam(':quantity', $_POST['quantity'][$count]);
+
+                        $record_number = $count + 1;
+                        if ($stmt_order_detail->execute()) {
+                            $record_saved ++;
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                        }
+                    } catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
+                }
+                if ($record_saved == count($ProductID))
+                echo "<div class='alert alert-success'>Record was saved.</div>";
             }
         }
         ?>
@@ -244,7 +270,7 @@
                     echo   "</select>";
                     echo   "</td>";
                     echo   "<td>";
-                    echo   "<input type='number' name='quantity[]' value=\"0\" class='form-control' min=\"0\" />";
+                    echo   "<input type='number' name='quantity[]' value=\"1\" class='form-control' min=\"1\" />";
                     echo   "</td>";
                     echo   "</tr>";
                     ?>
@@ -258,17 +284,6 @@
             </div>
         </form>
 
-        <hr class="featurette-divider">
-
-        <?php
-        if ($_POST) {
-        }
-        try {
-        } catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-
-        ?>
         <!-- Content End -->
 
         <hr class="featurette-divider">
@@ -297,11 +312,10 @@
                     }
                 }
                 var total = document.querySelectorAll('.pRow').length;
-           
+
                 var row = document.getElementById('order').rows;
                 for (var i = 1; i <= total; i++) {
-                    row[i].cells[0].innerHTML = i ;
-                 
+                    row[i].cells[0].innerHTML = i;
                 }
             }, false);
         </script>
