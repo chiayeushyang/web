@@ -41,6 +41,18 @@ session_start();
 
     <?php
 
+    if ($_GET) {
+        $error = $_GET['error'];
+
+        if ($error == "logout") {
+            echo "<div class='alert alert-success align-item-center'>Logout Successfully</div>";
+        } elseif ($error == "session_expired") {
+            echo "<div class='alert alert-danger align-item-center'>Access Denied (Session Expired)</div>";
+        } else {
+            echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
+        }
+    }
+
     if ($_POST) {
         $username = trim($_POST['username']);
         $pass = trim($_POST['password']);
