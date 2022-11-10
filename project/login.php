@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 
+<?php
+// Start the session
+session_start();
+?>
+
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +40,6 @@
 <body class="text-center">
 
     <?php
-
 
     if ($_POST) {
         $username = trim($_POST['username']);
@@ -78,6 +83,9 @@
                                 echo "<div class='alert alert-danger align-item-center'>Your Account is suspended</div>";
                                 break;
                             case "Active":
+                                $_SESSION["username"] = $username;
+                                $_SESSION["password"] = $password;
+
                                 header("Location: index.php");
                                 break;
                             default:

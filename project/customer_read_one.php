@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 
+<?php
+session_start();
+
+if (!isset($_SESSION["username"]) && !isset($_SESSION["password"])) {
+    header("Location: login.php");
+}
+?>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -71,7 +79,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="btn btn-danger ms-5" href="logout.php">LOGOUT</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -125,11 +135,11 @@
             // execute our query
             $stmt->execute();
 
-            $num = $stmt->rowCount(); 
+            $num = $stmt->rowCount();
 
             if ($num > 0) {
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                // store retrieved row to a variable
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 // values to fill up our form
                 $username = $row['username'];

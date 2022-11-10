@@ -1,6 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 
+<?php
+session_start();
+
+if (!isset($_SESSION["username"]) && !isset($_SESSION["password"])) {
+    header("Location: login.php");
+}
+?>
+
 <head>
     <title>PDO - Create a Record - PHP CRUD Tutorial</title>
 
@@ -70,7 +78,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php">Contact Us</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="btn btn-danger ms-5" href="logout.php">LOGOUT</a>
+                        </li>
                     </ul>
                 </div>
             </div>
