@@ -25,7 +25,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -41,6 +41,17 @@ include 'check_session.php';
 
             <!-- PHP code to read records will be here -->
             <?php
+
+            if ($_GET) {
+                $message = $_GET['message'];
+
+                if ($message == "update_success") {
+                    echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else {
+                    echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
+                }
+            }
+
             // include database connection
             include 'config/database.php';
 
@@ -103,13 +114,16 @@ include 'check_session.php';
                     echo "<td>{$expired_date}</td>";
                     echo "<td>";
                     // read one record
-                    echo "<a href='product_read_one.php?id={$ProductID}' class='btn btn-info me-1'>Read</a>";
+                    echo "<div class='row'>";
+
+                    echo "<a href='product_read_one.php?id={$ProductID}' class='btn btn-info col-10 col-lg m-auto me-lg-1'>Read</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='product_update.php?id={$ProductID}' class='btn btn-primary me-1'>Edit</a>";
+                    echo "<a href='product_update.php?id={$ProductID}' class='btn btn-primary col-10 col-lg m-auto me-lg-1 mt-2 mt-lg-0'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_product({$ProductID});'  class='btn btn-danger'>Delete</a>";
+                    echo "<a href='#' onclick='delete_product({$ProductID});' class='btn btn-danger col-10 col-lg m-auto mt-2 mt-xl-0'>Delete</a>";
+                    echo "</div>";
                     echo "</td>";
                     echo "</tr>";
                 }

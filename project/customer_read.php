@@ -96,14 +96,17 @@ include 'check_session.php';
                     echo "<td>{$registration_date_time}</td>";
                     echo "<td>{$account_status}</td>";
                     echo "<td>";
+
+                    echo "<div class='row'>";
                     // read one record
-                    echo "<a href='customer_read_one.php?id={$CustomerID}' class='btn btn-info me-1'>Read</a>";
+                    echo "<a href='customer_read_one.php?id={$CustomerID}' class='btn btn-info col-11 col-lg m-auto me-lg-1'>Read</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary me-1'>Edit</a>";
+                    echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary col-11 col-lg m-auto me-lg-1 mt-2 mt-lg-0'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_product({$CustomerID});'  class='btn btn-danger'>Delete</a>";
+                    echo "<a href='#' onclick='delete_product({$CustomerID});' class='btn btn-danger col-11 col-lg m-auto mt-2 mt-xl-0'>Delete</a>";
+                    echo "</div>";
                     echo "</td>";
                     echo "</tr>";
                 }

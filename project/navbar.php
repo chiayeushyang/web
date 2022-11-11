@@ -16,7 +16,6 @@ function active_startwith($pagename_start)
 {
     return startsWith(basename($_SERVER["PHP_SELF"]), "$pagename_start") ? "active" : "";
 }
-
 ?>
 
 <header>

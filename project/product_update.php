@@ -3,6 +3,7 @@
 
 <?php
 include 'check_session.php';
+ob_start();
 ?>
 
 <head>
@@ -27,7 +28,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -50,7 +51,7 @@ include 'check_session.php';
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT ProductID, name, description, price FROM products WHERE ProductID = ? LIMIT 0,1";
+                    $query = "SELECT ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = ? LIMIT 0,1";
                     $stmt = $con->prepare($query);
 
                     // this is the first question mark
@@ -62,10 +63,7 @@ include 'check_session.php';
                     // store retrieved row to a variable
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    // values to fill up our form
-                    $name = $row['name'];
-                    $description = $row['description'];
-                    $price = $row['price'];
+                    extract($row);
                 }
 
                 // show error
@@ -77,38 +75,82 @@ include 'check_session.php';
                 <?php
                 // check if form was submitted
                 if ($_POST) {
-                    try {
-                        // write update query
-                        // in this case, it seemed like we have so many fields to pass and
-                        // it is better to label them and not use question marks
-                        $query = "UPDATE products SET name=:name, description=:description, price=:price WHERE ProductID=:ProductID";
-                        // prepare query for excecution
-                        $stmt = $con->prepare($query);
-                        // posted values
-                        $name = $_POST['name'];
-                        $description = $_POST['description'];
-                        $price = $_POST['price'];
-                        // bind the parameters
-                        $stmt->bindParam(':name', $name);
-                        $stmt->bindParam(':description', $descriptiont);
-                        $stmt->bindParam(':price', $price);
-                        $stmt->bindParam(':ProductID', $id);
-                        // Execute the query
-                        if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was updated.</div>";
-                        } else {
-                            echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
-                        }
+
+                    // posted values
+                    $name = $_POST['name'];
+                    $description = $_POST['description'];
+                    $price = $_POST['price'];
+                    $promotion_price = $_POST['promotion_price'];
+                    $manufacture_date = $_POST['manufacture_date'];
+                    $expired_date = $_POST['expired_date'];
+
+                    $validated = true;
+
+                    if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
+                        echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
+                        $validated = false;
                     }
-                    // show errors
-                    catch (PDOException $exception) {
-                        die('ERROR: ' . $exception->getMessage());
+
+                    if ($promotion_price == "") {
+                        $promotion_price = NULL;
+                    }
+
+                    if ($expired_date == "") {
+                        $expired_date = NULL;
+                    } else if ($expired_date < $manufacture_date) {
+                        echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                        $validated = false;
+                    }
+
+                    if (!is_numeric($price)) {
+                        echo "<div class='alert alert-danger'>All Prices should be numbers only</div>";
+                    } else if ($price > 1000) {
+                        echo "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
+                        $validated = false;
+                    } else if ($price < 0) {
+                        echo "<div class='alert alert-danger'>Price cannot be negative</div>";
+                        $validated = false;
+                    }
+                    if ($promotion_price > $price) {
+                        echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
+                        $validated = false;
+                    }
+
+                    if ($validated) {
+                        try {
+                            // write update query
+                            // in this case, it seemed like we have so many fields to pass and
+                            // it is better to label them and not use question marks
+                            $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date WHERE ProductID=:ProductID";
+                            // prepare query for excecution
+                            $stmt = $con->prepare($query);
+                            // bind the parameters
+                            $stmt->bindParam(':name', $name);
+                            $stmt->bindParam(':description', $description);
+                            $stmt->bindParam(':price', $price);
+                            $stmt->bindParam(':ProductID', $id);
+                            $stmt->bindParam(':promotion_price', $promotion_price);
+                            $stmt->bindParam(':manufacture_date', $manufacture_date);
+                            $stmt->bindParam(':expired_date', $expired_date);
+
+                            // Execute the query
+                            if ($stmt->execute()) {
+                                header("Location: product_read.php?message=update_success");
+                                ob_end_flush();
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                            }
+                        }
+                        // show errors
+                        catch (PDOException $exception) {
+                            die('ERROR: ' . $exception->getMessage());
+                        }
                     }
                 } ?>
 
 
                 <!--we have our html form here where new record information can be updated-->
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
+                <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post">
                     <table class='table table-hover table-responsive table-bordered'>
                         <tr>
                             <td>Name</td>
@@ -116,22 +158,33 @@ include 'check_session.php';
                         </tr>
                         <tr>
                             <td>Description</td>
-                            <td><textarea name='description' class='form-control'><?php echo $description;  ?></textarea></td>
+                            <td><textarea name='description' class='form-control'><?php echo $description; ?></textarea></td>
                         </tr>
                         <tr>
                             <td>Price</td>
                             <td><input type='text' name='price' value="<?php echo $price; ?>" class='form-control' /></td>
                         </tr>
                         <tr>
+                            <td>Promotion Price</td>
+                            <td><input type='text' name='promotion_price' value="<?php echo $promotion_price; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Manufacture Date</td>
+                            <td><input type='date' name='manufacture_date' value="<?php echo $manufacture_date; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Promotion Price</td>
+                            <td><input type='date' name='expired_date' value="<?php echo $expired_date; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
                             <td></td>
                             <td>
                                 <input type='submit' value='Save Changes' class='btn btn-primary' />
-                                <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                                <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                             </td>
                         </tr>
                     </table>
                 </form>
-
             </div>
             <!-- end .container -->
         </body>
