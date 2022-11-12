@@ -6,7 +6,7 @@ include 'check_session.php';
 ?>
 
 <head>
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <title>Read Product</title>
 
     <link rel="stylesheet" href="css/styles.css" />
 

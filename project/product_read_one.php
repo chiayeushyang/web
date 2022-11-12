@@ -9,7 +9,7 @@ include 'check_session.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>PDO - Read One Record - PHP CRUD Tutorial</title>
+    <title>Read One Product</title>
 
     <link rel="stylesheet" href="css/styles.css" />
 

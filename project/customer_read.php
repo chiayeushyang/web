@@ -28,7 +28,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -44,6 +44,17 @@ include 'check_session.php';
 
             <!-- PHP code to read records will be here -->
             <?php
+
+            if ($_GET) {
+                $message = $_GET['message'];
+
+                if ($message == "update_success") {
+                    echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else {
+                    echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
+                }
+            }
+
             // include database connection
             include 'config/database.php';
 

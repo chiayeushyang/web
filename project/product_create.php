@@ -9,7 +9,7 @@ include 'check_session.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <title>Create New Product</title>
 
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
