@@ -61,6 +61,7 @@ function active_startwith($pagename_start)
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item <?php echo active("order_create.php") ?>" href="order_create.php">Create New Order</a></li>
                             <li><a class="dropdown-item <?php echo active("order_read.php") ?>" href="order_read.php">Read Order</a></li>
+                            <li><a class="dropdown-item <?php echo active("order_read_one.php") ?>" href="order_read_one.php">Read Order One</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
