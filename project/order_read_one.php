@@ -72,7 +72,7 @@ include 'check_session.php';
             // prepare select query
             $query = "SELECT OrderID, ProductID, quantity FROM order_detail WHERE OrderID= :OrderID ";
             $stmt = $con->prepare($query);
-            $query_customer = "SELECT username, OrderID FROM customers LEFT JOIN order_summary ON customers.CustomerID = order_summary.CustomerID WHERE OrderID=:OrderID ";
+            $query_customer = "SELECT username, OrderID, order_date FROM customers LEFT JOIN order_summary ON customers.CustomerID = order_summary.CustomerID WHERE OrderID=:OrderID ";
             $stmt_customer = $con->prepare($query_customer);
 
             // Bind the parameter
@@ -122,6 +122,10 @@ include 'check_session.php';
                     <tr>
                         <th class="table-dark ">Customer</th>
                         <td colspan="3" class="table-dark table-active"><?php echo $username;  ?></td>
+                    </tr>
+                    <tr>
+                        <th class="table-dark ">Order Date</th>
+                        <td colspan="3" class="table-dark table-active"><?php echo $order_date;  ?></td>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
