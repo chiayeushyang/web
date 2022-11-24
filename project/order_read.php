@@ -61,7 +61,15 @@ include 'check_session.php';
             // delete message prompt will be here
 
             // select all data
-            $query = "SELECT OrderID, CustomerID, order_date FROM order_summary ORDER BY OrderID ASC";
+            $query = "SELECT order_summary.OrderID, first_name, last_name, order_date, sum(quantity * price) as total_price FROM order_summary 
+            INNER JOIN customers 
+            ON order_summary.CustomerID = customers.CustomerID
+            INNER JOIN order_detail
+            ON order_summary.OrderID = order_detail.OrderID
+            INNER JOIN products
+            ON order_detail.ProductID = products.ProductID
+            GROUP BY order_detail.OrderID";
+            
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -79,7 +87,9 @@ include 'check_session.php';
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>OrderID</th>";
-                echo "<th>CustomerID</th>";
+                echo "<th>First Name</th>";
+                echo "<th>Last Name</th>";
+                echo "<th>Total Price (RM)</th>";
                 echo "<th>Order Date</th>";
                 echo "<th>Action</th>";
                 echo "</tr>";
@@ -92,7 +102,9 @@ include 'check_session.php';
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$OrderID}</td>";
-                    echo "<td><a href='customer_read_one.php?id={$CustomerID}' class='text-decoration-none'>{$CustomerID}</a></td>";
+                    echo "<td>{$first_name}</td>";
+                    echo "<td>{$last_name}</td>";
+                    echo "<td class='text-end'> <p class='me-2'>" . number_format(round($total_price, 1) ,2) . "</p></td>";
                     echo "<td>{$order_date}</td>";
                     echo "<td>";
 
