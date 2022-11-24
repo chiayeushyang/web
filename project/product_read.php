@@ -47,6 +47,8 @@ include 'check_session.php';
 
                 if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else if ($message == "product_in_use") { // if it was redirected from delete.php
+                    echo "<div class='alert alert-danger'>Selected product founded in order (Please delete specific order before delete product)</div>";
                 } else if ($message == "deleted") { // if it was redirected from delete.php
                     echo "<div class='alert alert-success'>Record was deleted.</div>";
                 } else {
