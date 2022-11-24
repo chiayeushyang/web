@@ -43,10 +43,12 @@ include 'check_session.php';
             <?php
 
             if ($_GET) {
-                $message = $_GET['message'];
+                $message = isset($_GET['message']) ? $_GET['message'] : "";
 
                 if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else if ($message == "deleted") { // if it was redirected from delete.php
+                    echo "<div class='alert alert-success'>Record was deleted.</div>";
                 } else {
                     echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
                 }
@@ -54,8 +56,6 @@ include 'check_session.php';
 
             // include database connection
             include 'config/database.php';
-
-            // delete message prompt will be here
 
             // select all data
             $query = "SELECT ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products ORDER BY ProductID ASC";
@@ -138,7 +138,18 @@ include 'check_session.php';
 
         </div> <!-- end .container -->
 
-        <!-- confirm delete record will be here -->
+        <script type='text/javascript'>
+            // confirm record deletion
+            function delete_product(id) {
+
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'product_delete.php?id=' + id;
+                }
+            }
+        </script>
+
 
         <!-- Content End -->
 
