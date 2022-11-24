@@ -136,7 +136,7 @@ include 'check_session.php';
                         <th class="text-center">Product</th>
                         <th class="text-center">Quantity</th>
                         <th class="text-center">Unit Price</th>
-                        <th class="text-center">Price</th>
+                        <th class="text-center">Price (RM)</th>
                     </tr>
                     <?php
                     try {
@@ -167,7 +167,7 @@ include 'check_session.php';
                             echo "<td>$no. {$row_product['name']}</td>";
                             echo "<td>{$row['quantity']}</td>";
                             echo "<td>RM {$row_product['price']}</td>";
-                            echo "<td>RM $total_unit_price</td>";
+                            echo "<td class='text-end'>".number_format($total_unit_price,2). "</td>";
                             echo "</tr>";
 
                             $no++;
@@ -181,7 +181,7 @@ include 'check_session.php';
                     ?>
                     <tr>
                         <th colspan="3" class="text-end"><p class="me-3 my-2 fs-5">Total</p></th>
-                        <td><?php echo "<p class='me-3 my-2 fs-5'>RM $total_amount</p>" ?></td>
+                        <td><?php echo "<p class='my-2 text-end'>" . number_format(round($total_amount, 1), 2) . "</p>" ?></td>
                     </tr>
                 </tbody>
             </table>
