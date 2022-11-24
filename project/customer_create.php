@@ -85,6 +85,8 @@ include 'check_session.php';
                 } else if ($confirm_password !== $password) {
                     echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
                     $validation = false;
+                } else {
+                    $password = md5($password);
                 }
 
                 // Check birthday

@@ -89,7 +89,7 @@ session_start();
 
                     extract($row);
 
-                    if ($pass == $password) {
+                    if (md5($pass) == $password) {
                         switch ($account_status) {
                             case "Inactive":
                                 echo "<div class='alert alert-danger align-item-center'>Your Account is suspended</div>";
