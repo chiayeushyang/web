@@ -173,7 +173,7 @@ ob_start();
                             <td><input type='date' name='manufacture_date' value="<?php echo $manufacture_date; ?>" class='form-control' /></td>
                         </tr>
                         <tr>
-                            <td>Promotion Price</td>
+                            <td>Expired Date</td>
                             <td><input type='date' name='expired_date' value="<?php echo $expired_date; ?>" class='form-control' /></td>
                         </tr>
                         <tr>
