@@ -46,10 +46,12 @@ include 'check_session.php';
             <?php
 
             if ($_GET) {
-                $message = $_GET['message'];
+                $message = isset($_GET['message']) ? $_GET['message'] : "";
 
                 if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else if ($message == "deleted") { // if it was redirected from delete.php
+                    echo "<div class='alert alert-success'>Record was deleted.</div>";
                 } else {
                     echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
                 }
@@ -104,7 +106,7 @@ include 'check_session.php';
                     echo "<td>{$OrderID}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";
-                    echo "<td>" . number_format(round($total_price, 1) ,2) . "</p></td>";
+                    echo "<td>" . number_format(round($total_price, 1), 2) . "</p></td>";
                     echo "<td>{$order_date}</td>";
                     echo "<td>";
 
@@ -116,7 +118,7 @@ include 'check_session.php';
                     echo "<a href='order_update.php?id={$OrderID}' class='btn btn-primary col-11 col-lg m-auto me-lg-1 mt-2 mt-lg-0'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_product({$OrderID});' class='btn btn-danger col-11 col-lg m-auto mt-2 mt-xl-0'>Delete</a>";
+                    echo "<a href='#' onclick='delete_order({$OrderID});' class='btn btn-danger col-11 col-lg m-auto mt-2 mt-xl-0'>Delete</a>";
                     echo "</div>";
                     echo "</td>";
                     echo "</tr>";
@@ -132,7 +134,17 @@ include 'check_session.php';
 
         </div> <!-- end .container -->
 
-        <!-- confirm delete record will be here -->
+        <script type='text/javascript'>
+            // confirm record deletion
+            function delete_order(id) {
+
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'order_delete.php?id=' + id;
+                }
+            }
+        </script>
 
         <!-- Content End -->
 
