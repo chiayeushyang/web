@@ -78,7 +78,7 @@ ob_start();
 
                     if ($_POST) {
                         $username = trim($_POST['username']);
-                        $old_password = $_POST['old_password'];
+                        $old_password = md5($_POST['old_password']);
                         $new_password = $_POST['new_password'];
                         $confirm_password = $_POST['confirm_password'];
                         $first_name = $_POST['first_name'];
@@ -113,7 +113,7 @@ ob_start();
                         } else if ($confirm_password !== $new_password) {
                             echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
                             $validation = false;
-                        }
+                        } 
 
                         // var_dump($username);
 
@@ -153,7 +153,7 @@ ob_start();
                             if ($old_password == "" && $new_password == "" && $confirm_password == "") {
                                 $stmt->bindParam(':password', $pass);
                             } else {
-                                $stmt->bindParam(':password', $new_password);
+                                $stmt->bindParam(':password', md5($new_password));
                             }            
                             $stmt->bindParam(':first_name', $first_name);
                             $stmt->bindParam(':last_name', $last_name);
