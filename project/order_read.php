@@ -69,7 +69,7 @@ include 'check_session.php';
             INNER JOIN products
             ON order_detail.ProductID = products.ProductID
             GROUP BY order_detail.OrderID";
-            
+
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -104,7 +104,7 @@ include 'check_session.php';
                     echo "<td>{$OrderID}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";
-                    echo "<td class='text-end'> <p class='me-2'>" . number_format(round($total_price, 1) ,2) . "</p></td>";
+                    echo "<td>" . number_format(round($total_price, 1) ,2) . "</p></td>";
                     echo "<td>{$order_date}</td>";
                     echo "<td>";
 
