@@ -32,7 +32,7 @@ function active_startwith($pagename_start)
             <div class="collapse navbar-collapse d-md-flex justify-content-end" id="navbarCollapse">
                 <ul class="navbar-nav mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link <?php echo active("index.php") ?>" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link <?php echo active("welcome_page.php") ?>" aria-current="page" href="welcome_page.php">Dashboard</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle <?php echo active_startwith("product") ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

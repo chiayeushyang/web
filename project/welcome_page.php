@@ -6,8 +6,12 @@ include 'check_session.php';
 ?>
 
 <head>
-    <title>Read Product</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Welcome</title>
+
+    <link rel="stylesheet" href="css/welcome.css" />
     <link rel="stylesheet" href="css/styles.css" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
@@ -31,10 +35,10 @@ include 'check_session.php';
     <!-- NAVBAR END -->
 
     <main class="mt-5">
-        <div class="container">
+        <div class="container shadow p-3 mb-5 rounded" id="background">
             <?php
 
-            $current_user = "Admin1";
+            $current_user = $_SESSION["username"];
 
             // include database connection
             include 'config/database.php';
@@ -44,7 +48,7 @@ include 'check_session.php';
                 (SELECT COUNT(CustomerID) as total_customer FROM customers) as c, 
                 (SELECT COUNT(ProductID) as total_product FROM products) as p, 
                 (SELECT COUNT(OrderID) as total_order FROM order_summary) as o,
-                (SELECT IFNULL((SELECT OrderID FROM order_summary INNER JOIN customers ON order_summary.CustomerID = customers.CustomerID WHERE customers.username = :username ORDER BY order_date DESC LIMIT 0,1), 'Record Not Fouund') as latest_order ) as l_o";
+                (SELECT IFNULL((SELECT OrderID FROM order_summary INNER JOIN customers ON order_summary.CustomerID = customers.CustomerID WHERE customers.username = :username ORDER BY order_date DESC LIMIT 0,1), 'No Record Found') as latest_order ) as l_o";
 
                 $stmt = $con->prepare($query);
 
@@ -55,18 +59,105 @@ include 'check_session.php';
                 die('ERROR: ' . $exception->getMessage());
             }
 
-
             $num = $stmt->rowCount();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             extract($row);
 
-            echo $total_customer . "<br>";
-            echo $total_product . "<br>";
-            echo $total_order . "<br>";
             echo $latest_order . "<br>";
+
+            try {
+                $query_2 = "SELECT first_name, last_name, order_date,sum(quantity * price) as total_price FROM order_summary 
+                INNER JOIN customers 
+                ON order_summary.CustomerID = customers.CustomerID
+                INNER JOIN order_detail
+                ON order_summary.OrderID = order_detail.OrderID
+                INNER JOIN products
+                ON order_detail.ProductID = products.ProductID
+                WHERE order_summary.OrderID = :latest_order
+                GROUP BY order_detail.OrderID";
+
+                $stmt_2 = $con->prepare($query_2);
+
+                $stmt_2->bindParam(':latest_order', $latest_order);
+
+                $query_highest = "SELECT username, order_summary.OrderID, order_date as top_order_date,sum(quantity * price) as highest_price FROM order_summary 
+                INNER JOIN customers ON order_summary.CustomerID = customers.CustomerID 
+                INNER JOIN order_detail ON order_summary.OrderID = order_detail.OrderID 
+                INNER JOIN products ON order_detail.ProductID = products.ProductID 
+                GROUP BY order_detail.OrderID 
+                ORDER BY highest_price DESC LIMIT 1";
+
+                $stmt_highest = $con->prepare($query_highest);
+
+                $stmt_2->execute();
+
+                $stmt_highest->execute();
+            } catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
+
+            $num_2 = $stmt_2->rowCount();
+
+            $row_2 = $stmt_2->fetch(PDO::FETCH_ASSOC);
+
+            if ($num_2 > 0) {
+                extract($row_2);
+
+                echo $first_name;
+                echo $total_price . "\n";
+                echo $order_date;
+            } else {
+                echo "<div class='alert alert-danger'>No records found.</div>";
+            }
+
+            $num_highest = $stmt_highest->rowCount();
+
+            if ($num_highest > 0) {
+
+                $row_highest = $stmt_highest->fetch(PDO::FETCH_ASSOC);
+                extract($row_highest);
+
+                echo $username . "---" . $OrderID . "---" . $highest_price . "---" . $top_order_date . "<br>";
+            } else {
+                echo "<div class='alert alert-danger'>No records found.</div>";
+            }
             ?>
+            <div class="my-5 fs-1 fw-bold text-light">Welcome <?php echo $current_user ?> </div>
+            <div class="row gx-5 gy-5">
+                <div class="col-12 col-md-4">
+                    <div class="p-3 bg-white border rounded text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Total Customers <br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$total_customer</p>" ?></h4>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="p-3 bg-white bg-opacity-75 border rounded text-center">
+                        <h4 class="fw-semibold text-black text-opacity-50">Total Products <br> <?php echo "<p class='my-2 fs-3 text-black text-opacity-75 fw-bolder'>$total_product</p>" ?></h4>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="p-3 bg-white border rounded text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Total Orders <br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$total_order</p>" ?></h4>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h3 class="fw-semibold text-light mb-3">Your Latest Order</h4>
+                        <div class="p-3 bg-white border rounded-top text-center">
+                            <h4 class="fw-semibold text-black text-opacity-75">Latest OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$latest_order</p>" ?></h4>
+                        </div>
+                        <div class="p-3 bg-white border text-center">
+                            <h4 class="fw-semibold text-black text-opacity-75">Name <br>
+                                <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($first_name) && isset($last_name) ? $first_name . " " . $last_name : "No Record Found" ?></p>
+                            </h4>
+                        </div>
+                        <div class="p-3 bg-white rounded-bottom text-center">
+                            <h4 class="fw-semibold text-black text-opacity-75">Purchase Date <br>
+                                <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($order_date) ? $order_date : "No Record Found" ?></p>
+                            </h4>
+                        </div>
+                </div>
+            </div>
         </div>
 
         <!-- Content End -->

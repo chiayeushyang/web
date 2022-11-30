@@ -98,7 +98,7 @@ session_start();
                                 $_SESSION["username"] = $username;
                                 $_SESSION["password"] = $password;
 
-                                header("Location: index.php");
+                                header("Location: welcome_page.php");
                                 break;
                             default:
                                 echo "<div class='alert alert-danger align-item-center'>No account status stated</div>";
