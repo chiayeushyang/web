@@ -15,7 +15,8 @@ include 'check_session.php';
     <link rel="stylesheet" href="css/styles.css" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <!-- Fontawesome -->
     <script src="https://kit.fontawesome.com/e0e2f315c7.js" crossorigin="anonymous"></script>
 
@@ -65,10 +66,8 @@ include 'check_session.php';
 
             extract($row);
 
-            echo $latest_order . "<br>";
-
             try {
-                $query_2 = "SELECT first_name, last_name, order_date,sum(quantity * price) as total_price FROM order_summary 
+                $query_2 = "SELECT first_name, last_name, order_date, sum(quantity * price) as total_price FROM order_summary 
                 INNER JOIN customers 
                 ON order_summary.CustomerID = customers.CustomerID
                 INNER JOIN order_detail
@@ -82,7 +81,7 @@ include 'check_session.php';
 
                 $stmt_2->bindParam(':latest_order', $latest_order);
 
-                $query_highest = "SELECT username, order_summary.OrderID, order_date as top_order_date,sum(quantity * price) as highest_price FROM order_summary 
+                $query_highest = "SELECT first_name as top_first_name, last_name as top_last_name,order_summary.OrderID as top_OrderID, order_date as top_order_date,sum(quantity * price) as highest_price FROM order_summary 
                 INNER JOIN customers ON order_summary.CustomerID = customers.CustomerID 
                 INNER JOIN order_detail ON order_summary.OrderID = order_detail.OrderID 
                 INNER JOIN products ON order_detail.ProductID = products.ProductID 
@@ -104,13 +103,7 @@ include 'check_session.php';
 
             if ($num_2 > 0) {
                 extract($row_2);
-
-                echo $first_name;
-                echo $total_price . "\n";
-                echo $order_date;
-            } else {
-                echo "<div class='alert alert-danger'>No records found.</div>";
-            }
+            } 
 
             $num_highest = $stmt_highest->rowCount();
 
@@ -118,13 +111,15 @@ include 'check_session.php';
 
                 $row_highest = $stmt_highest->fetch(PDO::FETCH_ASSOC);
                 extract($row_highest);
-
-                echo $username . "---" . $OrderID . "---" . $highest_price . "---" . $top_order_date . "<br>";
             } else {
                 echo "<div class='alert alert-danger'>No records found.</div>";
             }
             ?>
-            <div class="my-5 fs-1 fw-bold text-light">Welcome <?php echo $current_user ?> </div>
+            <div class="monitor-wrapper position-relative bg-black p-4 mb-5">
+                <div class="monitor center">
+                    <p class="m-0">Welcome <?php echo $current_user ?>&nbsp;ʕ•́ᴥ•̀ʔっ♡</p>
+                </div>
+            </div>
             <div class="row gx-5 gy-5">
                 <div class="col-12 col-md-4">
                     <div class="p-3 bg-white border rounded text-center">
@@ -141,21 +136,53 @@ include 'check_session.php';
                         <h4 class="fw-semibold text-black text-opacity-75">Total Orders <br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$total_order</p>" ?></h4>
                     </div>
                 </div>
+            </div>
+            <div class="row gx-5 gy-5 mt-3">
+                <h3 class="fw-semibold text-light">Your Latest Order</h3>
                 <div class="col-12 col-md-6">
-                    <h3 class="fw-semibold text-light mb-3">Your Latest Order</h4>
-                        <div class="p-3 bg-white border rounded-top text-center">
-                            <h4 class="fw-semibold text-black text-opacity-75">Latest OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$latest_order</p>" ?></h4>
-                        </div>
-                        <div class="p-3 bg-white border text-center">
-                            <h4 class="fw-semibold text-black text-opacity-75">Name <br>
-                                <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($first_name) && isset($last_name) ? $first_name . " " . $last_name : "No Record Found" ?></p>
-                            </h4>
-                        </div>
-                        <div class="p-3 bg-white rounded-bottom text-center">
-                            <h4 class="fw-semibold text-black text-opacity-75">Purchase Date <br>
-                                <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($order_date) ? $order_date : "No Record Found" ?></p>
-                            </h4>
-                        </div>
+                    <div class="p-3 bg-white border rounded-top text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Latest OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$latest_order</p>" ?></h4>
+                    </div>
+                    <div class="p-3 bg-white border text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Name <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($first_name) && isset($last_name) ? $first_name . " " . $last_name : "No Record Found" ?></p>
+                        </h4>
+                    </div>
+                    <div class="p-3 bg-white rounded-bottom text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Purchase Date <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($order_date) ? $order_date : "No Record Found" ?></p>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-12 col-md align-self-center">
+                    <div class="p-3 bg-white border rounded text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Purchase Amount <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($total_price) ? "RM" . $total_price : "No Record Found" ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5 gy-5 mt-3">
+                <h3 class="fw-semibold text-light">Top Purchase Order</h3>
+                <div class="col-12 col-md-6">
+                    <div class="p-3 bg-white border rounded-top text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$top_OrderID</p>" ?></h4>
+                    </div>
+                    <div class="p-3 bg-white border text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Name <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($top_first_name) && isset($top_last_name) ? $top_first_name . " " . $top_last_name : "No Record Found" ?></p>
+                        </h4>
+                    </div>
+                    <div class="p-3 bg-white rounded-bottom text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Purchase Date <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($top_order_date) ? $top_order_date : "No Record Found" ?></p>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-12 col-md align-self-center">
+                    <div class="p-3 bg-white border rounded text-center">
+                        <h4 class="fw-semibold text-black text-opacity-75">Purchase Amount <br>
+                            <p class='my-2 fs-3 text-black fw-bolder'><?php echo isset($highest_price) ? "RM" . $highest_price : "No Record Found" ?></p>
+                    </div>
                 </div>
             </div>
         </div>
