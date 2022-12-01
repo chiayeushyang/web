@@ -35,6 +35,18 @@ div#background {
     color: #EBB55F;
 }
 
+#chart_wrap {
+    position: relative;
+    height: 0;
+    padding-bottom: 300px;
+    overflow: hidden;
+}
+
+#chart_div {
+    position: absolute;
+    top: 0; 
+}
+
 @keyframes move {
     from {
         left: 1900px;
