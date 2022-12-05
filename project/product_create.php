@@ -112,7 +112,6 @@ include 'check_session.php';
                             if ($stmt->execute()) {
                                 echo "<div class='alert alert-success'>Record was saved.</div>";
 
-                                var_dump(isset($_FILES['image']));
                                 if ($_FILES['image'] != "") {
                                     //so try to upload the file
                                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {

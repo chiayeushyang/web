@@ -51,7 +51,7 @@ ob_start();
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT ProductID, name, description, price, image, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = ? LIMIT 0,1";
+                    $query = "SELECT ProductID, name, description, price, image as old_image, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = ? LIMIT 0,1";
                     $stmt = $con->prepare($query);
 
                     // this is the first question mark
@@ -75,12 +75,10 @@ ob_start();
                 <?php
                 // check if form was submitted
                 if ($_POST) {
-
                     // posted values
                     $name = $_POST['name'];
                     $description = $_POST['description'];
                     $price = $_POST['price'];
-                    $image = $_POST['image'];
                     $promotion_price = $_POST['promotion_price'];
                     $manufacture_date = $_POST['manufacture_date'];
                     $expired_date = $_POST['expired_date'];
@@ -129,7 +127,7 @@ ob_start();
                             $stmt->bindParam(':name', $name);
                             $stmt->bindParam(':description', $description);
                             $stmt->bindParam(':price', $price);
-                            $stmt->bindParam(':image', $image);
+                            $stmt->bindParam(':image', $image_new);
                             $stmt->bindParam(':ProductID', $id);
                             $stmt->bindParam(':promotion_price', $promotion_price);
                             $stmt->bindParam(':manufacture_date', $manufacture_date);
@@ -137,7 +135,7 @@ ob_start();
 
                             // Execute the query
                             if ($stmt->execute()) {
-                                header("Location: product_read.php?message=update_success");
+                                // header("Location: product_read.php?message=update_success");
                                 ob_end_flush();
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
@@ -167,10 +165,11 @@ ob_start();
                             <td><input type='text' name='price' value="<?php echo $price; ?>" class='form-control' /></td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-center"><img src="uploads/<?php echo $image; ?>" alt="Image not found" width="250px"></td>
+                            <td colspan="2" class="text-center"><img src="uploads/<?php echo $old_image; ?>" alt="Image not found" width="250px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input type='file' name='image' class='form-control' /></td>
+                            <td>Photo</td>
+                            <td><input type="file" name="image" /></td>
                         </tr>
                         <tr>
                             <td>Promotion Price</td>
