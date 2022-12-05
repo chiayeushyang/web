@@ -20,6 +20,7 @@ if ($image) {
 
     // make sure that file is a real image
     $check = getimagesize($_FILES["image"]["tmp_name"]);
+    var_dump($check);
     if ($check !== false) {
         // submitted file is an image
     } else {

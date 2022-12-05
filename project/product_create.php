@@ -48,7 +48,6 @@ include 'check_session.php';
                 $promotion_price = $_POST['promotion_price'];
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
-
                 $validated = true;
 
                 if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
@@ -81,8 +80,10 @@ include 'check_session.php';
                     $validated = false;
                 }
                 
-                include "image_upload.php";
-
+                if ($_FILES['image'] != "") {
+                    include "image_upload.php";
+                }
+                
                 if ($validated) {
                     // include database connection
                     include 'config/database.php';
@@ -111,7 +112,9 @@ include 'check_session.php';
                             if ($stmt->execute()) {
                                 echo "<div class='alert alert-success'>Record was saved.</div>";
 
-                                //so try to upload the file
+                                var_dump(isset($_FILES['image']));
+                                if ($_FILES['image'] != "") {
+                                    //so try to upload the file
                                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                                     // it means photo was uploaded
                                 } else {
@@ -120,6 +123,8 @@ include 'check_session.php';
                                     echo "<div>Update the record to upload photo.</div>";
                                     echo "</div>";
                                 }
+                                }
+                                
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to save record.</div>";
                             }
