@@ -27,9 +27,9 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-     <?php 
-     include "navbar.php"
-     ?>
+    <?php
+    include "navbar.php";
+    ?>
     <!-- NAVBAR END -->
     <main>
 
@@ -80,15 +80,16 @@ include 'check_session.php';
                     echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                     $validated = false;
                 }
-
-
+                
+                include "image_upload.php";
 
                 if ($validated) {
                     // include database connection
                     include 'config/database.php';
+                    
                     try {
                         // insert query
-                        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
+                        $query = "INSERT INTO products SET name=:name, description=:description, price=:price, image=:image, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
                         // prepare query for execution
                         $stmt = $con->prepare($query);
 
@@ -96,16 +97,39 @@ include 'check_session.php';
                         $stmt->bindParam(':name', $name);
                         $stmt->bindParam(':description', $description);
                         $stmt->bindParam(':price', $price);
+                        $stmt->bindParam(':image', $image);
                         $stmt->bindParam(':promotion_price', $promotion_price);
                         $stmt->bindParam(':manufacture_date', $manufacture_date);
                         $stmt->bindParam(':expired_date', $expired_date);
                         $created = date('Y-m-d H:i:s'); // get the current date and time
                         $stmt->bindParam(':created', $created);
-                        // Execute the query
-                        if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was saved.</div>";
-                        } else {
-                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+
+                        // if $file_upload_error_messages is still empty
+                        // it means there are no errors, 
+                        if (empty($file_upload_error_messages)) {
+                            // Execute the query
+                            if ($stmt->execute()) {
+                                echo "<div class='alert alert-success'>Record was saved.</div>";
+
+                                //so try to upload the file
+                                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                    // it means photo was uploaded
+                                } else {
+                                    echo "<div class='alert alert-danger'>";
+                                    echo "<div>Unable to upload photo.</div>";
+                                    echo "<div>Update the record to upload photo.</div>";
+                                    echo "</div>";
+                                }
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                            }
+                        } // if $file_upload_error_messages is NOT empty
+                        else {
+                            // it means there are some errors, so show them to user
+                            echo "<div class='alert alert-danger'>";
+                            echo "<div>{$file_upload_error_messages}</div>";
+                            echo "<div>Update the record to upload photo.</div>";
+                            echo "</div>";
                         }
                     }
                     // show error
@@ -116,11 +140,10 @@ include 'check_session.php';
             }
 
             ?>
-
             <!-- PHP insert code will be here -->
 
             <!-- html form here where the product information will be entered -->
-            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Name</td>
@@ -133,6 +156,10 @@ include 'check_session.php';
                     <tr>
                         <td>Price</td>
                         <td><input type='text' name='price' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Photo</td>
+                        <td><input type="file" name="image" /></td>
                     </tr>
                     <tr>
                         <td>Promotion Price</td>

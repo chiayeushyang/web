@@ -51,7 +51,7 @@ ob_start();
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = ? LIMIT 0,1";
+                    $query = "SELECT ProductID, name, description, price, image, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = ? LIMIT 0,1";
                     $stmt = $con->prepare($query);
 
                     // this is the first question mark
@@ -80,6 +80,7 @@ ob_start();
                     $name = $_POST['name'];
                     $description = $_POST['description'];
                     $price = $_POST['price'];
+                    $image = $_POST['image'];
                     $promotion_price = $_POST['promotion_price'];
                     $manufacture_date = $_POST['manufacture_date'];
                     $expired_date = $_POST['expired_date'];
@@ -121,13 +122,14 @@ ob_start();
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
                             // it is better to label them and not use question marks
-                            $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date WHERE ProductID=:ProductID";
+                            $query = "UPDATE products SET name=:name, description=:description, price=:price, image=:image, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date WHERE ProductID=:ProductID";
                             // prepare query for excecution
                             $stmt = $con->prepare($query);
                             // bind the parameters
                             $stmt->bindParam(':name', $name);
                             $stmt->bindParam(':description', $description);
                             $stmt->bindParam(':price', $price);
+                            $stmt->bindParam(':image', $image);
                             $stmt->bindParam(':ProductID', $id);
                             $stmt->bindParam(':promotion_price', $promotion_price);
                             $stmt->bindParam(':manufacture_date', $manufacture_date);
@@ -163,6 +165,12 @@ ob_start();
                         <tr>
                             <td>Price</td>
                             <td><input type='text' name='price' value="<?php echo $price; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center"><img src="uploads/<?php echo $image; ?>" alt="Image not found" width="250px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type='file' name='image' class='form-control' /></td>
                         </tr>
                         <tr>
                             <td>Promotion Price</td>

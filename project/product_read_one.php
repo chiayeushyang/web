@@ -29,9 +29,9 @@ include 'check_session.php';
 <body>
     <div>
         <!-- NAVBAR -->
-        <?php 
-    include "navbar.php";
-    ?>
+        <?php
+        include "navbar.php";
+        ?>
         <!-- NAVBAR END -->
 
         <!-- Content Start-->
@@ -71,7 +71,7 @@ include 'check_session.php';
             // read current record's data
             try {
                 // prepare select query
-                $query = "SELECT ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = :ProductID ";
+                $query = "SELECT image, ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE ProductID = :ProductID ";
                 $stmt = $con->prepare($query);
 
                 // Bind the parameter
@@ -87,6 +87,7 @@ include 'check_session.php';
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     // values to fill up our form
+                    $image = $row['image'];
                     $name = $row['name'];
                     $description = $row['description'];
                     $price = $row['price'];
@@ -119,6 +120,9 @@ include 'check_session.php';
 
             <!--we have our html table here where the record will be displayed-->
             <table class='table table-hover table-responsive table-bordered'>
+                <tr>
+                    <td colspan="2" class="text-center"><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" alt="Image not found" width="250px"></td>
+                </tr>
                 <tr>
                     <td>ID</td>
                     <td><?php echo htmlspecialchars($ProductID, ENT_QUOTES);  ?></td>
