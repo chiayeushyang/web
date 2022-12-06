@@ -98,7 +98,7 @@ include 'check_session.php';
 
         $stmt_top = $con->prepare($query_top);
 
-        $query_no = "SELECT products.name as no_product FROM products left JOIN order_detail ON order_detail.ProductID = products.ProductID WHERE order_detail.ProductID is NULL";
+        $query_no = "SELECT products.name as no_product FROM products left JOIN order_detail ON order_detail.ProductID = products.ProductID WHERE order_detail.ProductID is NULL LIMIT 3";
 
         $stmt_no = $con->prepare($query_no);
 
