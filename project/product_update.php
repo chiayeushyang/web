@@ -118,7 +118,9 @@ ob_start();
                     if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
                     } else {
-                        unlink("uploads/$old_image");
+                        if ($old_image != "") {
+                            unlink("uploads/$old_image");
+                        }
                         include "image_upload.php";
                         $new_image = $image;
                     }
