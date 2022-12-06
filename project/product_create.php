@@ -80,7 +80,7 @@ include 'check_session.php';
                     $validated = false;
                 }
                 
-                if ($_FILES['image'] != "") {
+                if (!empty($_FILES["image"]["name"])) {
                     include "image_upload.php";
                 }
                 
@@ -112,7 +112,7 @@ include 'check_session.php';
                             if ($stmt->execute()) {
                                 echo "<div class='alert alert-success'>Record was saved.</div>";
 
-                                if ($_FILES['image'] != "") {
+                                if (!empty($_FILES["image"]["name"])) {
                                     //so try to upload the file
                                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                                     // it means photo was uploaded

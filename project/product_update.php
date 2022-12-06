@@ -115,6 +115,14 @@ ob_start();
                         $validated = false;
                     }
 
+                    if (empty($_FILES["image"]["name"])) {
+                        $new_image = $old_image;
+                    } else {
+                        unlink("uploads/$old_image");
+                        include "image_upload.php";
+                        $new_image = $image;
+                    }
+
                     if ($validated) {
                         try {
                             // write update query
@@ -127,18 +135,43 @@ ob_start();
                             $stmt->bindParam(':name', $name);
                             $stmt->bindParam(':description', $description);
                             $stmt->bindParam(':price', $price);
-                            $stmt->bindParam(':image', $image_new);
+                            $stmt->bindParam(':image', $new_image);
                             $stmt->bindParam(':ProductID', $id);
                             $stmt->bindParam(':promotion_price', $promotion_price);
                             $stmt->bindParam(':manufacture_date', $manufacture_date);
                             $stmt->bindParam(':expired_date', $expired_date);
 
-                            // Execute the query
-                            if ($stmt->execute()) {
-                                // header("Location: product_read.php?message=update_success");
-                                ob_end_flush();
-                            } else {
-                                echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                            // if $file_upload_error_messages is still empty
+                            // it means there are no errors, 
+                            if (empty($file_upload_error_messages)) {
+
+                                if ($stmt->execute()) {
+                                    if (!empty($_FILES["image"]["name"])) {
+                                        //so try to upload the file
+                                        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                            // it means photo was uploaded
+                                            header("Location: product_read.php?message=update_success");
+                                            ob_end_flush();
+                                        } else {
+                                            echo "<div class='alert alert-danger'>";
+                                            echo "<div>Unable to upload photo.</div>";
+                                            echo "<div>Update the record to upload photo.</div>";
+                                            echo "</div>";
+                                        }
+                                    } else {
+                                        header("Location: product_read.php?message=update_success");
+                                        ob_end_flush();
+                                    }
+                                } else {
+                                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                                }
+                            } // if $file_upload_error_messages is NOT empty
+                            else {
+                                // it means there are some errors, so show them to user
+                                echo "<div class='alert alert-danger'>";
+                                echo "<div>{$file_upload_error_messages}</div>";
+                                echo "<div>Update the record to upload photo.</div>";
+                                echo "</div>";
                             }
                         }
                         // show errors
@@ -150,7 +183,7 @@ ob_start();
 
 
                 <!--we have our html form here where new record information can be updated-->
-                <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post">
+                <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post" enctype="multipart/form-data">
                     <table class='table table-hover table-responsive table-bordered'>
                         <tr>
                             <td>Name</td>
