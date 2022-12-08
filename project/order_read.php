@@ -106,7 +106,7 @@ include 'check_session.php';
                     echo "<td>{$OrderID}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";
-                    echo "<td>" . number_format(round($total_price, 1), 2) . "</p></td>";
+                    echo "<td class='text-end'>" . number_format(round($total_price, 1), 2) . "</p></td>";
                     echo "<td>{$order_date}</td>";
                     echo "<td>";
 
