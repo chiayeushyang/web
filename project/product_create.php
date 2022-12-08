@@ -82,6 +82,8 @@ include 'check_session.php';
                 
                 if (!empty($_FILES["image"]["name"])) {
                     include "image_upload.php";
+                } else {
+                    $image = "";
                 }
                 
                 if ($validated) {
