@@ -1,6 +1,8 @@
 <?php
 include 'config/database.php';
 
+error_reporting(E_WARNING);
+
 // new 'image' field
 $image = !empty($_FILES["image"]["name"])
 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
@@ -15,7 +17,6 @@ if ($image) {
     $target_file = $target_directory . $image;
     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
-    var_dump($_FILES["image"]["tmp_name"]);
     // make sure that file is a real image
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if ($check === false) {
