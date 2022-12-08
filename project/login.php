@@ -133,12 +133,6 @@ session_start();
                 <input type="password" class="form-control" name="password" placeholder="Password">
                 <label for="password">Password</label>
             </div>
-
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me" name="remember"> Remember me
-                </label>
-            </div>
             <input type='submit' value='Save' class='w-100 btn btn-lg btn-primary' />
             <p class="mt-5 mb-3 text-muted">&copy; 2022 Chia Yeu Shyang</p>
         </form>
