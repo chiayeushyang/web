@@ -163,13 +163,14 @@ include 'check_session.php';
 
                             $unit_price = $row_product['promotion_price'] == "" ? $row_product['price'] : $row_product['promotion_price'];
 
-                            $total_unit_price = $row['quantity'] * $row_product['promotion_price'] == "" ? $row_product['price'] : $row_product['promotion_price'];
+                            $total_unit_price = $row['quantity'] * $row_product['promotion_price'] == "" ? $row['quantity'] *  $row_product['price'] : $row['quantity'] * $row_product['promotion_price'];
+
                             $total_amount += $total_unit_price;
                             echo "<tr>";
                             echo "<td>$no. {$row_product['name']}</td>";
                             echo "<td>{$row['quantity']}</td>";
                             echo "<td class='text-end'>" . number_format($unit_price, 2) . "</td>";
-                            echo "<td class='text-end'>".number_format($total_unit_price,2). "</td>";
+                            echo "<td class='text-end'>".number_format($total_unit_price, 2). "</td>";
                             echo "</tr>";
 
                             $no++;
