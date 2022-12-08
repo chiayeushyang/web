@@ -85,8 +85,11 @@ ob_start();
 
                     $validated = true;
 
+                    // error message is empty
+                    $file_upload_error_messages = "";
+
                     if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
-                        echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                         $validated = false;
                     }
 
@@ -97,28 +100,28 @@ ob_start();
                     if ($expired_date == "") {
                         $expired_date = NULL;
                     } else if ($expired_date < $manufacture_date) {
-                        echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
                         $validated = false;
                     }
 
                     if (!is_numeric($price)) {
-                        echo "<div class='alert alert-danger'>All Prices should be numbers only</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>All Prices should be numbers only</div>";
                     } else if ($price > 1000) {
-                        echo "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
                         $validated = false;
                     } else if ($price < 0) {
-                        echo "<div class='alert alert-danger'>Price cannot be negative</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot be negative</div>";
                         $validated = false;
                     }
                     if ($promotion_price > $price) {
-                        echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                         $validated = false;
                     }
 
                     if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
                     } else {
-                        if ($old_image != "") {
+                        if ($old_image != "" && getimagesize($_FILES["image"]["tmp_name"]) !== false) {
                             unlink("uploads/$old_image");
                         }
                         include "image_upload.php";
@@ -143,43 +146,37 @@ ob_start();
                             $stmt->bindParam(':manufacture_date', $manufacture_date);
                             $stmt->bindParam(':expired_date', $expired_date);
 
-                            // if $file_upload_error_messages is still empty
-                            // it means there are no errors, 
-                            if (empty($file_upload_error_messages)) {
+                            if ($stmt->execute()) {
 
-                                if ($stmt->execute()) {
-                                    if (!empty($_FILES["image"]["name"])) {
-                                        //so try to upload the file
-                                        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                            // it means photo was uploaded
-                                            header("Location: product_read.php?message=update_success");
-                                            ob_end_flush();
-                                        } else {
-                                            echo "<div class='alert alert-danger'>";
-                                            echo "<div>Unable to upload photo.</div>";
-                                            echo "<div>Update the record to upload photo.</div>";
-                                            echo "</div>";
-                                        }
-                                    } else {
+                                if (!empty($_FILES["image"]["name"])) {
+                                    //so try to upload the file
+                                    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                        // it means photo was uploaded
                                         header("Location: product_read.php?message=update_success");
                                         ob_end_flush();
+                                    } else {
+                                        echo "<div class='alert alert-danger'>";
+                                        echo "<div>Unable to upload photo.</div>";
+                                        echo "<div>Update the record to upload photo.</div>";
+                                        echo "</div>";
                                     }
                                 } else {
-                                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                                    header("Location: product_read.php?message=update_success");
+                                    ob_end_flush();
                                 }
-                            } // if $file_upload_error_messages is NOT empty
-                            else {
-                                // it means there are some errors, so show them to user
-                                echo "<div class='alert alert-danger'>";
-                                echo "<div>{$file_upload_error_messages}</div>";
-                                echo "<div>Update the record to upload photo.</div>";
-                                echo "</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
                         }
                         // show errors
                         catch (PDOException $exception) {
                             die('ERROR: ' . $exception->getMessage());
                         }
+                    } else {
+                        // it means there are some errors, so show them to user
+                        echo "<div class='alert alert-danger'>";
+                        echo "<div>{$file_upload_error_messages}</div>";
+                        echo "</div>";
                     }
                 } ?>
 
