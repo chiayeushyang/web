@@ -95,6 +95,8 @@ include 'check_session.php';
 
                     if ($promotion_price == Null) {
                         $promotion_price = "-";
+                    } else {
+                        $promotion_price = number_format((double)$promotion_price, 2);
                     }
 
                     if ($manufacture_date == Null) {
@@ -110,8 +112,8 @@ include 'check_session.php';
                     echo "<td>{$ProductID}</td>";
                     echo "<td>{$name}</td>";
                     echo "<td>{$description}</td>";
-                    echo "<td class='text-end'>" . number_format((double)$price, 2) . "</td>";
-                    echo "<td class='text-end'>" . number_format((double)$promotion_price, 2) . "</td>";
+                    echo "<td class='text-end'>" . number_format($price, 2) . "</td>";
+                    echo "<td class='text-end'>{$promotion_price}</td>";
                     echo "<td>{$manufacture_date}</td>";
                     echo "<td>{$expired_date}</td>";
                     echo "<td>";

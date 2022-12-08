@@ -98,6 +98,8 @@ include 'check_session.php';
 
                     if ($promotion_price == Null) {
                         $promotion_price = "-";
+                    } else {
+                        $promotion_price = number_format((double)$promotion_price, 2);
                     }
 
                     if ($manufacture_date == Null) {
@@ -137,11 +139,11 @@ include 'check_session.php';
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><?php echo "RM ", htmlspecialchars($price, ENT_QUOTES); ?></td>
+                    <td><?php echo "RM ", number_format($price, 2); ?></td>
                 </tr>
                 <tr>
                     <td>Promotion Price</td>
-                    <td><?php echo "RM ", htmlspecialchars($promotion_price, ENT_QUOTES); ?></td>
+                    <td><?php echo "RM ", $promotion_price; ?></td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
