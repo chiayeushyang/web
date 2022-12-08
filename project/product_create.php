@@ -66,9 +66,14 @@ include 'check_session.php';
 
                 if ($expired_date == "") {
                     $expired_date = NULL;
-                } else if ($expired_date < $manufacture_date) {
-                    $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
-                    $validated = false;
+                } else if ($expired_date != "") {
+                    $date1 = date_create($expired_date);
+                    $date2 = date_create($manufacture_date);
+                    $expired_check = date_diff($date2, $date1);
+                    if ($expired_check->format("%R%a") < 0) {
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                        $validated = false;
+                    }
                 }
 
                 if (!is_numeric($price)) {
@@ -118,9 +123,8 @@ include 'check_session.php';
 
                             if (!empty($_FILES["image"]["name"])) {
                                 //so try to upload the file
-                                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                    // it means photo was uploaded
-                                } else {
+                                // it means photo was uploaded
+                                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                                     echo "<div class='alert alert-danger'>";
                                     echo "<div>Unable to upload photo.</div>";
                                     echo "<div>Update the record to upload photo.</div>";
