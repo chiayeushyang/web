@@ -15,31 +15,31 @@ if ($image) {
     $target_file = $target_directory . $image;
     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
-    // error message is empty
-    $file_upload_error_messages = "";
-
+    var_dump($_FILES["image"]["tmp_name"]);
     // make sure that file is a real image
     $check = getimagesize($_FILES["image"]["tmp_name"]);
-    if ($check !== false) {
-        // submitted file is an image
-    } else {
-        $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-    }
+    if ($check === false) {
+        $file_upload_error_messages .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
+        $validated = false;
+    } 
 
     // make sure certain file types are allowed
     $allowed_file_types = array("jpg", "jpeg", "png", "gif");
     if (!in_array($file_type, $allowed_file_types)) {
-        $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+        $file_upload_error_messages .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+        $validated = false;
     }
 
     // make sure file does not exist
     if (file_exists($target_file)) {
-        $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+        $file_upload_error_messages .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
+        $validated = false;
     }
 
     // make sure submitted file is not too large, can't be larger than 1 MB
     if ($_FILES['image']['size'] > (1024000)) {
-        $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+        $file_upload_error_messages .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
+        $validated = false;
     }
 
     // make sure the 'uploads' folder exists

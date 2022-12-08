@@ -48,10 +48,15 @@ include 'check_session.php';
                 $promotion_price = $_POST['promotion_price'];
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
+
                 $validated = true;
 
+                // error message is empty
+                $file_upload_error_messages = "";
+
+
                 if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
-                    echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                     $validated = false;
                 }
 
@@ -62,34 +67,34 @@ include 'check_session.php';
                 if ($expired_date == "") {
                     $expired_date = NULL;
                 } else if ($expired_date < $manufacture_date) {
-                    echo "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
                     $validated = false;
                 }
 
                 if (!is_numeric($price)) {
-                    echo "<div class='alert alert-danger'>All Prices should be numbers only</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>All Prices should be numbers only</div>";
                 } else if ($price > 1000) {
-                    echo "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
                     $validated = false;
                 } else if ($price < 0) {
-                    echo "<div class='alert alert-danger'>Price cannot be negative</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot be negative</div>";
                     $validated = false;
                 }
                 if ($promotion_price > $price) {
-                    echo "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                     $validated = false;
                 }
-                
+
                 if (!empty($_FILES["image"]["name"])) {
                     include "image_upload.php";
                 } else {
                     $image = "";
                 }
-                
+
                 if ($validated) {
                     // include database connection
                     include 'config/database.php';
-                    
+
                     try {
                         // insert query
                         $query = "INSERT INTO products SET name=:name, description=:description, price=:price, image=:image, promotion_price = :promotion_price ,manufacture_date = :manufacture_date, expired_date = :expired_date, created=:created";
@@ -107,15 +112,12 @@ include 'check_session.php';
                         $created = date('Y-m-d H:i:s'); // get the current date and time
                         $stmt->bindParam(':created', $created);
 
-                        // if $file_upload_error_messages is still empty
-                        // it means there are no errors, 
-                        if (empty($file_upload_error_messages)) {
-                            // Execute the query
-                            if ($stmt->execute()) {
-                                echo "<div class='alert alert-success'>Record was saved.</div>";
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
 
-                                if (!empty($_FILES["image"]["name"])) {
-                                    //so try to upload the file
+                            if (!empty($_FILES["image"]["name"])) {
+                                //so try to upload the file
                                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                                     // it means photo was uploaded
                                 } else {
@@ -124,24 +126,20 @@ include 'check_session.php';
                                     echo "<div>Update the record to upload photo.</div>";
                                     echo "</div>";
                                 }
-                                }
-                                
-                            } else {
-                                echo "<div class='alert alert-danger'>Unable to save record.</div>";
                             }
-                        } // if $file_upload_error_messages is NOT empty
-                        else {
-                            // it means there are some errors, so show them to user
-                            echo "<div class='alert alert-danger'>";
-                            echo "<div>{$file_upload_error_messages}</div>";
-                            echo "<div>Update the record to upload photo.</div>";
-                            echo "</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
                     }
                     // show error
                     catch (PDOException $exception) {
                         die('ERROR: ' . $exception->getMessage());
                     }
+                } else {
+                    // it means there are some errors, so show them to user
+                    echo "<div class='alert alert-danger'>";
+                    echo "<div>{$file_upload_error_messages}</div>";
+                    echo "</div>";
                 }
             }
 
