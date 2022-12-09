@@ -99,7 +99,7 @@ include 'check_session.php';
                     if ($promotion_price == Null) {
                         $promotion_price = "-";
                     } else {
-                        $promotion_price = number_format((double)$promotion_price, 2);
+                        $promotion_price = number_format((float)$promotion_price, 2);
                     }
 
                     if ($manufacture_date == Null) {
@@ -122,9 +122,12 @@ include 'check_session.php';
 
             <!--we have our html table here where the record will be displayed-->
             <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td colspan="2" class="text-center"><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" alt="Image not found" width="250px"></td>
-                </tr>
+                <?php if ($image != "") {
+                    echo "<tr>";
+                    echo "<td colspan='2' class='text-center'><img src='uploads/$image'alt='Image not found' width='250px'></td>";
+                    echo "</tr>";
+                }
+                ?>
                 <tr>
                     <td>ID</td>
                     <td><?php echo htmlspecialchars($ProductID, ENT_QUOTES);  ?></td>

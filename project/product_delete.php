@@ -16,12 +16,24 @@ try {
     if ($num > 0) {
         header('Location: product_read.php?message=product_in_use');
     } else {
+        $query_image = "SELECT image FROM products WHERE ProductID = ?";
+        $stmt_image = $con->prepare($query_image);
+        $stmt_image->bindParam(1, $id);
+        $stmt_image->execute();
+        $num_image = $stmt_image->rowCount();
+
+        if ($num_image > 0) {
+            $row = $stmt_image->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+        }
+
         // delete query
         $query = "DELETE FROM products WHERE ProductID = ?";
         $stmt = $con->prepare($query);
         $stmt->bindParam(1, $id);
 
         if ($stmt->execute()) {
+            unlink("uploads/$image");
             // redirect to read records page and
             // tell the user record was deleted
             header('Location: product_read.php?message=deleted');

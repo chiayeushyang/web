@@ -60,7 +60,7 @@ include 'check_session.php';
             include 'config/database.php';
 
             // select all data
-            $query = "SELECT ProductID, name, description, price, promotion_price, manufacture_date, expired_date FROM products ORDER BY ProductID ASC";
+            $query = "SELECT ProductID, name, description, image, price, promotion_price, manufacture_date, expired_date FROM products ORDER BY ProductID ASC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -110,7 +110,11 @@ include 'check_session.php';
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$ProductID}</td>";
-                    echo "<td>{$name}</td>";
+                    echo "<td>{$name}";
+                    if ($image !== "") {
+                        echo "<div class='text-center'><img src='uploads/$image' width='50px'/></div>";
+                    } 
+                    echo "</td>";
                     echo "<td>{$description}</td>";
                     echo "<td class='text-end'>" . number_format($price, 2) . "</td>";
                     echo "<td class='text-end'>{$promotion_price}</td>";

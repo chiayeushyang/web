@@ -196,9 +196,12 @@ ob_start();
                             <td>Price</td>
                             <td><input type='text' name='price' value="<?php echo $price; ?>" class='form-control' /></td>
                         </tr>
-                        <tr>
-                            <td colspan="2" class="text-center"><img src="uploads/<?php echo $old_image; ?>" alt="Image not found" width="250px"></td>
-                        </tr>
+                        <?php if ($old_image != "") {
+                            echo "<tr>";
+                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'></td>";
+                            echo "</tr>";
+                        }
+                        ?>
                         <tr>
                             <td>Photo</td>
                             <td><input type="file" name="image" /></td>
