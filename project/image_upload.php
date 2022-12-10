@@ -48,4 +48,15 @@ if ($image) {
     if (!is_dir($target_directory)) {
         mkdir($target_directory, 0777, true);
     }
+
+    if (empty($file_upload_error_messages)) {
+        //so try to upload the file
+        // it means photo was uploaded
+        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            echo "<div class='alert alert-danger'>";
+            echo "<div>Unable to upload photo.</div>";
+            echo "<div>Update the record to upload photo.</div>";
+            echo "</div>";
+        }
+    }
 }

@@ -98,7 +98,7 @@ include 'check_session.php';
 
                 if ($validated) {
                     // include database connection
-                    include 'config/database.php';
+                    include 'config/database.php'; 
 
                     try {
                         // insert query
@@ -120,18 +120,10 @@ include 'check_session.php';
                         // Execute the query
                         if ($stmt->execute()) {
                             echo "<div class='alert alert-success'>Record was saved.</div>";
-
-                            if (!empty($_FILES["image"]["name"])) {
-                                //so try to upload the file
-                                // it means photo was uploaded
-                                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                    echo "<div class='alert alert-danger'>";
-                                    echo "<div>Unable to upload photo.</div>";
-                                    echo "<div>Update the record to upload photo.</div>";
-                                    echo "</div>";
-                                }
-                            }
                         } else {
+                            if (file_exists($target_file)) {
+                                unlink($target_file);
+                            } 
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
                     }

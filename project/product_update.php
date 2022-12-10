@@ -147,23 +147,8 @@ ob_start();
                             $stmt->bindParam(':expired_date', $expired_date);
 
                             if ($stmt->execute()) {
-
-                                if (!empty($_FILES["image"]["name"])) {
-                                    //so try to upload the file
-                                    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                        // it means photo was uploaded
-                                        header("Location: product_read.php?message=update_success");
-                                        ob_end_flush();
-                                    } else {
-                                        echo "<div class='alert alert-danger'>";
-                                        echo "<div>Unable to upload photo.</div>";
-                                        echo "<div>Update the record to upload photo.</div>";
-                                        echo "</div>";
-                                    }
-                                } else {
-                                    header("Location: product_read.php?message=update_success");
-                                    ob_end_flush();
-                                }
+                                header("Location: product_read.php?message=update_success");
+                                ob_end_flush();
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
