@@ -177,7 +177,7 @@ include 'check_session.php';
                         <td></td>
                         <td>
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='index.php' class='btn btn-danger'>Back to home</a>
+                            <a href='welcome_page.php' class='btn btn-danger'>Back to home</a>
                         </td>
                     </tr>
                 </table>
