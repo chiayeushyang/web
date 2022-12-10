@@ -145,9 +145,9 @@ include 'check_session.php';
                 <td><?php echo htmlspecialchars($account_status, ENT_QUOTES); ?></td>
             </tr>
             <tr>
-                <td></td>
+                <td><?php echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
                 <td>
-                    <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
+                    <a href='customer_read.php' class='btn btn-danger col-12'>Back to read customers</a>
                 </td>
             </tr>
         </table>

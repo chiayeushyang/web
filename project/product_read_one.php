@@ -157,9 +157,9 @@ include 'check_session.php';
                     <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES); ?></td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td><?php echo "<a href='product_update.php?id={$ProductID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
                     <td>
-                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='product_read.php' class='btn btn-danger col-12'>Back to read products</a>
                     </td>
                 </tr>
             </table>
