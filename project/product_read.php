@@ -110,7 +110,7 @@ include 'check_session.php';
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$ProductID}</td>";
-                    echo "<td>{$name}";
+                    echo "<td><div class='text-center'>$name</div>";
                     if ($image !== "") {
                         echo "<div class='text-center'><img src='uploads/$image' width='50px'/></div>";
                     } 
