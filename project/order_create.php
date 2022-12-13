@@ -222,7 +222,7 @@ include 'check_session.php';
                     echo   "</select>";
                     echo   "</td>";
                     echo   "<td>";
-                    echo   "<input type='number' name='quantity[]' value=\"1\" class='form-control' min=\"1\" />";
+                    echo   "<input type='number' id='quantity' name='quantity[]' value=\"1\" class='form-control' min=\"1\" />";
                     echo   "</td>";
                     echo   "</tr>";
                     ?>
@@ -254,7 +254,8 @@ include 'check_session.php';
                 if (event.target.matches('.add_one')) {
                     var element = document.querySelector('.pRow');
                     var clone = element.cloneNode(true);
-                    element.after(clone);
+                    element.before(clone);
+                    document.getElementById('quantity').value = "1";
                 }
                 if (event.target.matches('.delete_one')) {
                     var total = document.querySelectorAll('.pRow').length;
