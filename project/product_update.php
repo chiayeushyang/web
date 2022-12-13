@@ -150,6 +150,9 @@ ob_start();
                                 header("Location: product_read.php?message=update_success");
                                 ob_end_flush();
                             } else {
+                                if (file_exists($target_file)) {
+                                    unlink($target_file);
+                                } 
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
                         }
