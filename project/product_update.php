@@ -166,6 +166,9 @@ ob_start();
                             die('ERROR: ' . $exception->getMessage());
                         }
                     } else {
+                        if (file_exists($target_file)) {
+                            unlink($target_file);
+                        } 
                         // it means there are some errors, so show them to user
                         echo "<div class='alert alert-danger'>";
                         echo "<div>{$file_upload_error_messages}</div>";

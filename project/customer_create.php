@@ -27,7 +27,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     </header>
@@ -60,9 +60,12 @@ include 'check_session.php';
 
                 $validation = true;
 
+                // error message is empty
+                $file_upload_error_messages = "";
+
                 // Check Empty
                 if ($username == "" || $password == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
-                    echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                     $validation = false;
                 }
 
@@ -71,19 +74,19 @@ include 'check_session.php';
                 // Check Username
                 if (strpos($username, " ") !== false) {
                     // if (preg_match("/[\s]/", $username)) {
-                    echo "<div class='alert alert-danger'>No space is allowed in username</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>No space is allowed in username</div>";
                     $validation = false;
                 } else if (strlen($username) < 6) {
-                    echo "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
                     $validation = false;
                 }
 
                 // Check password
                 if (!preg_match("/[0-9]/", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password) || strlen($password) < 8) {
-                    echo "<div class='alert alert-danger'>Please enter password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Please enter password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
                     $validation = false;
                 } else if ($confirm_password !== $password) {
-                    echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Please enter valid confirm password</div>";
                     $validation = false;
                 } else {
                     $password = md5($password);
@@ -91,12 +94,19 @@ include 'check_session.php';
 
                 // Check birthday
                 if ($date_of_birth > date('Y-m-d')) {
-                    echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
                     $validation = false;
                 } else if ($age->format("%y") < 18) {
-                    echo "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
                     $validation = false;
                 }
+
+                if (!empty($_FILES["image"]["name"])) {
+                    include "image_upload.php";
+                } else {
+                    $image = "";
+                }
+
 
                 if ($validation == true) {
                     // include database connection
@@ -104,13 +114,14 @@ include 'check_session.php';
 
                     try {
                         // insert query
-                        $query = "INSERT INTO customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, registration_date_time=:registration_date_time, account_status=:account_status";
+                        $query = "INSERT INTO customers SET username=:username, password=:password, customer_image=:image, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, registration_date_time=:registration_date_time, account_status=:account_status";
                         // prepare query for execution
                         $stmt = $con->prepare($query);
 
                         // bind the parameters
                         $stmt->bindParam(':username', $username);
                         $stmt->bindParam(':password', $password);
+                        $stmt->bindParam(':image', $image);
                         $stmt->bindParam(':first_name', $first_name);
                         $stmt->bindParam(':last_name', $last_name);
                         $stmt->bindParam(':gender', $gender);
@@ -123,6 +134,9 @@ include 'check_session.php';
                         if ($stmt->execute()) {
                             echo "<div class='alert alert-success'>Record was saved.</div>";
                         } else {
+                            if (file_exists($target_file)) {
+                                unlink($target_file);
+                            } 
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
                     }
@@ -130,6 +144,14 @@ include 'check_session.php';
                     catch (PDOException $exception) {
                         die('ERROR: ' . $exception->getMessage());
                     }
+                } else {
+                    if (file_exists($target_file)) {
+                        unlink($target_file);
+                    } 
+                    // it means there are some errors, so show them to user
+                    echo "<div class='alert alert-danger'>";
+                    echo "<div>{$file_upload_error_messages}</div>";
+                    echo "</div>";
                 }
             }
             ?>
@@ -137,7 +159,7 @@ include 'check_session.php';
             <!-- PHP insert code will be here -->
 
             <!-- html form here where the product information will be entered -->
-            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Username</td>
@@ -155,6 +177,10 @@ include 'check_session.php';
                     <tr>
                         <td>Confirm Password</td>
                         <td><input type='password' name='confirm_password' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Photo</td>
+                        <td><input type="file" name="image" /></td>
                     </tr>
                     <tr>
                         <td>First name</td>
