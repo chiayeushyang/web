@@ -125,15 +125,17 @@ ob_start();
 
                     if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
-                    } else {
-                        if ($old_image != "" && getimagesize($_FILES["image"]["tmp_name"]) !== false) {
+                    } else { 
+                        include "image_upload.php";
+                        if ($validated == true && $old_image != "" && getimagesize($target_file) !== false) {
                             unlink("uploads/$old_image");
                         }
-                        include "image_upload.php";
                         $new_image = $image;
                     }
 
                     if ($validated) {
+                        
+
                         try {
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
@@ -166,9 +168,6 @@ ob_start();
                             die('ERROR: ' . $exception->getMessage());
                         }
                     } else {
-                        if (file_exists($target_file)) {
-                            unlink($target_file);
-                        } 
                         // it means there are some errors, so show them to user
                         echo "<div class='alert alert-danger'>";
                         echo "<div>{$file_upload_error_messages}</div>";

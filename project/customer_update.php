@@ -106,15 +106,15 @@ ob_start();
 
                     //Check Password
                     if ($old_password != "" && md5($old_password) != $password) {
-                        echo "<div class='alert alert-danger'>Please enter corret password</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Please enter corret password</div>";
                         $validation = false;
                     } else if ($old_password == "" && $new_password == "" && $confirm_password == "") {
                         $pass = $password;
                     } else if (!preg_match("/[0-9]/", $new_password) || !preg_match("/[a-z]/", $new_password) || !preg_match("/[A-Z]/", $new_password) || strlen($new_password) < 8) {
-                        echo "<div class='alert alert-danger'>Please enter new password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Please enter new password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
                         $validation = false;
                     } else if ($confirm_password !== $new_password) {
-                        echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Please enter valid confirm password</div>";
                         $validation = false;
                     }
 
@@ -123,29 +123,29 @@ ob_start();
                     // Check Username
                     if (strpos($username, " ") !== false) {
                         // if (preg_match("/[\s]/", $username)) {
-                        echo "<div class='alert alert-danger'>No space is allowed in username</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>No space is allowed in username</div>";
                         $validation = false;
                     } else if (strlen($username) < 6) {
-                        echo "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
                         $validation = false;
                     }
 
                     // Check birthday
                     if ($date_of_birth > date('Y-m-d')) {
-                        echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
                         $validation = false;
                     } else if ($age->format("%y") < 18) {
-                        echo "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
                         $validation = false;
                     }
 
                     if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
-                    } else {
-                        if ($old_image != "" && getimagesize($_FILES["image"]["tmp_name"]) !== false) {
+                    } else { 
+                        include "image_upload.php";
+                        if ($validated == true && $old_image != "" && getimagesize($target_file) !== false) {
                             unlink("uploads/$old_image");
                         }
-                        include "image_upload.php";
                         $new_image = $image;
                     }
 
@@ -191,9 +191,6 @@ ob_start();
                             die('ERROR: ' . $exception->getMessage());
                         }
                     } else {
-                        if (file_exists($target_file)) {
-                            unlink($target_file);
-                        }
                         // it means there are some errors, so show them to user
                         echo "<div class='alert alert-danger'>";
                         echo "<div>{$file_upload_error_messages}</div>";
