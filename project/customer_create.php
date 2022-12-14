@@ -59,7 +59,7 @@ include 'check_session.php';
                 $age = date_diff($date1, $date2);
 
                 $validation = true;
-
+                $target_file = "";
                 // error message is empty
                 $file_upload_error_messages = "";
 

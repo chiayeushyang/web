@@ -85,6 +85,7 @@ ob_start();
                     $gender = $_POST['gender'];
                     $date_of_birth = $_POST['date_of_birth'];
                     $account_status = $_POST['account_status'];
+                    $delete_image = $_POST['delete_image'];
 
                     $today = date('Y-m-d');
 
@@ -139,9 +140,15 @@ ob_start();
                         $validation = false;
                     }
 
-                    if (empty($_FILES["image"]["name"])) {
+                    if ((!empty($_FILES["image"]["name"]) && $delete_image == "Yes")) {
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Cannot upload image if want to delete image.</div>";
+                        $validation = false;
+                    } else if ($delete_image == "Yes") {
+                        unlink("uploads/$old_image");
+                        $new_image = "";
+                    } else if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
-                    } else { 
+                    } else {
                         include "image_upload.php";
                         if ($validation == true && $old_image != "" && getimagesize($target_file) !== false) {
                             unlink("uploads/$old_image");
@@ -202,9 +209,17 @@ ob_start();
                 <!--we have our html form here where new record information can be updated-->
                 <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post" enctype="multipart/form-data">
                     <table class='table table-hover table-responsive table-bordered'>
+                        <input type='hidden' name='delete_image' value='No'>
                         <?php if ($old_image != "") {
                             echo "<tr>";
-                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'></td>";
+                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'>";
+                            echo "<div class='form-check form-switch mt-2 d-flex justify-content-center'>";
+                            echo "<input class='form-check-input me-3' type='checkbox' role='switch' name='delete_image' value='Yes' id='delete_image'>";
+                            echo "<label class='form-check-label fw-bold' for='delete_image'>";
+                            echo  "Delete Image";
+                            echo "</td>";
+                            echo "</label>";
+                            echo "</div>";
                             echo "</tr>";
                         } else {
                             echo "<tr>";
