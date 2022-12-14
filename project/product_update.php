@@ -127,7 +127,7 @@ ob_start();
                     if ((!empty($_FILES["image"]["name"]) && $delete_image == "Yes")) {
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Cannot upload image if want to delete image.</div>";
                         $validation = false;
-                    } else if ($delete_image == "Yes") {
+                    } else if ($validation == true && $delete_image == "Yes") {
                         unlink("uploads/$old_image");
                         $new_image = "";
                     } else if (empty($_FILES["image"]["name"])) {
