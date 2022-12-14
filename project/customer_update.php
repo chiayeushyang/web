@@ -143,7 +143,7 @@ ob_start();
                         $new_image = $old_image;
                     } else { 
                         include "image_upload.php";
-                        if ($validated == true && $old_image != "" && getimagesize($target_file) !== false) {
+                        if ($validation == true && $old_image != "" && getimagesize($target_file) !== false) {
                             unlink("uploads/$old_image");
                         }
                         $new_image = $image;

@@ -21,26 +21,26 @@ if ($image) {
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if ($check === false) {
         $file_upload_error_messages .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
-        $validated = false;
+        $validation = false;
     } 
 
     // make sure certain file types are allowed
     $allowed_file_types = array("jpg", "jpeg", "png", "gif");
     if (!in_array($file_type, $allowed_file_types)) {
         $file_upload_error_messages .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-        $validated = false;
+        $validation = false;
     }
 
     // make sure file does not exist
     if (file_exists($target_file)) {
         $file_upload_error_messages .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
-        $validated = false;
+        $validation = false;
     }
 
     // make sure submitted file is not too large, can't be larger than 1 MB
     if ($_FILES['image']['size'] > (1024000)) {
         $file_upload_error_messages .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
-        $validated = false;
+        $validation = false;
     }
 
     // make sure the 'uploads' folder exists

@@ -16,12 +16,23 @@ try {
     if ($num > 0) {
         header('Location: customer_read.php?message=customer_in_use');
     } else {
+        $query_image = "SELECT customer_image FROM customers WHERE CustomerID = ?";
+        $stmt_image = $con->prepare($query_image);
+        $stmt_image->bindParam(1, $id);
+        $stmt_image->execute();
+        $num_image = $stmt_image->rowCount();
+
+        if ($num_image > 0) {
+            $row = $stmt_image->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+        }
         // delete query
         $query = "DELETE FROM customers WHERE CustomerID = ?";
         $stmt = $con->prepare($query);
         $stmt->bindParam(1, $id);
 
         if ($stmt->execute()) {
+            unlink("uploads/$customer_image");
             // redirect to read records page and
             // tell the user record was deleted
             header('Location: customer_read.php?message=deleted');

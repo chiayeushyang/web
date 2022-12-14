@@ -49,7 +49,7 @@ include 'check_session.php';
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
 
-                $validated = true;
+                $validation = true;
 
                 // error message is empty
                 $file_upload_error_messages = "";
@@ -57,7 +57,7 @@ include 'check_session.php';
 
                 if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
-                    $validated = false;
+                    $validation = false;
                 }
 
                 if ($promotion_price == "") {
@@ -72,7 +72,7 @@ include 'check_session.php';
                     $expired_check = date_diff($date2, $date1);
                     if ($expired_check->format("%R%a") < 0) {
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
-                        $validated = false;
+                        $validation = false;
                     }
                 }
 
@@ -80,14 +80,14 @@ include 'check_session.php';
                     $file_upload_error_messages .= "<div class='alert alert-danger'>All Prices should be numbers only</div>";
                 } else if ($price > 1000) {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot exceed RM1000</div>";
-                    $validated = false;
+                    $validation = false;
                 } else if ($price < 0) {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot be negative</div>";
-                    $validated = false;
+                    $validation = false;
                 }
                 if ($promotion_price > $price) {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
-                    $validated = false;
+                    $validation = false;
                 }
 
                 if (!empty($_FILES["image"]["name"])) {
@@ -96,7 +96,7 @@ include 'check_session.php';
                     $image = "";
                 }
 
-                if ($validated) {
+                if ($validation) {
                     // include database connection
                     include 'config/database.php'; 
 
