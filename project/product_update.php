@@ -99,9 +99,14 @@ ob_start();
 
                     if ($expired_date == "") {
                         $expired_date = NULL;
-                    } else if ($expired_date < $manufacture_date) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
-                        $validated = false;
+                    } else if ($expired_date != "") {
+                        $date1 = date_create($expired_date);
+                        $date2 = date_create($manufacture_date);
+                        $expired_check = date_diff($date2, $date1);
+                        if ($expired_check->format("%R%a") < 0) {
+                            $file_upload_error_messages .= "<div class='alert alert-danger'>Expired date should be later than manufacture date</div>";
+                            $validated = false;
+                        }
                     }
 
                     if (!is_numeric($price)) {
@@ -152,7 +157,7 @@ ob_start();
                             } else {
                                 if (file_exists($target_file)) {
                                     unlink($target_file);
-                                } 
+                                }
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
                         }
