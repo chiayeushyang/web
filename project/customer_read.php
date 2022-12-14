@@ -65,7 +65,7 @@ include 'check_session.php';
             // delete message prompt will be here
 
             // select all data
-            $query = "SELECT CustomerID, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers ORDER BY CustomerID ASC";
+            $query = "SELECT CustomerID, username, password, customer_image, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers ORDER BY CustomerID ASC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -78,7 +78,7 @@ include 'check_session.php';
             //check if more than 0 record found
             if ($num > 0) {
 
-                echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+                echo "<table class='table table-hover table-responsive table-bordered align-middle'>"; //start table
 
                 //creating our table heading
                 echo "<tr>";
@@ -102,7 +102,11 @@ include 'check_session.php';
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$CustomerID}</td>";
-                    echo "<td>{$username}</td>";
+                    echo "<td><div class='text-center'>$username</div>";
+                    if ($customer_image !== "") {
+                        echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
+                    } 
+                    echo "</td>";
                     echo "<td>{$password}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";

@@ -73,7 +73,7 @@ include 'check_session.php';
             //check if more than 0 record found
             if ($num > 0) {
 
-                echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+                echo "<table class='table table-hover table-responsive table-bordered align-middle'>"; //start table
 
                 //creating our table heading
                 echo "<tr>";

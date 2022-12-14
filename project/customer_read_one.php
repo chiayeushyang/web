@@ -28,7 +28,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -70,7 +70,7 @@ include 'check_session.php';
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT CustomerID, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE CustomerID = :CustomerID ";
+            $query = "SELECT CustomerID, username, password, customer_image, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE CustomerID = :CustomerID ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
@@ -88,6 +88,7 @@ include 'check_session.php';
                 // values to fill up our form
                 $username = $row['username'];
                 $password = $row['password'];
+                $customer_image = $row['customer_image'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
                 $gender = $row['gender'];
@@ -108,6 +109,12 @@ include 'check_session.php';
 
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
+            <?php if ($customer_image != "") {
+                echo "<tr>";
+                echo "<td colspan='2' class='text-center'><img src='uploads/$customer_image'alt='Image not found' width='250px'></td>";
+                echo "</tr>";
+            }
+            ?>
             <tr>
                 <td>ID</td>
                 <td><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>

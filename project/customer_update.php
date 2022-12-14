@@ -51,7 +51,7 @@ ob_start();
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT CustomerID, username, password, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE CustomerID = ? LIMIT 0,1";
+                    $query = "SELECT CustomerID, username, password, customer_image as old_image, first_name, last_name, gender, date_of_birth, registration_date_time, account_status FROM customers WHERE CustomerID = ? LIMIT 0,1";
                     $stmt = $con->prepare($query);
 
                     // this is the first question mark
@@ -76,65 +76,77 @@ ob_start();
                 // check if form was submitted
                 if ($_POST) {
 
-                    if ($_POST) {
-                        $username = trim($_POST['username']);
-                        $old_password = md5($_POST['old_password']);
-                        $new_password = $_POST['new_password'];
-                        $confirm_password = $_POST['confirm_password'];
-                        $first_name = $_POST['first_name'];
-                        $last_name = $_POST['last_name'];
-                        $gender = $_POST['gender'];
-                        $date_of_birth = $_POST['date_of_birth'];
-                        $account_status = $_POST['account_status'];
+                    $username = trim($_POST['username']);
+                    $old_password = $_POST['old_password'];
+                    $new_password = $_POST['new_password'];
+                    $confirm_password = $_POST['confirm_password'];
+                    $first_name = $_POST['first_name'];
+                    $last_name = $_POST['last_name'];
+                    $gender = $_POST['gender'];
+                    $date_of_birth = $_POST['date_of_birth'];
+                    $account_status = $_POST['account_status'];
 
-                        $today = date('Y-m-d');
+                    $today = date('Y-m-d');
 
-                        $date1 = date_create($date_of_birth);
-                        $date2 = date_create($today);
-                        $age = date_diff($date1, $date2);
+                    $date1 = date_create($date_of_birth);
+                    $date2 = date_create($today);
+                    $age = date_diff($date1, $date2);
 
-                        $validation = true;
+                    $validation = true;
 
-                        // Check Empty
-                        if ($username == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
-                            echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
-                            $validation = false;
+
+                    // error message is empty
+                    $file_upload_error_messages = "";
+
+                    // Check Empty
+                    if ($username == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
+                        echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
+                        $validation = false;
+                    }
+
+                    //Check Password
+                    if ($old_password != "" && md5($old_password) != $password) {
+                        echo "<div class='alert alert-danger'>Please enter corret password</div>";
+                        $validation = false;
+                    } else if ($old_password == "" && $new_password == "" && $confirm_password == "") {
+                        $pass = $password;
+                    } else if (!preg_match("/[0-9]/", $new_password) || !preg_match("/[a-z]/", $new_password) || !preg_match("/[A-Z]/", $new_password) || strlen($new_password) < 8) {
+                        echo "<div class='alert alert-danger'>Please enter new password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
+                        $validation = false;
+                    } else if ($confirm_password !== $new_password) {
+                        echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
+                        $validation = false;
+                    }
+
+                    // var_dump($username);
+
+                    // Check Username
+                    if (strpos($username, " ") !== false) {
+                        // if (preg_match("/[\s]/", $username)) {
+                        echo "<div class='alert alert-danger'>No space is allowed in username</div>";
+                        $validation = false;
+                    } else if (strlen($username) < 6) {
+                        echo "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
+                        $validation = false;
+                    }
+
+                    // Check birthday
+                    if ($date_of_birth > date('Y-m-d')) {
+                        echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
+                        $validation = false;
+                    } else if ($age->format("%y") < 18) {
+                        echo "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
+                        $validation = false;
+                    }
+
+                    if (empty($_FILES["image"]["name"])) {
+                        $new_image = $old_image;
+                    } else {
+                        if ($old_image != "" && getimagesize($_FILES["image"]["tmp_name"]) !== false) {
+                            unlink("uploads/$old_image");
                         }
-
-                        //Check Password
-                        if ($old_password != "" && $old_password != $password) {
-                            echo "<div class='alert alert-danger'>Please enter corret password</div>";
-                            $validation = false;
-                        } else if ($old_password == "" && $new_password == "" && $confirm_password == "") {
-                            $pass = $password;
-                        } else if (!preg_match("/[0-9]/", $new_password) || !preg_match("/[a-z]/", $new_password) || !preg_match("/[A-Z]/", $new_password) || strlen($new_password) < 8) {
-                            echo "<div class='alert alert-danger'>Please enter new password with at least <br> - 1 capital letter <br> - 1 small letter <br> - 1 integer <br> - more than 8 character</div>";
-                            $validation = false;
-                        } else if ($confirm_password !== $new_password) {
-                            echo "<div class='alert alert-danger'>Please enter valid confirm password</div>";
-                            $validation = false;
-                        } 
-
-                        // var_dump($username);
-
-                        // Check Username
-                        if (strpos($username, " ") !== false) {
-                            // if (preg_match("/[\s]/", $username)) {
-                            echo "<div class='alert alert-danger'>No space is allowed in username</div>";
-                            $validation = false;
-                        } else if (strlen($username) < 6) {
-                            echo "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
-                            $validation = false;
-                        }
-
-                        // Check birthday
-                        if ($date_of_birth > date('Y-m-d')) {
-                            echo "<div class='alert alert-danger'>Date of Birth cannot in future.</div>";
-                            $validation = false;
-                        } else if ($age->format("%y") < 18) {
-                            echo "<div class='alert alert-danger'>Age below 18 years old are not allowed.</div>";
-                            $validation = false;
-                        }
+                        include "image_upload.php";
+                        $new_image = $image;
                     }
 
 
@@ -143,7 +155,7 @@ ob_start();
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
                             // it is better to label them and not use question marks
-                            $query = "UPDATE customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE CustomerID=:CustomerID";
+                            $query = "UPDATE customers SET username=:username, password=:password, customer_image=:image,first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE CustomerID=:CustomerID";
                             // prepare query for execution
                             $stmt = $con->prepare($query);
 
@@ -154,7 +166,8 @@ ob_start();
                                 $stmt->bindParam(':password', $pass);
                             } else {
                                 $stmt->bindParam(':password', md5($new_password));
-                            }            
+                            }
+                            $stmt->bindParam(':image', $new_image);
                             $stmt->bindParam(':first_name', $first_name);
                             $stmt->bindParam(':last_name', $last_name);
                             $stmt->bindParam(':gender', $gender);
@@ -167,6 +180,9 @@ ob_start();
                                 header("Location: customer_read.php?message=update_success");
                                 ob_end_flush();
                             } else {
+                                if (file_exists($target_file)) {
+                                    unlink($target_file);
+                                }
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
                         }
@@ -174,13 +190,35 @@ ob_start();
                         catch (PDOException $exception) {
                             die('ERROR: ' . $exception->getMessage());
                         }
+                    } else {
+                        if (file_exists($target_file)) {
+                            unlink($target_file);
+                        }
+                        // it means there are some errors, so show them to user
+                        echo "<div class='alert alert-danger'>";
+                        echo "<div>{$file_upload_error_messages}</div>";
+                        echo "</div>";
                     }
                 } ?>
 
 
                 <!--we have our html form here where new record information can be updated-->
-                <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post">
+                <form action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="post" enctype="multipart/form-data">
                     <table class='table table-hover table-responsive table-bordered'>
+                        <?php if ($old_image != "") {
+                            echo "<tr>";
+                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'></td>";
+                            echo "</tr>";
+                        } else {
+                            echo "<tr>";
+                            echo "<td colspan='2' class='text-center'><img src='images/noimage.jpg'alt='Image not found' width='250px'></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                        <tr>
+                            <td>Photo</td>
+                            <td><input type="file" name="image" /></td>
+                        </tr>
                         <tr>
                             <td>Username</td>
                             <td><input type='text' name='username' value="<?php echo $username;  ?>" class='form-control' /></td>
