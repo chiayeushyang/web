@@ -52,7 +52,7 @@ include 'check_session.php';
 
 
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -189,6 +189,11 @@ include 'check_session.php';
                 <?php
                 $query = "SELECT * FROM products ORDER BY ProductID ASC";
                 ?>
+                <div class="d-flex justify-content-between mb-4">
+                    <input type='submit' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' />
+                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
+                    <input type="button" value="Delete" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
@@ -228,11 +233,6 @@ include 'check_session.php';
                     ?>
 
                 </table>
-                <div class="d-flex justify-content-between">
-                    <input type='submit' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' />
-                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <input type="button" value="Delete" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
-                </div>
             </div>
         </form>
 
