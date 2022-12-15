@@ -3,6 +3,7 @@
 
 <?php
 include 'check_session.php';
+ob_start();
 ?>
 
 <head>
@@ -132,7 +133,8 @@ include 'check_session.php';
                         // Execute the query
 
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                            header("Location: customer_read.php?message=update_success");
+                            ob_end_flush();
                         } else {
                             if (file_exists($target_file)) {
                                 unlink($target_file);
