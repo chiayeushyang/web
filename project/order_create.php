@@ -23,8 +23,6 @@ include 'check_session.php';
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-
-    <script src="js/order.js"></script>
 </head>
 
 <body>
@@ -154,7 +152,7 @@ include 'check_session.php';
         ?>
 
         <!-- html form here where the product information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <form id="myForm" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <div class="row">
                 <?php include 'config/database.php'; ?>
                 <div class="col-10 col-sm-6 m-auto">
@@ -190,15 +188,16 @@ include 'check_session.php';
                 $query = "SELECT * FROM products ORDER BY ProductID ASC";
                 ?>
                 <div class="d-flex justify-content-between mb-4">
-                    <input type='submit' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' />
+                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
                     <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <input type="button" value="Delete" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                    <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
                 </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
                         <th>Products</th>
                         <th>Quantity</th>
+                        <th></th>
                     </tr>
 
                     <?php
@@ -213,7 +212,7 @@ include 'check_session.php';
                     echo "<p class=\"mb-0 mt-2\">1</p>";
                     echo "</td>";
                     echo "<td>";
-                    echo "<select class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
+                    echo "<select id='my-select' class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
                     echo "<option selected>Open this select menu</option>";
 
                     if ($num > 0) {
@@ -229,6 +228,7 @@ include 'check_session.php';
                     echo   "<td>";
                     echo   "<input type='number' id='quantity' name='quantity[]' value=\"1\" class='form-control' min=\"1\" />";
                     echo   "</td>";
+                    echo   "<td><button type='button' class='btn btn-danger col-11 delete-button'>Delete</button></td>";
                     echo   "</tr>";
                     ?>
 
@@ -256,6 +256,28 @@ include 'check_session.php';
                     var clone = element.cloneNode(true);
                     element.before(clone);
                     document.getElementById('quantity').value = "1";
+
+                    const selectElement = document.getElementById('my-select');
+                    // Set the selectedIndex property to the index of the desired option
+                    selectElement.selectedIndex = 0;
+
+                    // Get a reference to the newly added delete button
+                    const deleteButton = clone.querySelector('.delete-button');
+
+                    // Add an event listener to the delete button
+                    deleteButton.addEventListener('click', event => {
+
+                        var total = document.querySelectorAll('.pRow').length;
+                        if (total > 1) {
+                            // Get a reference to the table row containing the delete button that was clicked
+                            const row = event.target.closest('tr');
+
+                            // Use the .remove() method to remove the table row
+                            row.remove();
+                        } else {
+                            alert("The last row is not allowed to be deleted")
+                        }
+                    });
                 }
                 if (event.target.matches('.delete_one')) {
                     var total = document.querySelectorAll('.pRow').length;
@@ -271,6 +293,44 @@ include 'check_session.php';
                     row[i].cells[0].innerHTML = i;
                 }
             }, false);
+
+            // Get a reference to the table
+            const table = document.querySelector('#order');
+
+            // Get a reference to all of the delete buttons within the table
+            deleteButtons = table.querySelectorAll('.delete-button');
+
+            // Add an event listener to each delete button
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', event => {
+
+                    var total = document.querySelectorAll('.pRow').length;
+                    if (total > 1) {
+                        // Get a reference to the table row containing the delete button that was clicked
+                        const row = event.target.closest('tr');
+
+                        // Use the .remove() method to remove the table row
+                        row.remove();
+                    } else {
+                        alert("The last row is not allowed to be deleted")
+                    }
+                });
+            });
+
+            function checkDuplicate() {
+                var newarray = [];
+                const table = document.querySelector('#order');
+                var select = table.getElementsByTagName('select');
+                for (var i = 0; i < select.length; i++) {
+                    newarray.push(select[i].value);
+                }
+                var set = new Set(newarray);
+                if (set.size !== newarray.length) {
+                    alert("There are duplicate items in the array");
+                } else {
+                    document.getElementById("myForm").submit();
+                }
+            }
         </script>
 </body>
 

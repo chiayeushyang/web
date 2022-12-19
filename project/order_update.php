@@ -169,7 +169,7 @@ ob_start();
                 </div>
 
                 <div class="d-flex justify-content-between mb-4">
-                    <input type='button' value='Submit' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
+                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
                     <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
                     <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
                 </div>
@@ -256,11 +256,16 @@ ob_start();
 
                     // Add an event listener to the delete button
                     deleteButton.addEventListener('click', event => {
-                        // Get a reference to the table row containing the delete button that was clicked
-                        const row = event.target.closest('tr');
+                        var total = document.querySelectorAll('.pRow').length;
+                        if (total > 1) {
+                            // Get a reference to the table row containing the delete button that was clicked
+                            const row = event.target.closest('tr');
 
-                        // Use the .remove() method to remove the table row
-                        row.remove();
+                            // Use the .remove() method to remove the table row
+                            row.remove();
+                        } else {
+                            alert("The last row is not allowed to be deleted")
+                        }
                     });
                 }
                 if (event.target.matches('.delete_one')) {
@@ -287,11 +292,17 @@ ob_start();
             // Add an event listener to each delete button
             deleteButtons.forEach(button => {
                 button.addEventListener('click', event => {
-                    // Get a reference to the table row containing the delete button that was clicked
-                    const row = event.target.closest('tr');
 
-                    // Use the .remove() method to remove the table row
-                    row.remove();
+                    var total = document.querySelectorAll('.pRow').length;
+                    if (total > 1) {
+                        // Get a reference to the table row containing the delete button that was clicked
+                        const row = event.target.closest('tr');
+
+                        // Use the .remove() method to remove the table row
+                        row.remove();
+                    } else {
+                        alert("The last row is not allowed to be deleted")
+                    }
                 });
             });
 
