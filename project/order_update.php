@@ -139,7 +139,6 @@ ob_start();
                         $record_number = $count + 1;
                         if ($stmt_order_detail->execute()) {
                             $record_saved++;
-                            echo "j";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
@@ -156,7 +155,7 @@ ob_start();
         ?>
 
         <!-- html form here where the product information will be entered -->
-        <form id="my" action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="POST">
+        <form id="myForm" action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="POST">
             <div class="row">
                 <?php include 'config/database.php'; ?>
                 <div class="col-10 col-sm-6 m-auto">
@@ -170,15 +169,16 @@ ob_start();
                 </div>
 
                 <div class="d-flex justify-content-between mb-4">
-                    <input type='submit' value='button' class='btn btn-primary mt-3 mx-2 col-3 col-md' />
+                    <input type='button' value='Submit' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
                     <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <input type="button" value="Delete" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                    <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
                 </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
                         <th>Products</th>
                         <th>Quantity</th>
+                        <th></th>
                     </tr>
 
                     <?php
@@ -196,7 +196,7 @@ ob_start();
                             echo "<p class=\"mb-0 mt-2\">1</p>";
                             echo "</td>";
                             echo "<td>";
-                            echo "<select class=\"form-select\" name=\"ProductID[]\" aria-label=\"ProductID\">";
+                            echo "<select id='my-select' class=\"form-select\" name=\"ProductID[]\" aria-label=\"ProductID\">";
                             echo "<option $default>Open this select menu</option>";
                             if ($num > 0) {
                                 $status = "";
@@ -215,6 +215,7 @@ ob_start();
                             echo   "<td>";
                             echo   "<input type='number' id='quantity' name='quantity[]' value='$row_prev[quantity]' class='form-control' min=\"1\" />";
                             echo   "</td>";
+                            echo   "<td><button type='button' class='btn btn-danger col-11 delete-button'>Delete</button></td>";
                             echo   "</tr>";
                         } while ($row_prev = $stmt_prev->fetch(PDO::FETCH_ASSOC));
                     }
@@ -244,6 +245,23 @@ ob_start();
                     var clone = element.cloneNode(true);
                     element.before(clone);
                     document.getElementById('quantity').value = "1";
+
+                    // Get a reference to the <select> element
+                    const selectElement = document.getElementById('my-select');
+                    // Set the selectedIndex property to the index of the desired option
+                    selectElement.selectedIndex = 0;
+
+                    // Get a reference to the newly added delete button
+                    const deleteButton = clone.querySelector('.delete-button');
+
+                    // Add an event listener to the delete button
+                    deleteButton.addEventListener('click', event => {
+                        // Get a reference to the table row containing the delete button that was clicked
+                        const row = event.target.closest('tr');
+
+                        // Use the .remove() method to remove the table row
+                        row.remove();
+                    });
                 }
                 if (event.target.matches('.delete_one')) {
                     var total = document.querySelectorAll('.pRow').length;
@@ -258,22 +276,39 @@ ob_start();
                 for (var i = 1; i <= total; i++) {
                     row[i].cells[0].innerHTML = i;
                 }
-
-                if (event.target.matches('.delete_row')) { 
-                // Get a reference to the table
-                var table = document.getElementById("order");
-
-                // Loop through all the rows of the table
-                for (var i = 0; i < table.rows.length; i++) {
-                    // Attach an onclick event listener to the current row
-                    table.rows[i].onclick = function() {
-                        // Delete the row that was clicked on
-                        table.deleteRow(this.rowIndex);
-                    };
-                }
-                }
-
             }, false);
+
+            // Get a reference to the table
+            const table = document.querySelector('#order');
+
+            // Get a reference to all of the delete buttons within the table
+            deleteButtons = table.querySelectorAll('.delete-button');
+
+            // Add an event listener to each delete button
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', event => {
+                    // Get a reference to the table row containing the delete button that was clicked
+                    const row = event.target.closest('tr');
+
+                    // Use the .remove() method to remove the table row
+                    row.remove();
+                });
+            });
+
+            function checkDuplicate() {
+                var newarray = [];
+                const table = document.querySelector('#order');
+                var select = table.getElementsByTagName('select');
+                for (var i = 0; i < select.length; i++) {
+                    newarray.push(select[i].value);
+                }
+                var set = new Set(newarray);
+                if (set.size !== newarray.length) {
+                    alert("There are duplicate items in the array");
+                } else {
+                    document.getElementById("myForm").submit();
+                }
+            }
         </script>
 </body>
 
