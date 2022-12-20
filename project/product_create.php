@@ -51,7 +51,7 @@ ob_start();
                 $expired_date = $_POST['expired_date'];
 
                 $validation = true;
-
+                $target_file = "";
                 // error message is empty
                 $file_upload_error_messages = "";
 
