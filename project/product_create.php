@@ -86,7 +86,7 @@ ob_start();
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot be negative</div>";
                     $validation = false;
                 }
-                if ($promotion_price > $price) {
+                if ($promotion_price >= $price) {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                     $validation = false;
                 }
@@ -152,15 +152,15 @@ ob_start();
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Name</td>
-                        <td><input type='text' name='name' class='form-control' /></td>
+                        <td><input type='text' name='name' value="<?php echo isset($name) ? $name : ""; ?>" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td><textarea type='text' name='description' rows="5" class='form-control'></textarea></td>
+                        <td><textarea type='text' name='description'rows="5" class='form-control'><?php echo isset($description) ? $description : ""; ?></textarea></td>
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td><input type='text' name='price' class='form-control' /></td>
+                        <td><input type='text' name='price' value="<?php echo isset($price) ? $price : ""; ?>" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Photo</td>
@@ -168,15 +168,15 @@ ob_start();
                     </tr>
                     <tr>
                         <td>Promotion Price</td>
-                        <td><input type='text' name='promotion_price' class='form-control' /></td>
+                        <td><input type='text' value="<?php echo isset($promotion_price) ? $promotion_price : ""; ?>" name='promotion_price' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Manufacture Date</td>
-                        <td><input type='date' name='manufacture_date' class='form-control' /></td>
+                        <td><input type='date' name='manufacture_date' value="<?php echo isset($manufacture_date) ? $manufacture_date : ""; ?>"  class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Expired Date</td>
-                        <td><input type='date' name='expired_date' class='form-control' /></td>
+                        <td><input type='date' name='expired_date' value="<?php echo isset($expired_date) ? $expired_date : ""; ?>"  class='form-control' /></td>
                     </tr>
                     <tr>
                         <td></td>
