@@ -158,10 +158,34 @@ ob_start();
         <form id="myForm" action="<?php echo $_SERVER["PHP_SELF"] . "?id={$id}"; ?>" method="POST">
             <div class="row">
                 <?php include 'config/database.php'; ?>
-                <div class="col-10 col-sm-6 m-auto">
+                <div class="col-10 col-sm-7 m-auto mb-4">
+                    <div><b>OrderID</b></div>
+                    <input type='text' name='OrderID' value="<?php echo $row_prev['OrderID']; ?>" class='form-control' disabled />
+                </div>
+                <div class="col-10 col-sm-7 m-auto">
                     <label for="CustomerID" class="form-label">Customer Name</label>
                     <select class="form-select" name='CustomerID' aria-label="CustomerID">
-                        <option value="<?php echo $row_prev['CustomerID']; ?>"><?php echo $row_prev['username']; ?></option>;
+                        <?php
+                        $query_username = "SELECT CustomerID, username FROM customers ORDER BY CustomerID ASC";
+                        $stmt_username = $con->prepare($query_username);
+                        $stmt_username->execute();
+
+                        $num_username = $stmt_username->rowCount();
+
+                            //check if more than 0 record found
+                            if ($num_username > 0) {
+                                while ($row_username = $stmt_username->fetch(PDO::FETCH_ASSOC)) {
+                                    extract($row_username);
+                                    if ($CustomerID == $row_prev['CustomerID']) {
+                                        echo "<option value=\"$CustomerID\" selected>$username</option>";
+                                    } else {
+                                        echo "<option value=\"$CustomerID\">$username</option>";
+                                    }
+                                    
+                                }
+                            }
+                        ?>
+                    
                     </select>
                 </div>
                 <div class="mt-5 text-center">
@@ -171,7 +195,7 @@ ob_start();
                 <div class="d-flex justify-content-between mb-4">
                     <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
                     <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
                 </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
@@ -268,13 +292,14 @@ ob_start();
                         }
                     });
                 }
-                if (event.target.matches('.delete_one')) {
-                    var total = document.querySelectorAll('.pRow').length;
-                    if (total > <?php echo $num_prev; ?>) {
-                        var element = document.querySelector('.pRow');
-                        element.remove(element);
-                    }
-                }
+                // ------------- Delete one function -------------
+                // if (event.target.matches('.delete_one')) {
+                //     var total = document.querySelectorAll('.pRow').length;
+                //     if (total > 1) {
+                //         var element = document.querySelector('.pRow');
+                //         element.remove(element);
+                //     }
+                // }
                 var total = document.querySelectorAll('.pRow').length;
 
                 var row = document.getElementById('order').rows;
