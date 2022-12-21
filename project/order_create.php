@@ -143,7 +143,6 @@ include 'check_session.php';
                         $record_number = $count + 1;
                         if ($stmt_order_detail->execute()) {
                             $record_saved++;
-                            formReset();
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
@@ -153,6 +152,7 @@ include 'check_session.php';
                 }
                 if ($record_saved == count($ProductID))
                     echo "<div class='alert alert-success'>Record was saved.</div>";
+                    formReset();
             }
         }
         ?>
