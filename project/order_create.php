@@ -66,6 +66,12 @@ include 'check_session.php';
             $CustomerID = $_POST['CustomerID'];
             $ProductID = $_POST['ProductID'];
 
+            function formReset(){
+                unset($_POST['CustomerID']);
+                unset($_POST['ProductID']);
+                unset($_POST['quantity']);
+            }
+
             $validation = true;
             $product_error = 0;
 
@@ -105,7 +111,6 @@ include 'check_session.php';
 
                         // execute our query
                         $stmt->execute();
-
                         $num = $stmt->rowCount();
 
                         if ($num > 0) {
@@ -138,6 +143,7 @@ include 'check_session.php';
                         $record_number = $count + 1;
                         if ($stmt_order_detail->execute()) {
                             $record_saved++;
+                            formReset();
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
@@ -174,7 +180,13 @@ include 'check_session.php';
 
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 extract($row);
-                                echo "<option value=\"$CustomerID\">$username</option>";
+                                echo "<option value='$CustomerID'";
+
+                                if (isset($_POST["CustomerID"]) && $_POST["CustomerID"] == $CustomerID) {
+                                    echo "selected";
+                                }
+
+                                echo ">$username</option>";
                             }
                         }
                         ?>
@@ -190,7 +202,7 @@ include 'check_session.php';
                 <div class="d-flex justify-content-between mb-4">
                     <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
                     <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" />
+                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
                 </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
@@ -201,35 +213,60 @@ include 'check_session.php';
                     </tr>
 
                     <?php
-                    $stmt = $con->prepare($query);
-                    $stmt->execute();
+                    $index = 0;
+                    $productCount = 0;
+                    $colNum = 1;
 
-                    // this is how to get number of rows returned
-                    $num = $stmt->rowCount();
-
-                    echo "<tr class=\"pRow\">";
-                    echo "<td class=\"d-flex justify-content-center\">";
-                    echo "<p class=\"mb-0 mt-2\">1</p>";
-                    echo "</td>";
-                    echo "<td>";
-                    echo "<select id='my-select' class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
-                    echo "<option selected>Open this select menu</option>";
-
-                    if ($num > 0) {
-
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
-
-                            echo "<option value=\"$ProductID\">$name</option>";
-                        }
+                    if (isset($_POST['ProductID'])) {
+                        $productCount = count($_POST['ProductID']);
                     }
-                    echo   "</select>";
-                    echo   "</td>";
-                    echo   "<td>";
-                    echo   "<input type='number' id='quantity' name='quantity[]' value=\"1\" class='form-control' min=\"1\" />";
-                    echo   "</td>";
-                    echo   "<td><button type='button' class='btn btn-danger col-11 delete-button'>Delete</button></td>";
-                    echo   "</tr>";
+
+                    do {
+                        $stmt = $con->prepare($query);
+                        $stmt->execute();
+
+                        // this is how to get number of rows returned
+                        $num = $stmt->rowCount();
+
+                        echo "<tr class=\"pRow\">";
+                        echo "<td class=\"d-flex justify-content-center\">";
+                        echo "<p class=\"mb-0 mt-2\">$colNum</p>";
+                        echo "</td>";
+                        echo "<td>";
+                        echo "<select id='my-select' class=\"form-select\" name=\"ProductID[]\" aria-label=\"OrderID\">";
+                        echo "<option selected>Open this select menu</option>";
+
+                        if ($num > 0) {
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row);
+
+                                echo "<option value={$ProductID} ";
+
+                                // if the option is selected then auto select it
+                                if (isset($_POST["ProductID"]) && $_POST["ProductID"][$index] == $ProductID) {
+                                    echo "selected";
+                                }
+                                echo ">{$name}</option>";
+                            }
+                        }
+                        echo   "</select>";
+                        echo   "</td>";
+                        echo   "<td>";
+                        echo   "<input type='number' id='quantity' name='quantity[]' value= '";
+                        if (isset($_POST["quantity"])) {
+                            echo $_POST["quantity"][$index];
+                        } else {
+                            echo "1";
+                        }
+                        echo "' class='form-control' min=\"1\" />";
+                        echo   "</td>";
+                        echo   "<td><button type='button' class='btn btn-danger col-11 delete-button'>Delete</button></td>";
+                        echo   "</tr>";
+
+                        $index++;
+                        $colNum++;
+                    } while ($productCount > $index);
                     ?>
 
                 </table>
@@ -258,34 +295,28 @@ include 'check_session.php';
                     document.getElementById('quantity').value = "1";
 
                     const selectElement = document.getElementById('my-select');
-                    // Set the selectedIndex property to the index of the desired option
                     selectElement.selectedIndex = 0;
-
-                    // Get a reference to the newly added delete button
                     const deleteButton = clone.querySelector('.delete-button');
-
-                    // Add an event listener to the delete button
                     deleteButton.addEventListener('click', event => {
 
                         var total = document.querySelectorAll('.pRow').length;
                         if (total > 1) {
-                            // Get a reference to the table row containing the delete button that was clicked
                             const row = event.target.closest('tr');
 
-                            // Use the .remove() method to remove the table row
                             row.remove();
                         } else {
                             alert("The last row is not allowed to be deleted")
                         }
                     });
                 }
-                if (event.target.matches('.delete_one')) {
-                    var total = document.querySelectorAll('.pRow').length;
-                    if (total > 1) {
-                        var element = document.querySelector('.pRow');
-                        element.remove(element);
-                    }
-                }
+                // ------------- Delete one function -------------
+                // if (event.target.matches('.delete_one')) {
+                //     var total = document.querySelectorAll('.pRow').length;
+                //     if (total > 1) {
+                //         var element = document.querySelector('.pRow');
+                //         element.remove(element);
+                //     }
+                // }
                 var total = document.querySelectorAll('.pRow').length;
 
                 var row = document.getElementById('order').rows;
@@ -294,22 +325,15 @@ include 'check_session.php';
                 }
             }, false);
 
-            // Get a reference to the table
             const table = document.querySelector('#order');
-
-            // Get a reference to all of the delete buttons within the table
             deleteButtons = table.querySelectorAll('.delete-button');
 
-            // Add an event listener to each delete button
             deleteButtons.forEach(button => {
                 button.addEventListener('click', event => {
 
                     var total = document.querySelectorAll('.pRow').length;
                     if (total > 1) {
-                        // Get a reference to the table row containing the delete button that was clicked
                         const row = event.target.closest('tr');
-
-                        // Use the .remove() method to remove the table row
                         row.remove();
                     } else {
                         alert("The last row is not allowed to be deleted")

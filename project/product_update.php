@@ -85,7 +85,7 @@ ob_start();
                     $delete_image = $_POST['delete_image'];
 
                     $validation = true;
-
+                    $target_file = "";
                     // error message is empty
                     $file_upload_error_messages = "";
 

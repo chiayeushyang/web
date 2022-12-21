@@ -95,7 +95,7 @@ ob_start();
 
                     $validation = true;
 
-
+                    $target_file = "";
                     // error message is empty
                     $file_upload_error_messages = "";
 
