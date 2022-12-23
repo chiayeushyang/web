@@ -212,7 +212,7 @@ include 'check_session.php';
                 <h3 class="fw-semibold text-light">Your Latest Order</h3>
                 <div class="col-12 col-md-6">
                     <div class="p-3 bg-white border rounded-top text-center">
-                        <h4 class="fw-semibold text-black text-opacity-75">Latest OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$latest_order</p>" ?></h4>
+                        <h4 class="fw-semibold text-black text-opacity-75">Latest OrderID<br> <?php echo "<a href='order_read_one.php?id=$latest_order' class='my-2 fs-3 text-black fw-bolder'>$latest_order</a>" ?></h4>
                     </div>
                     <div class="p-3 bg-white border text-center">
                         <h4 class="fw-semibold text-black text-opacity-75">Name <br>
@@ -236,7 +236,7 @@ include 'check_session.php';
                 <h3 class="fw-semibold text-light">Top Purchase Order</h3>
                 <div class="col-12 col-md-6">
                     <div class="p-3 bg-white border rounded-top text-center">
-                        <h4 class="fw-semibold text-black text-opacity-75">OrderID<br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$top_OrderID</p>" ?></h4>
+                        <h4 class="fw-semibold text-black text-opacity-75">OrderID<br> <?php echo "<a href='order_read_one.php?id=$top_OrderID' class='my-2 fs-3 text-black fw-bolder'>$top_OrderID</a>" ?></h4>
                     </div>
                     <div class="p-3 bg-white border text-center">
                         <h4 class="fw-semibold text-black text-opacity-75">Name <br>
