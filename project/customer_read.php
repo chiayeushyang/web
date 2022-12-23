@@ -47,10 +47,13 @@ include 'check_session.php';
 
             if ($_GET) {
                 $message = isset($_GET['message']) ? $_GET['message'] : "";
+                $id = isset($_GET['id']) ? $_GET['id'] : "";
 
-                if ($message == "update_success") {
+                if ($message == "update_success" && $id != "") {
+                    echo "<div class='alert alert-success'>Record with <b class='fs-2'> CustomerID : $id </b> updated.</div>";
+                } else if ($message == "update_success"){
                     echo "<div class='alert alert-success'>Record was updated.</div>";
-                } else if ($message == "customer_in_use") {
+                }else if ($message == "customer_in_use") {
                     echo "<div class='alert alert-danger'>Selected Customer founded in order (Please delete specific order before delete customer)</div>";  
                 } else if ($message == "deleted") { // if it was redirected from delete.php
                     echo "<div class='alert alert-success'>Record was deleted.</div>";
@@ -83,7 +86,7 @@ include 'check_session.php';
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>ID</th>";
-                echo "<th>Username</th>";
+                echo "<th>Photo</th>";
                 echo "<th>Passowrd</th>";
                 echo "<th>First Name</th>";
                 echo "<th>Last Name</th>";
@@ -102,10 +105,12 @@ include 'check_session.php';
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$CustomerID}</td>";
-                    echo "<td><div class='text-center'>$username</div>";
+                    echo "<td>";
                     if ($customer_image !== "") {
                         echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
-                    } 
+                    } else  {
+                        echo "<div class='text-center'><img src='images/noimage.jpg' width='50px'/></div>";
+                    }
                     echo "</td>";
                     echo "<td>{$password}</td>";
                     echo "<td>{$first_name}</td>";
