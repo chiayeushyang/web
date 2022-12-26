@@ -98,6 +98,17 @@ ob_start();
                 $validation = false;
             }
 
+            $quantity_error = 0;
+            for ($count = 0; $count < count($ProductID); $count++) {
+                if (isset($_POST["quantity"]) && $_POST["quantity"][$count] < 1) {
+                    $quantity_error++;
+                }
+            }
+            if ($quantity_error > 0) {
+                echo "<div class='alert alert-danger'>Please enter a valid quantity</div>";
+                $validation = false;
+            }
+
             if ($validation) {
                 try {
                     // include database connection
@@ -147,7 +158,7 @@ ob_start();
                     }
                 }
                 if ($record_saved == count($ProductID)) {
-                    header("Location: order_read.php?message=update_success");
+                    header("Location: order_read.php?message=update_success&id=$id");
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 }
             }
@@ -340,7 +351,7 @@ ob_start();
                 }
                 var set = new Set(newarray);
                 if (set.size !== newarray.length) {
-                    alert("There are duplicate items in the array");
+                    alert("There are duplicate items in the order");
                 } else {
                     document.getElementById("myForm").submit();
                 }
