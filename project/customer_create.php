@@ -174,11 +174,11 @@ ob_start();
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td><input type='password' name='password' value="<?php echo isset($password) ? $password : ""; ?>" class='form-control' /></td>
+                        <td><input type='password' name='password' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Confirm Password</td>
-                        <td><input type='password' name='confirm_password' value="<?php echo isset($confirm_password) ? $confirm_password : ""; ?>" class='form-control' /></td>
+                        <td><input type='password' name='confirm_password' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Photo</td>

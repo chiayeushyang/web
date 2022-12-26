@@ -119,7 +119,7 @@ ob_start();
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Price cannot be negative</div>";
                         $validation = false;
                     }
-                    if ($promotion_price > $price) {
+                    if ($promotion_price >= $price) {
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Promotion price should be cheaper than original price</div>";
                         $validation = false;
                     }
@@ -159,7 +159,7 @@ ob_start();
                             $stmt->bindParam(':expired_date', $expired_date);
 
                             if ($stmt->execute()) {
-                                header("Location: product_read.php?message=update_success");
+                                header("Location: product_read.php?message=update_success&id=$id");
                                 ob_end_flush();
                             } else {
                                 if (file_exists($target_file)) {
