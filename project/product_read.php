@@ -6,6 +6,9 @@ include 'check_session.php';
 ?>
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Read Product</title>
 
     <link rel="stylesheet" href="css/styles.css" />
@@ -48,7 +51,7 @@ include 'check_session.php';
 
                 if ($message == "update_success" && $id != "") {
                     echo "<div class='alert alert-success'>Record with <b class='fs-2'> ProductID : $id </b> updated.</div>";
-                } else if ($message == "update_success"){
+                } else if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
                 } else if ($message == "product_in_use") { // if it was redirected from delete.php
                     echo "<div class='alert alert-danger'>Selected product founded in order (Please delete specific order before delete product)</div>";
@@ -75,7 +78,7 @@ include 'check_session.php';
 
             //check if more than 0 record found
             if ($num > 0) {
-
+                echo "<div class='table-responsive'>";
                 echo "<table class='table table-hover table-responsive table-bordered align-middle'>"; //start table
 
                 //creating our table heading
@@ -99,7 +102,7 @@ include 'check_session.php';
                     if ($promotion_price == Null) {
                         $promotion_price = "-";
                     } else {
-                        $promotion_price = number_format((double)$promotion_price, 2);
+                        $promotion_price = number_format((float)$promotion_price, 2);
                     }
 
                     if ($manufacture_date == Null) {
@@ -116,7 +119,7 @@ include 'check_session.php';
                     echo "<td><div class='text-center'>$name</div>";
                     if ($image !== "") {
                         echo "<div class='text-center'><img src='uploads/$image' width='50px'/></div>";
-                    } 
+                    }
                     echo "</td>";
                     echo "<td>{$description}</td>";
                     echo "<td class='text-end'>" . number_format($price, 2) . "</td>";
@@ -142,6 +145,7 @@ include 'check_session.php';
 
                 // end table
                 echo "</table>";
+                echo "</div>";
             } else {
                 echo "<div class='alert alert-danger'>No records found.</div>";
             }

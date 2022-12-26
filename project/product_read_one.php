@@ -121,49 +121,50 @@ include 'check_session.php';
             ?>
 
             <!--we have our html table here where the record will be displayed-->
-            <table class='table table-hover table-responsive table-bordered'>
-                <?php if ($image != "") {
-                    echo "<tr>";
-                    echo "<td colspan='2' class='text-center'><img src='uploads/$image'alt='Image not found' width='250px'></td>";
-                    echo "</tr>";
-                }
-                ?>
-                <tr>
-                    <td>ID</td>
-                    <td><?php echo htmlspecialchars($ProductID, ENT_QUOTES);  ?></td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
-                </tr>
-                <tr>
-                    <td>Price</td>
-                    <td><?php echo "RM ", number_format($price, 2); ?></td>
-                </tr>
-                <tr>
-                    <td>Promotion Price</td>
-                    <td><?php echo "RM ", $promotion_price; ?></td>
-                </tr>
-                <tr>
-                    <td>Manufacture Date</td>
-                    <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES); ?></td>
-                </tr>
-                <tr>
-                    <td>Expired Date</td>
-                    <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES); ?></td>
-                </tr>
-                <tr>
-                    <td><?php echo "<a href='product_update.php?id={$ProductID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
-                    <td>
-                        <a href='product_read.php' class='btn btn-danger col-12'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
-
+            <div class="table-responsive">
+                <table class='table table-hover table-responsive table-bordered'>
+                    <?php if ($image != "") {
+                        echo "<tr>";
+                        echo "<td colspan='2' class='text-center'><img src='uploads/$image'alt='Image not found' width='250px'></td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                    <tr>
+                        <td>ID</td>
+                        <td><?php echo htmlspecialchars($ProductID, ENT_QUOTES);  ?></td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td><?php echo "RM ", number_format($price, 2); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Promotion Price</td>
+                        <td><?php echo "RM ", $promotion_price; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Manufacture Date</td>
+                        <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Expired Date</td>
+                        <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES); ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo "<a href='product_update.php?id={$ProductID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
+                        <td>
+                            <a href='product_read.php' class='btn btn-danger col-12'>Back to read products</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <!-- Content End -->

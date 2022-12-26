@@ -86,8 +86,8 @@ include 'check_session.php';
 
             //check if more than 0 record found
             if ($num > 0) {
-
-                echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-hover table-bordered'>"; //start table
 
                 //creating our table heading
                 echo "<tr>";
@@ -130,6 +130,7 @@ include 'check_session.php';
 
                 // end table
                 echo "</table>";
+                echo "</div>";
             } else {
                 echo "<div class='alert alert-danger'>No records found.</div>";
             }

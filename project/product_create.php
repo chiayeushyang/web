@@ -99,7 +99,7 @@ ob_start();
 
                 if ($validation) {
                     // include database connection
-                    include 'config/database.php'; 
+                    include 'config/database.php';
 
                     try {
                         // insert query
@@ -125,7 +125,7 @@ ob_start();
                         } else {
                             if (file_exists($target_file)) {
                                 unlink($target_file);
-                            } 
+                            }
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
                     }
@@ -136,7 +136,7 @@ ob_start();
                 } else {
                     if (file_exists($target_file)) {
                         unlink($target_file);
-                    } 
+                    }
                     // it means there are some errors, so show them to user
                     echo "<div class='alert alert-danger'>";
                     echo "<div>{$file_upload_error_messages}</div>";
@@ -149,43 +149,45 @@ ob_start();
 
             <!-- html form here where the product information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-                <table class='table table-hover table-responsive table-bordered'>
-                    <tr>
-                        <td>Name</td>
-                        <td><input type='text' name='name' value="<?php echo isset($name) ? $name : ""; ?>" class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Description</td>
-                        <td><textarea type='text' name='description'rows="5" class='form-control'><?php echo isset($description) ? $description : ""; ?></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>Price</td>
-                        <td><input type='text' name='price' value="<?php echo isset($price) ? $price : ""; ?>" class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Photo</td>
-                        <td><input type="file" name="image" /></td>
-                    </tr>
-                    <tr>
-                        <td>Promotion Price</td>
-                        <td><input type='text' value="<?php echo isset($promotion_price) ? $promotion_price : ""; ?>" name='promotion_price' class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Manufacture Date</td>
-                        <td><input type='date' name='manufacture_date' value="<?php echo isset($manufacture_date) ? $manufacture_date : ""; ?>"  class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Expired Date</td>
-                        <td><input type='date' name='expired_date' value="<?php echo isset($expired_date) ? $expired_date : ""; ?>"  class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='welcome_page.php' class='btn btn-danger'>Back to home</a>
-                        </td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class='table table-hover table-responsive table-bordered'>
+                        <tr>
+                            <td>Name</td>
+                            <td><input type='text' name='name' value="<?php echo isset($name) ? $name : ""; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea type='text' name='description' rows="5" class='form-control'><?php echo isset($description) ? $description : ""; ?></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td><input type='text' name='price' value="<?php echo isset($price) ? $price : ""; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Photo</td>
+                            <td><input type="file" name="image" /></td>
+                        </tr>
+                        <tr>
+                            <td>Promotion Price</td>
+                            <td><input type='text' value="<?php echo isset($promotion_price) ? $promotion_price : ""; ?>" name='promotion_price' class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Manufacture Date</td>
+                            <td><input type='date' name='manufacture_date' value="<?php echo isset($manufacture_date) ? $manufacture_date : ""; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td>Expired Date</td>
+                            <td><input type='date' name='expired_date' value="<?php echo isset($expired_date) ? $expired_date : ""; ?>" class='form-control' /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type='submit' value='Save' class='btn btn-primary' />
+                                <a href='welcome_page.php' class='btn btn-danger'>Back to home</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </form>
         </div>
         <!-- end .container -->
@@ -195,10 +197,7 @@ ob_start();
         <!-- FOOTER -->
         <footer class="container">
             <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-                <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-                <a class="text-decoration-none fw-bold" href="#">Terms</a>
-            </p>
+            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang</p>
         </footer>
     </main>
 </body>

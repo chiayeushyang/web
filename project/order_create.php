@@ -66,7 +66,8 @@ include 'check_session.php';
             $CustomerID = $_POST['CustomerID'];
             $ProductID = $_POST['ProductID'];
 
-            function formReset(){
+            function formReset()
+            {
                 unset($_POST['CustomerID']);
                 unset($_POST['ProductID']);
                 unset($_POST['quantity']);
@@ -88,6 +89,17 @@ include 'check_session.php';
 
             if ($product_error > 0) {
                 echo "<div class='alert alert-danger'>Please choose product for all blank</div>";
+                $validation = false;
+            }
+            $quantity_error = 0;
+
+            for ($count = 0; $count < count($ProductID); $count++) {
+                if (isset($_POST["quantity"]) && $_POST["quantity"][$count] < 1) {
+                    $quantity_error++;
+                }
+            }
+            if ($quantity_error > 0) {
+                echo "<div class='alert alert-danger'>Please enter a valid quantity</div>";
                 $validation = false;
             }
 
@@ -150,9 +162,10 @@ include 'check_session.php';
                         die('ERROR: ' . $exception->getMessage());
                     }
                 }
-                if ($record_saved == count($ProductID))
+                if ($record_saved == count($ProductID)) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                     formReset();
+                }
             }
         }
         ?>
@@ -289,13 +302,15 @@ include 'check_session.php';
         <script>
             document.addEventListener('click', function(event) {
                 if (event.target.matches('.add_one')) {
-                    var element = document.querySelector('.pRow');
-                    var clone = element.cloneNode(true);
-                    element.before(clone);
-                    document.getElementById('quantity').value = "1";
+                    var table = document.querySelectorAll('.pRow');
+                    var rowCount = table.length;
+                    var clone = table[rowCount - 1].cloneNode(true);
+                    table[rowCount - 1].after(clone);
+                    var quantity = document.getElementById('quantity').length - 1
+                    quantity.value = "1";
 
                     const selectElement = document.getElementById('my-select');
-                    selectElement.selectedIndex = 0;
+                    // selectElement.selectedIndex = 0;
                     const deleteButton = clone.querySelector('.delete-button');
                     deleteButton.addEventListener('click', event => {
 
@@ -350,7 +365,7 @@ include 'check_session.php';
                 }
                 var set = new Set(newarray);
                 if (set.size !== newarray.length) {
-                    alert("There are duplicate items in the array");
+                    alert("There are duplicate items in the order");
                 } else {
                     document.getElementById("myForm").submit();
                 }

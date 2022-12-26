@@ -108,57 +108,58 @@ include 'check_session.php';
         ?>
 
         <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-            <?php if ($customer_image != "") {
-                echo "<tr>";
-                echo "<td colspan='2' class='text-center'><img src='uploads/$customer_image'alt='Image not found' width='250px'></td>";
-                echo "</tr>";
-            }
-            ?>
-            <tr>
-                <td>ID</td>
-                <td><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Username</td>
-                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><?php echo htmlspecialchars($password, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>First Name</td>
-                <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Last Name</td>
-                <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Date of Birth</td>
-                <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES); ?></td>
-            </tr>
-            <tr>
-                <td>Registration Date Time</td>
-                <td><?php echo htmlspecialchars($registration_date_time, ENT_QUOTES); ?></td>
-            </tr>
-            <tr>
-                <td>Account</td>
-                <td><?php echo htmlspecialchars($account_status, ENT_QUOTES); ?></td>
-            </tr>
-            <tr>
-                <td><?php echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
-                <td>
-                    <a href='customer_read.php' class='btn btn-danger col-12'>Back to read customers</a>
-                </td>
-            </tr>
-        </table>
-
+        <div class="table-responsive">
+            <table class='table table-hover table-bordered'>
+                <?php if ($customer_image != "") {
+                    echo "<tr>";
+                    echo "<td colspan='2' class='text-center'><img src='uploads/$customer_image'alt='Image not found' width='250px'></td>";
+                    echo "</tr>";
+                }
+                ?>
+                <tr>
+                    <td>ID</td>
+                    <td><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><?php echo htmlspecialchars($password, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td>Registration Date Time</td>
+                    <td><?php echo htmlspecialchars($registration_date_time, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td>Account</td>
+                    <td><?php echo htmlspecialchars($account_status, ENT_QUOTES); ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo "<a href='customer_update.php?id={$CustomerID}' class='btn btn-primary col-12'>Edit</a>"; ?></td>
+                    <td>
+                        <a href='customer_read.php' class='btn btn-danger col-12'>Back to read customers</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <!-- Content End -->

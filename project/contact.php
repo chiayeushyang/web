@@ -29,7 +29,7 @@ include 'check_session.php';
 
 <body>
     <!-- NAVBAR -->
-    <?php 
+    <?php
     include "navbar.php";
     ?>
     <!-- NAVBAR END -->
@@ -40,7 +40,25 @@ include 'check_session.php';
             <div class="contact-image">
                 <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact" />
             </div>
-            <form method="post">
+            <?php
+            if ($_POST) {
+                $txtName = $_POST['txtName'];
+                $txtEmail = $_POST['txtEmail'];
+                $txtPhone = $_POST['txtPhone'];
+                $txtMsg = $_POST['txtMsg'];
+
+ 
+                // the message
+                $msg = "First line of text\nSecond line of text";
+                
+                // use wordwrap() if lines are longer than 70 characters
+                $msg = wordwrap($msg,70);
+                
+                // send email
+                var_dump(mail("yeushyang020825@gmail.com","My subject",$msg));
+            }
+            ?>
+            <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
                 <h3>Drop Us a Message</h3>
                 <div class="row">
                     <div class="col-md-6">

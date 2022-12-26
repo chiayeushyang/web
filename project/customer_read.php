@@ -51,10 +51,10 @@ include 'check_session.php';
 
                 if ($message == "update_success" && $id != "") {
                     echo "<div class='alert alert-success'>Record with <b class='fs-2'> CustomerID : $id </b> updated.</div>";
-                } else if ($message == "update_success"){
+                } else if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
-                }else if ($message == "customer_in_use") {
-                    echo "<div class='alert alert-danger'>Selected Customer founded in order (Please delete specific order before delete customer)</div>";  
+                } else if ($message == "customer_in_use") {
+                    echo "<div class='alert alert-danger'>Selected Customer founded in order (Please delete specific order before delete customer)</div>";
                 } else if ($message == "deleted") { // if it was redirected from delete.php
                     echo "<div class='alert alert-success'>Record was deleted.</div>";
                 } else {
@@ -80,9 +80,8 @@ include 'check_session.php';
 
             //check if more than 0 record found
             if ($num > 0) {
-
-                echo "<table class='table table-hover table-responsive table-bordered align-middle'>"; //start table
-
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-hover table-bordered align-middle'>"; //start table
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>ID</th>";
@@ -108,7 +107,7 @@ include 'check_session.php';
                     echo "<td>";
                     if ($customer_image !== "") {
                         echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
-                    } else  {
+                    } else {
                         echo "<div class='text-center'><img src='images/noimage.jpg' width='50px'/></div>";
                     }
                     echo "</td>";
@@ -138,6 +137,7 @@ include 'check_session.php';
 
                 // end table
                 echo "</table>";
+                echo "</div>";
             } else {
                 echo "<div class='alert alert-danger'>No records found.</div>";
             }
