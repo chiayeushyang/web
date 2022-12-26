@@ -68,7 +68,7 @@ include 'check_session.php';
     extract($row);
 
     try {
-        $query_2 = "SELECT first_name, last_name, order_date, sum(quantity * price) as total_price FROM order_summary 
+        $query_2 = "SELECT first_name, last_name, order_date, sum(quantity *  IF(promotion_price IS NULL,price,promotion_price)) as total_price FROM order_summary 
                 INNER JOIN customers 
                 ON order_summary.CustomerID = customers.CustomerID
                 INNER JOIN order_detail
@@ -82,7 +82,7 @@ include 'check_session.php';
 
         $stmt_2->bindParam(':latest_order', $latest_order);
 
-        $query_highest = "SELECT first_name as top_first_name, last_name as top_last_name,order_summary.OrderID as top_OrderID, order_date as top_order_date,sum(quantity * price) as highest_price FROM order_summary 
+        $query_highest = "SELECT first_name as top_first_name, last_name as top_last_name,order_summary.OrderID as top_OrderID, order_date as top_order_date,sum(quantity * IF(promotion_price IS NULL,price,promotion_price)) as highest_price FROM order_summary 
                 INNER JOIN customers ON order_summary.CustomerID = customers.CustomerID 
                 INNER JOIN order_detail ON order_summary.OrderID = order_detail.OrderID 
                 INNER JOIN products ON order_detail.ProductID = products.ProductID 

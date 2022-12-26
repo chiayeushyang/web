@@ -86,7 +86,7 @@ include 'check_session.php';
                 echo "<tr>";
                 echo "<th>ID</th>";
                 echo "<th>Photo</th>";
-                echo "<th>Passowrd</th>";
+                // echo "<th>Passowrd</th>";
                 echo "<th>First Name</th>";
                 echo "<th>Last Name</th>";
                 echo "<th>Gender</th>";
@@ -111,7 +111,7 @@ include 'check_session.php';
                         echo "<div class='text-center'><img src='images/noimage.jpg' width='50px'/></div>";
                     }
                     echo "</td>";
-                    echo "<td>{$password}</td>";
+                    // echo "<td>{$password}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";
                     echo "<td>{$gender}</td>";

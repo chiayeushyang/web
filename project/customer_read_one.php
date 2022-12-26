@@ -87,7 +87,7 @@ include 'check_session.php';
 
                 // values to fill up our form
                 $username = $row['username'];
-                $password = $row['password'];
+                // $password = $row['password'];
                 $customer_image = $row['customer_image'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
@@ -117,17 +117,17 @@ include 'check_session.php';
                 }
                 ?>
                 <tr>
-                    <td>ID</td>
-                    <td><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>
+                    <td class='col-3'>ID</td>
+                    <td class='col'><?php echo htmlspecialchars($CustomerID, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <td>Username</td>
                     <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td>Password</td>
                     <td><?php echo htmlspecialchars($password, ENT_QUOTES);  ?></td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td>First Name</td>
                     <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
