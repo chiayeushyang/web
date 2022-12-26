@@ -28,9 +28,9 @@ include 'check_session.php';
 
 <body>
   <!-- NAVBAR -->
-  <?php 
-    include "navbar.php";
-    ?>
+  <?php
+  include "navbar.php";
+  ?>
   <!-- NAVBAR END -->
   <main>
 
@@ -200,10 +200,7 @@ include 'check_session.php';
     <!-- FOOTER -->
     <footer class="container">
       <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-      <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-        <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-        <a class="text-decoration-none fw-bold" href="#">Terms</a>
-      </p>
+      <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang</p>
     </footer>
   </main>
 </body>

@@ -183,20 +183,19 @@ ob_start();
 
                         $num_username = $stmt_username->rowCount();
 
-                            //check if more than 0 record found
-                            if ($num_username > 0) {
-                                while ($row_username = $stmt_username->fetch(PDO::FETCH_ASSOC)) {
-                                    extract($row_username);
-                                    if ($CustomerID == $row_prev['CustomerID']) {
-                                        echo "<option value=\"$CustomerID\" selected>$username</option>";
-                                    } else {
-                                        echo "<option value=\"$CustomerID\">$username</option>";
-                                    }
-                                    
+                        //check if more than 0 record found
+                        if ($num_username > 0) {
+                            while ($row_username = $stmt_username->fetch(PDO::FETCH_ASSOC)) {
+                                extract($row_username);
+                                if ($CustomerID == $row_prev['CustomerID']) {
+                                    echo "<option value=\"$CustomerID\" selected>$username</option>";
+                                } else {
+                                    echo "<option value=\"$CustomerID\">$username</option>";
                                 }
                             }
+                        }
                         ?>
-                    
+
                     </select>
                 </div>
                 <div class="mt-5 text-center">
@@ -267,10 +266,7 @@ ob_start();
         <!-- FOOTER -->
         <footer class="container">
             <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-                <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-                <a class="text-decoration-none fw-bold" href="#">Terms</a>
-            </p>
+            <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang</p>
         </footer>
         <!-- FOOTER END -->
         <script>

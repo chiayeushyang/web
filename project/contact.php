@@ -91,10 +91,7 @@ include 'check_session.php';
         <!-- FOOTER -->
         <footer class="container">
             <p class="float-end"><a class="text-white fw-bold" href="#">Back to top</a></p>
-            <p class="text-white fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-                <a class="text-white fw-bold" href="#">Privacy</a> &middot;
-                <a class="text-white fw-bold" href="#">Terms</a>
-            </p>
+            <p class="text-white fw-bold">&copy; 2022 Chia Yeu Shyang</p>
         </footer>
     </main>
 </body>

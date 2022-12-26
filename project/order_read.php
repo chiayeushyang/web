@@ -51,7 +51,7 @@ include 'check_session.php';
 
                 if ($message == "update_success" && $id != "") {
                     echo "<div class='alert alert-success'>Record with <b class='fs-2'> OrderID : $id </b> updated.</div>";
-                } else if ($message == "update_success"){
+                } else if ($message == "update_success") {
                     echo "<div class='alert alert-success'>Record was updated.</div>";
                 } else if ($message == "deleted") { // if it was redirected from delete.php
                     echo "<div class='alert alert-success'>Record was deleted.</div>";
@@ -158,10 +158,7 @@ include 'check_session.php';
     <!-- FOOTER -->
     <footer class="container">
         <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-        <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-            <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-            <a class="text-decoration-none fw-bold" href="#">Terms</a>
-        </p>
+        <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang</p>
     </footer>
     <!-- FOOTER END -->
 </body>

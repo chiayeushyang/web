@@ -130,7 +130,9 @@ include 'check_session.php';
                 </thead>
                 <tbody class="table-group-divider">
                     <tr>
-                        <th colspan="4" class="text-center"><p class="my-2">------------------- Order -------------------</p></th>
+                        <th colspan="4" class="text-center">
+                            <p class="my-2">------------------- Order -------------------</p>
+                        </th>
                     </tr>
                     <tr>
                         <th class="text-center">Product</th>
@@ -170,7 +172,7 @@ include 'check_session.php';
                             echo "<td>$no. {$row_product['name']}</td>";
                             echo "<td>{$row['quantity']}</td>";
                             echo "<td class='text-end'>" . number_format($unit_price, 2) . "</td>";
-                            echo "<td class='text-end'>".number_format($total_unit_price, 2). "</td>";
+                            echo "<td class='text-end'>" . number_format($total_unit_price, 2) . "</td>";
                             echo "</tr>";
 
                             $no++;
@@ -183,7 +185,9 @@ include 'check_session.php';
                     }
                     ?>
                     <tr>
-                        <th colspan="3" class="text-end"><p class="me-3 my-2 fs-5">Total</p></th>
+                        <th colspan="3" class="text-end">
+                            <p class="me-3 my-2 fs-5">Total</p>
+                        </th>
                         <td><?php echo "<p class='my-2 text-end'>" . number_format(round($total_amount, 1), 2) . "</p>" ?></td>
                     </tr>
                 </tbody>
@@ -200,10 +204,7 @@ include 'check_session.php';
     <!-- FOOTER -->
     <footer class="container">
         <p class="float-end"><a class="text-decoration-none fw-bold" href="#">Back to top</a></p>
-        <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang &middot;
-            <a class="text-decoration-none fw-bold" href="#">Privacy</a> &middot;
-            <a class="text-decoration-none fw-bold" href="#">Terms</a>
-        </p>
+        <p class="text-muted fw-bold">&copy; 2022 Chia Yeu Shyang</p>
     </footer>
     <!-- FOOTER END -->
 </body>
