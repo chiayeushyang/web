@@ -76,7 +76,6 @@ ob_start();
                 // check if form was submitted
                 if ($_POST) {
 
-                    $username = trim($_POST['username']);
                     $old_password = $_POST['old_password'];
                     $new_password = $_POST['new_password'];
                     $confirm_password = $_POST['confirm_password'];
@@ -100,7 +99,7 @@ ob_start();
                     $file_upload_error_messages = "";
 
                     // Check Empty
-                    if ($username == "" || $first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
+                    if ($first_name == "" || $last_name == "" || $gender == "" || $date_of_birth == "") {
                         echo "<div class='alert alert-danger'>Please make sure all fields are not empty</div>";
                         $validation = false;
                     }
@@ -162,13 +161,12 @@ ob_start();
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
                             // it is better to label them and not use question marks
-                            $query = "UPDATE customers SET username=:username, password=:password, customer_image=:image,first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE CustomerID=:CustomerID";
+                            $query = "UPDATE customers SET password=:password, customer_image=:image,first_name=:first_name, last_name=:last_name ,gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE CustomerID=:CustomerID";
                             // prepare query for execution
                             $stmt = $con->prepare($query);
 
                             // bind the parameters
                             $stmt->bindParam(":CustomerID", $id);
-                            $stmt->bindParam(':username', $username);
                             if ($old_password == "" && $new_password == "" && $confirm_password == "") {
                                 $stmt->bindParam(':password', $pass);
                             } else {
@@ -184,7 +182,7 @@ ob_start();
 
                             // Execute the query
                             if ($stmt->execute()) {
-                                header("Location: customer_read.php?message=update_success");
+                                header("Location: customer_read.php?message=update_success&id=$id");
                                 ob_end_flush();
                             } else {
                                 if (file_exists($target_file)) {
@@ -230,10 +228,6 @@ ob_start();
                         <tr>
                             <td>Photo</td>
                             <td><input type="file" name="image" /></td>
-                        </tr>
-                        <tr>
-                            <td>Username</td>
-                            <td><input type='text' name='username' value="<?php echo $username;  ?>" class='form-control' /></td>
                         </tr>
                         <tr>
                             <td>Old Password</td>

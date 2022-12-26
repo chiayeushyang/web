@@ -44,8 +44,11 @@ include 'check_session.php';
 
             if ($_GET) {
                 $message = isset($_GET['message']) ? $_GET['message'] : "";
+                $id = isset($_GET['id']) ? $_GET['id'] : "";
 
-                if ($message == "update_success") {
+                if ($message == "update_success" && $id != "") {
+                    echo "<div class='alert alert-success'>Record with <b class='fs-2'> ProductID : $id </b> updated.</div>";
+                } else if ($message == "update_success"){
                     echo "<div class='alert alert-success'>Record was updated.</div>";
                 } else if ($message == "product_in_use") { // if it was redirected from delete.php
                     echo "<div class='alert alert-danger'>Selected product founded in order (Please delete specific order before delete product)</div>";
