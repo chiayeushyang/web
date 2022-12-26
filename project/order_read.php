@@ -66,7 +66,7 @@ include 'check_session.php';
             // delete message prompt will be here
 
             // select all data
-            $query = "SELECT order_summary.OrderID, first_name, last_name, order_date, sum(quantity * price) as total_price FROM order_summary 
+            $query = "SELECT order_summary.OrderID, first_name, last_name, order_date, sum(quantity * IF(promotion_price IS NULL,price,promotion_price)) as total_price FROM order_summary 
             INNER JOIN customers 
             ON order_summary.CustomerID = customers.CustomerID
             INNER JOIN order_detail
