@@ -42,15 +42,20 @@ session_start();
     <?php
 
     if ($_GET) {
-        $error = $_GET['error'];
+        $error = isset($_GET['error']) ? $_GET['error'] : "";;
+        $message = isset($_GET['message']) ? $_GET['message'] : "";;
 
         if ($error == "logout") {
             echo "<div class='alert alert-success align-item-center'>Logout Successfully</div>";
         } elseif ($error == "session_expired") {
             echo "<div class='alert alert-danger align-item-center'>Access Denied (Session Expired)</div>";
-        } else {
+        } elseif ($error != ""){
             echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
         }
+
+        if ($message == "create_success") {
+            echo "<div class='alert alert-success align-item-center'>Create Successfully</div>";
+        };
     }
 
     if ($_POST) {
@@ -134,6 +139,7 @@ session_start();
                 <label for="password">Password</label>
             </div>
             <input type='submit' value='Save' class='w-100 btn btn-lg btn-primary' />
+            <div><p class="mt-5">Don't have accout yet ?<a href="register.php"> Register Now</a><p> </div>
             <p class="mt-5 mb-3 text-muted">&copy; 2022 Chia Yeu Shyang</p>
         </form>
     </main>
