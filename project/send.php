@@ -36,7 +36,7 @@ if(isset($_POST["send"]) && $_POST["name"] != "" && $_POST["email"] != "" && $_P
     $mail -> addAddress("yeushyang020825@gmail.com");
     $mail -> isHTML(true);
 
-    $mail -> Subjet = $_POST["name"] . $_POST["phone"];
+    $mail -> Subject = "Eshop Message from " . $_POST['email'];
     $mail -> Body = $context;
 
     $msg = wordwrap($mail->Body, 70);
