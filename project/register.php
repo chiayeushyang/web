@@ -57,7 +57,25 @@
                     $validation = false;
                 }
 
-                // var_dump($username);
+                // include database connection
+                include 'config/database.php';
+                   
+                // delete message prompt will be here
+                   
+                // select all data
+                $query_check = "SELECT username FROM customers WHERE username=:username";
+                $stmt_check = $con->prepare($query_check);
+                $stmt_check->bindParam(':username', $username);
+               
+                $stmt_check->execute();
+                   
+                // this is how to get number of rows returned
+                $num_check = $stmt_check->rowCount();
+                   
+                if ($num_check > 0) {
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>The username already exist</div>";
+                    $validation = false;
+                }
 
                 // Check Username
                 if (strpos($username, " ") !== false) {
