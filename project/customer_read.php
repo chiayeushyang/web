@@ -116,10 +116,28 @@ include 'check_session.php';
                     // echo "<td>{$password}</td>";
                     echo "<td>{$first_name}</td>";
                     echo "<td>{$last_name}</td>";
-                    echo "<td>{$gender}</td>";
+                    echo "<td>";
+                        if ($gender == 'Male') {
+                        echo "<div class='d-flex justify-content-center align-items-center'>";
+                        echo "<img src='images/male_icon' width='20px' class='me-2'/>";
+                        echo "<p class='text-primary fw-bold mb-0'>$gender</p>";
+                        echo "</div>";
+                    } else if ($gender == 'Female') {
+                        echo "<div class='d-flex justify-content-center align-items-center'>";
+                        echo "<img src='images/female_icon' width='20px' class='me-2'/>";
+                        echo "<p class='text-danger fw-bold mb-0'>$gender</p>";
+                        echo "</div>";
+                    };
+                    echo "</td>";
                     echo "<td>{$date_of_birth}</td>";
                     echo "<td>{$registration_date_time}</td>";
-                    echo "<td>{$account_status}</td>";
+                    echo "<td class='text-center'>";
+                    if ($account_status == 'Active') {
+                        echo "<p class='btn btn-success fw-bold mb-0 rounded-pill'>$account_status</p>";
+                    } else if ($account_status == 'Inactive') {
+                        echo "<p class='btn btn-danger fw-bold mb-0 text-center rounded-pill'>$account_status</p>";
+                    };
+                    echo "</td>";
                     echo "<td>";
 
                     echo "<div class='row'>";
