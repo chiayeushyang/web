@@ -31,6 +31,18 @@ include 'check_session.php';
     <!-- NAVBAR -->
     <?php
     include "navbar.php";
+
+    if ($_GET) {
+        $message = isset($_GET['message']) ? $_GET['message'] : "";
+    
+        if ($message == "mail_success") {
+            echo "<div class='alert alert-success text-center container mt-5'>Your message with send succesfully.</div>";
+        } else if ($message == "mail_empty") {
+            echo "<div class='alert alert-danger text-center container mt-5'>Empty mail was not allowed to send.</div>";
+        } else {
+            echo "<div class='alert alert-danger  text-center container mt-5'>Unknown error happened</div>";
+        }
+    }
     ?>
     <!-- NAVBAR END -->
     <main>
@@ -40,45 +52,27 @@ include 'check_session.php';
             <div class="contact-image">
                 <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact" />
             </div>
-            <?php
-            if ($_POST) {
-                $txtName = $_POST['txtName'];
-                $txtEmail = $_POST['txtEmail'];
-                $txtPhone = $_POST['txtPhone'];
-                $txtMsg = $_POST['txtMsg'];
-
- 
-                // the message
-                $msg = "First line of text\nSecond line of text";
-                
-                // use wordwrap() if lines are longer than 70 characters
-                $msg = wordwrap($msg,70);
-                
-                // send email
-                var_dump(mail("yeushyang020825@gmail.com","My subject",$msg));
-            }
-            ?>
-            <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
+            <form method="post" action="send.php">
                 <h3>Drop Us a Message</h3>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="text" name="txtName" class="form-control" placeholder="Your Name *" value="" />
+                            <input type="text" name="name" class="form-control" placeholder="Your Name *" value="" />
                         </div>
                         <div class="form-group  mt-4">
-                            <input type="text" name="txtEmail" class="form-control" placeholder="Your Email *" value="" />
+                            <input type="text" name="email" class="form-control" placeholder="Your Email *" value="" />
                         </div>
                         <div class="form-group mt-4">
-                            <input type="text" name="txtPhone" class="form-control" placeholder="Your Phone Number *" value="" />
+                            <input type="text" name="phone" class="form-control" placeholder="Your Phone Number *" value="" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mt-4 mt-md-auto">
-                            <textarea name="txtMsg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 165px;"></textarea>
+                            <textarea name="msg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 165px;"></textarea>
                         </div>
                     </div>
                     <div class="form-group mt-4 text-center">
-                        <input type="submit" name="btnSubmit" class="btnContact" value="Send Message" />
+                        <input type="submit" name="send" class="btnContact" value="Send Message" />
                     </div>
                 </div>
             </form>
