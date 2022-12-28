@@ -186,6 +186,12 @@ include 'check_session.php';
                     ?>
                     <tr>
                         <th colspan="3" class="text-end">
+                            <p class="me-3 my-2">Rounded</p>
+                        </th>
+                        <td><?php echo "<p class='my-2 text-end'>" . number_format(number_format(round($total_amount, 1), 2) - number_format($total_amount, 2),2) . "</p>" ?></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-end">
                             <p class="me-3 my-2 fs-5">Total</p>
                         </th>
                         <td><?php echo "<p class='my-2 text-end'>" . number_format(round($total_amount, 1), 2) . "</p>" ?></td>
