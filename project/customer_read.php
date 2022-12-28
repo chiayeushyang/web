@@ -107,8 +107,10 @@ include 'check_session.php';
                     echo "<td>";
                     if ($customer_image !== "") {
                         echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
-                    } else {
-                        echo "<div class='text-center'><img src='images/noimage.jpg' width='50px'/></div>";
+                    } else if ($gender == "Male") {
+                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male' width='50px' /></a>";
+                    } else if ($gender == "Female") {
+                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/female' width='50px' /></a>";
                     }
                     echo "</td>";
                     // echo "<td>{$password}</td>";
