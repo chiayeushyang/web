@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_WARNING);
 // Function to check string starting
 // with given substring
 function startsWith($string, $startString)
@@ -23,7 +24,7 @@ include 'config/database.php';
 
 try {
     // prepare select query
-    $query = "SELECT customer_image FROM customers WHERE username = :username ";
+    $query = "SELECT CustomerID, customer_image, gender FROM customers WHERE username = :username ";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
@@ -39,6 +40,9 @@ try {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         extract($row);
+    } else {
+        $CustomerID = "";
+        $gender = "";
     }
 } // show error
 catch (PDOException $exception) {
@@ -96,7 +100,15 @@ catch (PDOException $exception) {
                         <a class="nav-link <?php echo active("contact.php") ?>" href="contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item align-self-md-center">
-                        <?php echo "<img class='ms-3 rounded' src='uploads/$customer_image' width='50px' />" ?>
+                        <?php 
+                        if ($customer_image != NULL) {
+                            echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='uploads/$customer_image' width='50px' /></a>";
+                        } else if ($gender == "Male") {
+                            echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male' width='50px' /></a>";
+                        } else if ($gender == "Female") {
+                            echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/female' width='50px' /></a>";
+                        }
+                       ?>
                     </li>
                     <li class="nav-item align-self-md-center">
                         <a class="btn btn-danger ms-0 ms-md-4 mt-3 mt-md-0" href="logout.php">LOGOUT</a>
