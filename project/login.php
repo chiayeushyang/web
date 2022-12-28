@@ -131,11 +131,11 @@ session_start();
             <h1 class="h3 mb-3 fw-normal fw-bold">Please sign in</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" name="username" placeholder="Username">
+                <input id="username" type="text" class="form-control" name="username" placeholder="Username">
                 <label for="username">Username</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" name="password" placeholder="Password">
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
                 <label for="password">Password</label>
             </div>
             <input type='submit' value='Save' class='w-100 btn btn-lg btn-primary' />
