@@ -108,9 +108,9 @@ include 'check_session.php';
                     if ($customer_image !== "") {
                         echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
                     } else if ($gender == "Male") {
-                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male' width='50px' /></a>";
+                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male.png' width='50px' /></a>";
                     } else if ($gender == "Female") {
-                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/female' width='50px' /></a>";
+                        echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/female.png' width='50px' /></a>";
                     }
                     echo "</td>";
                     // echo "<td>{$password}</td>";
@@ -119,12 +119,12 @@ include 'check_session.php';
                     echo "<td>";
                         if ($gender == 'Male') {
                         echo "<div class='d-flex justify-content-center align-items-center'>";
-                        echo "<img src='images/male_icon' width='20px' class='me-2'/>";
+                        echo "<img src='images/male_icon.png' width='20px' class='me-2'/>";
                         echo "<p class='text-primary fw-bold mb-0'>$gender</p>";
                         echo "</div>";
                     } else if ($gender == 'Female') {
                         echo "<div class='d-flex justify-content-center align-items-center'>";
-                        echo "<img src='images/female_icon' width='20px' class='me-2'/>";
+                        echo "<img src='images/female_icon.png' width='20px' class='me-2'/>";
                         echo "<p class='text-danger fw-bold mb-0'>$gender</p>";
                         echo "</div>";
                     };
