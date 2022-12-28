@@ -98,7 +98,7 @@ include 'check_session.php';
 
         $stmt_top = $con->prepare($query_top);
 
-        $query_no = "SELECT products.name as no_product FROM products left JOIN order_detail ON order_detail.ProductID = products.ProductID WHERE order_detail.ProductID is NULL LIMIT 3";
+        $query_no = "SELECT products.name as no_product, products.ProductID as no_ID FROM products left JOIN order_detail ON order_detail.ProductID = products.ProductID WHERE order_detail.ProductID is NULL LIMIT 3";
 
         $stmt_no = $con->prepare($query_no);
 
@@ -194,17 +194,17 @@ include 'check_session.php';
             <div class="row gx-0 gx-md-5 gy-5">
                 <div class="col-12 col-md-4">
                     <div class="p-3 bg-white border rounded text-center">
-                        <h4 class="fw-semibold text-black text-opacity-75">Total Customers <br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$total_customer</p>" ?></h4>
+                        <h4 class="fw-semibold text-black text-opacity-75">Total Customers <br> <?php echo "<a href='customer_read.php' class='text-decoration-none'><p class='my-2 fs-3 text-black fw-bolder'>$total_customer</p></a>" ?></h4>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="p-3 bg-white bg-opacity-75 border rounded text-center">
-                        <h4 class="fw-semibold text-black text-opacity-50">Total Products <br> <?php echo "<p class='my-2 fs-3 text-black text-opacity-75 fw-bolder'>$total_product</p>" ?></h4>
+                        <h4 class="fw-semibold text-black text-opacity-50">Total Products <br> <?php echo "<a href='product_read.php' class='text-decoration-none'><p class='my-2 fs-3 text-black text-opacity-75 fw-bolder'>$total_product</p></a>" ?></h4>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="p-3 bg-white border rounded text-center">
-                        <h4 class="fw-semibold text-black text-opacity-75">Total Orders <br> <?php echo "<p class='my-2 fs-3 text-black fw-bolder'>$total_order</p>" ?></h4>
+                        <h4 class="fw-semibold text-black text-opacity-75">Total Orders <br> <?php echo "<a href='order_read.php' class='text-decoration-none'><p class='my-2 fs-3 text-black fw-bolder'>$total_order</p></a>" ?></h4>
                     </div>
                 </div>
             </div>
@@ -275,7 +275,7 @@ include 'check_session.php';
                                 extract($row_no);
                                 echo "<tr class=\"table-light\">";
                                 echo "<th class=\"text-center\">$count</th>";
-                                echo "<th>$no_product</th>";
+                                echo "<th><a href='product_read_one.php?id=$no_ID' class='my-2 fs-4 text-black text-decoration-none'>$no_product</a></th>";
                                 echo "</tr>";
                                 $count++;
                             }
