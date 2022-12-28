@@ -162,89 +162,70 @@ ob_start();
 
             <!-- html form here where the product information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-                <div class='table-responsive'>
-                    <table class='table table-hover table-responsive table-bordered'>
-                        <tr>
-                            <td>Username</td>
-                            <td>
-                                <div class="input-group input-group-lg mb-3">
-                                    <span class="input-group-text" id="basic-addon1">@</span>
-                                    <input type="text" class="form-control" name="username" value="<?php echo isset($username) ? $username : ""; ?>" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password</td>
-                            <td><input type='password' name='password' class='form-control' /></td>
-                        </tr>
-                        <tr>
-                            <td>Confirm Password</td>
-                            <td><input type='password' name='confirm_password' class='form-control' /></td>
-                        </tr>
-                        <tr>
-                            <td>Photo</td>
-                            <td><input type="file" name="image" /></td>
-                        </tr>
-                        <tr>
-                            <td>First name</td>
-                            <td><input type='text' name='first_name' value="<?php echo isset($first_name) ? $first_name : ""; ?>" class='form-control' /></td>
-                        </tr>
-                        <tr>
-                            <td>Last name</td>
-                            <td><input type='text' name='last_name' value="<?php echo isset($last_name) ? $last_name : ""; ?>" class='form-control' /></td>
-                        </tr>
-                        <tr>
-                            <td>Gender</td>
-                            <td class="d-flex">
-                                <div class="form-check mx-3">
-                                    <input class="form-check-input" type="radio" name="gender" value="Male" id="Male" required <?php echo ((isset($gender)) && ($gender == 'Male')) ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Male">
-                                        Male
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gender" value="Female" id="Female" required <?php echo ((isset($gender)) && ($gender == 'Female')) ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Female">
-                                        Female
-                                    </label>
-                                </div>
-                                <div class="form-check mx-3">
-                                    <input class="form-check-input" type="radio" name="gender" value="Others" id="Others" required <?php echo ((isset($gender)) && ($gender == 'Others')) ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Others">
-                                        Others
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Date of birth</td>
-                            <td><input type='date' name='date_of_birth' value="<?php echo isset($date_of_birth) ? $date_of_birth : ""; ?>" class='form-control' /></td>
-                        </tr>
-                        <tr>
-                            <td>Account status</td>
-                            <td class="d-flex">
-                                <div class="form-check mx-3">
-                                    <input class="form-check-input" type="radio" name="account_status" value="Active" id="Active" required <?php echo ((isset($account_status)) && ($account_status == 'Active')) ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Active">
-                                        Active
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="account_status" value="Inactive" id="Inactive" <?php echo ((isset($account_status)) && ($account_status == 'Inactive')) ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Inactive">
-                                        Inactive
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type='submit' value='Save' class='btn btn-primary' />
-                                <a href='welcome_page.php' class='btn btn-danger'>Back to home</a>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="m-auto">
+                    <p class="fw-bold">Username</p>
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                        <input type="text" class="form-control" name="username" value="<?php echo isset($username) ? $username : ""; ?>" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                </div>
+                <div class="d-md-flex row">
+                    <div class="mb-3 col">
+                        <p class="fw-bold">First name</p>
+                        <div class="input-group input-group-lg">
+                            <input type='text' name='first_name' value="<?php echo isset($first_name) ? $first_name : ""; ?>" class='form-control' />
+                        </div>
+                    </div>
+                    <div class="ms-md-1 mb-3 col">
+                        <p class="fw-bold">Last name</p>
+                        <div class="input-group input-group-lg">
+                            <input type='text' name='last_name' value="<?php echo isset($last_name) ? $last_name : ""; ?>" class='form-control' />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-md-flex row">
+                    <div class="mb-3 col">
+                        <p class="fw-bold">Password</p>
+                        <div class="input-group input-group-lg">
+                            <input type='password' name='password' class='form-control input-group-lg' />
+                        </div>
+                    </div>
+                    <div class="ms-md-1 mb-3 col">
+                        <p class="fw-bold">Confirm Password</p>
+                        <div class="input-group input-group-lg">
+                            <input type='password' name='confirm_password' class='form-control' />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <p class="fw-bold">Date of Birth</p>
+                    <div class="input-group input-group-lg">
+                        <input type='date' name='date_of_birth' value="<?php echo isset($date_of_birth) ? $date_of_birth : ""; ?>" class='form-control' />
+                    </div>
+                </div>
+                <p class="fw-bold">Gender</p>
+                <div class="row mx-1 mb-3">
+                    <input type="radio" class="btn-check" name="gender" id="Male" value="Male" autocomplete="off" checked>
+                    <label class="btn btn-lg btn-outline-primary col" for="Male">Male</label>
+                    <input type="radio" class="btn-check" name="gender" id="Female" value="Female" autocomplete="off" <?php echo ((isset($gender)) && ($gender == 'Female')) ?  "checked" : ""; ?>>
+                    <label class="btn btn-lg btn-outline-danger col" for="Female">Female</label>
+                </div>
+                <p class="fw-bold">Account Status</p>
+                <div class="row mx-1 mb-3">
+                    <input type="radio" class="btn-check" name="account_status" id="Active" value="Active" autocomplete="off" checked>
+                    <label class="btn btn-lg btn-outline-success col" for="Active">Active</label>
+                    <input type="radio" class="btn-check" name="account_status" id="Inactive" value="Inactive" autocomplete="off" <?php echo ((isset($account_status)) && ($account_status == 'Inactive')) ?  "checked" : ""; ?>>
+                    <label class="btn btn-lg btn-outline-secondary col" for="Inactive">Inactive</label>
+                </div>
+                <div>
+                    <p class="fw-bold">Photo</p>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" name="image" id="image">
+                    </div>
+                </div>
+                <div class="m-auto mt-5 row justify-content-center">
+                    <input type='submit' value='Save' class='btn btn-primary col-6 me-3' />
+                    <a href='login.php' class='btn btn-danger col-3 ms-3'>Cancle</a>
                 </div>
             </form>
         </div>

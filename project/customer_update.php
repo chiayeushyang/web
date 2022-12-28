@@ -264,12 +264,6 @@ ob_start();
                                         Female
                                     </label>
                                 </div>
-                                <div class="form-check mx-3">
-                                    <input class="form-check-input" type="radio" name="gender" value="Others" id="Others" required <?php echo ($gender == 'Others') ?  "checked" : "";  ?>>
-                                    <label class="form-check-label" for="Others">
-                                        Others
-                                    </label>
-                                </div>
                             </td>
                         </tr>
                         <tr>

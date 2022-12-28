@@ -7,6 +7,7 @@
 
     <title>Register</title>
 
+    <link rel="stylesheet" href="css/login.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
@@ -21,16 +22,14 @@
 
 </head>
 
-<body>
-    <main>
-
+<body class="pb-5">
+    <main class="rounded m-auto pb-5">
         <!-- Container -->
         <div class="container mt-5">
-            <div class="page-header">
-                <h1>Customers</h1>
+            <div class="page-header mb-5">
+                <h1>Register</h1>
             </div>
 
-            <!-- html form to create product will be here -->
             <?php
             if ($_POST) {
                 $username = trim($_POST['username']);
@@ -63,7 +62,7 @@
                 // Check Username
                 if (strpos($username, " ") !== false) {
                     // if (preg_match("/[\s]/", $username)) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>No space is allowed in username</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>No space is allowed in username</div>";
                     $validation = false;
                 } else if (strlen($username) < 6) {
                     $file_upload_error_messages .= "<div class='alert alert-danger'>Username should contained at leats 6 characters</div>";
@@ -125,7 +124,7 @@
                         } else {
                             if (file_exists($target_file)) {
                                 unlink($target_file);
-                            } 
+                            }
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
                     }
@@ -136,7 +135,7 @@
                 } else {
                     if (file_exists($target_file)) {
                         unlink($target_file);
-                    } 
+                    }
                     // it means there are some errors, so show them to user
                     echo "<div class='alert alert-danger'>";
                     echo "<div>{$file_upload_error_messages}</div>";
@@ -149,68 +148,67 @@
 
             <!-- html form here where the product information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-                <table class='table table-hover table-responsive table-bordered'>
-                    <tr>
-                        <td>Username</td>
-                        <td>
-                            <div class="input-group input-group-lg mb-3">
-                                <span class="input-group-text" id="basic-addon1">@</span>
-                                <input type="text" class="form-control" name="username" value="<?php echo isset($username) ? $username : ""; ?>" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Password</td>
-                        <td><input type='password' name='password' class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Confirm Password</td>
-                        <td><input type='password' name='confirm_password' class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Photo</td>
-                        <td><input type="file" name="image" /></td>
-                    </tr>
-                    <tr>
-                        <td>First name</td>
-                        <td><input type='text' name='first_name' value="<?php echo isset($first_name) ? $first_name : ""; ?>" class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Last name</td>
-                        <td><input type='text' name='last_name' value="<?php echo isset($last_name) ? $last_name : ""; ?>" class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td>Gender</td>
-                        <td class="d-flex">
-                            <div class="form-check mx-3">
-                                <input class="form-check-input" type="radio" name="gender" value="Male" id="Male" required <?php echo ((isset($gender)) && ($gender == 'Male') )?  "checked" : "";  ?>>
-                                <label class="form-check-label" for="Male">
-                                    Male
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" value="Female" id="Female" required <?php echo ((isset($gender)) && ($gender == 'Female')) ?  "checked" : "";  ?>>
-                                <label class="form-check-label" for="Female">
-                                    Female
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Date of birth</td>
-                        <td><input type='date' name='date_of_birth' value="<?php echo isset($date_of_birth) ? $date_of_birth : ""; ?>" class='form-control' /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='welcome_page.php' class='btn btn-danger'>Back to home</a>
-                        </td>
-                    </tr>
-                </table>
+                <div class="m-auto">
+                    <p class="fw-bold">Username</p>
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                        <input type="text" class="form-control" name="username" value="<?php echo isset($username) ? $username : ""; ?>" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                </div>
+                <div class="d-md-flex">
+                    <div class="mb-3">
+                        <p class="fw-bold">First name</p>
+                        <div class="input-group input-group-lg">
+                            <input type='text' name='first_name' value="<?php echo isset($first_name) ? $first_name : ""; ?>" class='form-control' />
+                        </div>
+                    </div>
+                    <div class="ms-md-1 mb-3">
+                        <p class="fw-bold">Last name</p>
+                        <div class="input-group input-group-lg">
+                            <input type='text' name='last_name' value="<?php echo isset($last_name) ? $last_name : ""; ?>" class='form-control' />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-md-flex">
+                    <div class="mb-3">
+                        <p class="fw-bold">Password</p>
+                        <div class="input-group input-group-lg">
+                            <input type='password' name='password' class='form-control input-group-lg' />
+                        </div>
+                    </div>
+                    <div class="ms-md-1 mb-3">
+                        <p class="fw-bold">Confirm Password</p>
+                        <div class="input-group input-group-lg">
+                            <input type='password' name='confirm_password' class='form-control' />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <p class="fw-bold">Date of Birth</p>
+                    <div class="input-group input-group-lg">
+                        <input type='date' name='date_of_birth' value="<?php echo isset($date_of_birth) ? $date_of_birth : ""; ?>" class='form-control' />
+                    </div>
+                </div>
+                <p class="fw-bold">Gender</p>
+                <div class="row mx-1 mb-3">
+                    <input type="radio" class="btn-check" name="gender" id="Male" value="Male" autocomplete="off" checked>
+                    <label class="btn btn-lg btn-outline-primary col" for="Male">Male</label>
+                    <input type="radio" class="btn-check" name="gender" id="Female" value="Female" autocomplete="off" <?php echo ((isset($gender)) && ($gender == 'Female')) ?  "checked" : ""; ?>>
+                    <label class="btn btn-lg btn-outline-danger col" for="Female">Female</label>
+                </div>
+                <div>
+                    <p class="fw-bold">Photo</p>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" name="image" id="image">
+                    </div>
+                </div>
+                <div class="m-auto mt-5 row justify-content-center">
+                    <input type='submit' value='Save' class='btn btn-primary col-6 me-3' />
+                    <a href='login.php' class='btn btn-danger col-3 ms-3'>Cancle</a>
+                </div>
             </form>
         </div>
- 
+
     </main>
 </body>
 
