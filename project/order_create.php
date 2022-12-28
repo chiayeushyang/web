@@ -212,11 +212,7 @@ include 'check_session.php';
                 <?php
                 $query = "SELECT * FROM products ORDER BY ProductID ASC";
                 ?>
-                <div class="d-flex justify-content-between mb-4">
-                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
-                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
-                </div>
+
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
@@ -281,8 +277,12 @@ include 'check_session.php';
                         $colNum++;
                     } while ($productCount > $index);
                     ?>
-
                 </table>
+                <div class="d-flex justify-content-between mb-4">
+                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
+                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
+                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
+                </div>
             </div>
         </form>
 
@@ -305,9 +305,8 @@ include 'check_session.php';
                     var table = document.querySelectorAll('.pRow');
                     var rowCount = table.length;
                     var clone = table[rowCount - 1].cloneNode(true);
+                    clone.querySelector('#quantity').value = "1";
                     table[rowCount - 1].after(clone);
-                    var quantity = document.getElementById('quantity').length - 1
-                    quantity.value = "1";
 
                     const selectElement = document.getElementById('my-select');
                     // selectElement.selectedIndex = 0;

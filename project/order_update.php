@@ -201,12 +201,6 @@ ob_start();
                 <div class="mt-5 text-center">
                     <label class="form-label">--- Edit Product Here ---</label>
                 </div>
-
-                <div class="d-flex justify-content-between mb-4">
-                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
-                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
-                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
-                </div>
                 <table class='table table-hover table-responsive table-bordered' id='order'>
                     <tr>
                         <th class="text-center">#</th>
@@ -231,7 +225,7 @@ ob_start();
                             echo "</td>";
                             echo "<td>";
                             echo "<select id='my-select' class=\"form-select\" name=\"ProductID[]\" aria-label=\"ProductID\">";
-                            echo "<option $default>Open this select menu</option>";
+                            echo "<option $default value='0'>Open this select menu</option>";
                             if ($num > 0) {
                                 $status = "";
                                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -254,8 +248,12 @@ ob_start();
                         } while ($row_prev = $stmt_prev->fetch(PDO::FETCH_ASSOC));
                     }
                     ?>
-
                 </table>
+                <div class="d-flex justify-content-between mb-4">
+                    <input type='button' value='Save' class='btn btn-primary mt-3 mx-2 col-3 col-md' onclick="checkDuplicate()" />
+                    <input type="button" value="Add More Product" class="btn btn-info mt-3 mx-2 col-3 col-md add_one" />
+                    <!-- <input type="button" value="Delete First" class="btn btn-danger mt-3 mx-2 col-3 col-md delete_one" /> -->
+                </div>
             </div>
         </form>
 
@@ -272,15 +270,13 @@ ob_start();
         <script>
             document.addEventListener('click', function(event) {
                 if (event.target.matches('.add_one')) {
-                    var element = document.querySelector('.pRow');
-                    var clone = element.cloneNode(true);
-                    element.before(clone);
-                    document.getElementById('quantity').value = "1";
-
-                    // Get a reference to the <select> element
-                    const selectElement = document.getElementById('my-select');
-                    // Set the selectedIndex property to the index of the desired option
-                    selectElement.selectedIndex = 0;
+                    var table = document.querySelectorAll('.pRow');
+                var rowCount = table.length;
+                var clone = table[rowCount - 1].cloneNode(true);
+                // empty the input after clone
+                clone.querySelector('#my-select').value = "0";
+                clone.querySelector('#quantity').value = "1";
+                table[rowCount - 1].after(clone);
 
                     // Get a reference to the newly added delete button
                     const deleteButton = clone.querySelector('.delete-button');
