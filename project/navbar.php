@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_WARNING);
+
 // Function to check string starting
 // with given substring
 function startsWith($string, $startString)
@@ -24,7 +24,7 @@ include 'config/database.php';
 
 try {
     // prepare select query
-    $query = "SELECT CustomerID, customer_image, gender FROM customers WHERE username = :username ";
+    $query = "SELECT CustomerID, customer_image, gender as nav_gender FROM customers WHERE username = :username ";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
@@ -42,7 +42,7 @@ try {
         extract($row);
     } else {
         $CustomerID = "";
-        $gender = "";
+        $nav_gender = "";
     }
 } // show error
 catch (PDOException $exception) {
@@ -103,9 +103,9 @@ catch (PDOException $exception) {
                         <?php 
                         if ($customer_image != NULL) {
                             echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='uploads/$customer_image' width='50px' /></a>";
-                        } else if ($gender == "Male") {
+                        } else if ($nav_gender == "Male") {
                             echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male.png' width='50px' /></a>";
-                        } else if ($gender == "Female") {
+                        } else if ($nav_gender == "Female") {
                             echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/female.png' width='50px' /></a>";
                         }
                        ?>

@@ -53,17 +53,12 @@ include 'check_session.php';
                     </tr>
                 </table>
             </form>
-
-            <hr class="featurette-divider">
-
-            <div class="page-header">
-                <h1>Read Product</h1>
-            </div>
-
             <?php
             // get passed parameter value, in this case, the record ID
             // isset() is a PHP function used to verify if a value is there or not
-            $ProductID = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+            $ProductID = isset($_GET['id']) ? $_GET['id'] : die();
+
+            echo "<hr class='featurette-divider'>";
 
             //include database connection
             include 'config/database.php';
@@ -85,6 +80,10 @@ include 'check_session.php';
                 if ($num > 0) {
                     // store retrieved row to a variable
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    echo "<div class='page-header'>";
+                    echo "<h1>Read Product</h1>";
+                    echo "</div>";
 
                     // values to fill up our form
                     $image = $row['image'];
@@ -110,7 +109,7 @@ include 'check_session.php';
                         $expired_date = "-";
                     }
                 } else {
-                    die('ERROR: Record ID not found.');
+                    die("<p>Cannot Find the Product with ProductID = <b>$ProductID</b></p>");
                 }
             }
 
