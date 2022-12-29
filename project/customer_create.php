@@ -225,18 +225,18 @@ ob_start();
                 </div>
                 <p class="fw-bold">Gender</p>
                 <input type="hidden" class="btn-check" name="gender" value=""/>
-                <div class="row mx-1 mb-3">
+                <div class="d-flex mx-1 mb-3">
                     <input type="radio" class="btn-check" name="gender" id="Male" value="Male" autocomplete="off" <?php echo ((isset($gender)) && ($gender == 'Male')) ?  "checked" : ""; ?>>
-                    <label class="btn btn-lg btn-outline-primary col" for="Male">Male</label>
+                    <label class="btn btn-lg btn-outline-primary col-6" for="Male">Male</label>
                     <input type="radio" class="btn-check" name="gender" id="Female" value="Female" autocomplete="off" <?php echo ((isset($gender)) && ($gender == 'Female')) ?  "checked" : ""; ?>>
-                    <label class="btn btn-lg btn-outline-danger col" for="Female">Female</label>
+                    <label class="btn btn-lg btn-outline-danger col-6" for="Female">Female</label>
                 </div>
                 <p class="fw-bold">Account Status</p>
-                <div class="row mx-1 mb-3">
+                <div class="d-flex mx-1 mb-3">
                     <input type="radio" class="btn-check" name="account_status" id="Active" value="Active" autocomplete="off" checked>
-                    <label class="btn btn-lg btn-outline-success col" for="Active">Active</label>
+                    <label class="btn btn-lg btn-outline-success col-6" for="Active">Active</label>
                     <input type="radio" class="btn-check" name="account_status" id="Inactive" value="Inactive" autocomplete="off" <?php echo ((isset($account_status)) && ($account_status == 'Inactive')) ?  "checked" : ""; ?>>
-                    <label class="btn btn-lg btn-outline-secondary col" for="Inactive">Inactive</label>
+                    <label class="btn btn-lg btn-outline-secondary col-6" for="Inactive">Inactive</label>
                 </div>
                 <div>
                     <p class="fw-bold">Photo</p>
