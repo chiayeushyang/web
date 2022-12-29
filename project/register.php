@@ -208,6 +208,7 @@
                     </div>
                 </div>
                 <p class="fw-bold">Gender</p>
+                <input type="hidden" class="btn-check" name="gender" value=""/>
                 <div class="row mx-1 mb-3">
                     <input type="radio" class="btn-check" name="gender" id="Male" value="Male" autocomplete="off" checked>
                     <label class="btn btn-lg btn-outline-primary col" for="Male">Male</label>
