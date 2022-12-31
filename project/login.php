@@ -8,23 +8,13 @@ session_start();
 
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <?php include "bootstrap.php"; ?>
 
     <title>Login</title>
 
     <link rel="stylesheet" href="css/login.css" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-
-    <!-- Fontawesome -->
-    <script src="https://kit.fontawesome.com/e0e2f315c7.js" crossorigin="anonymous"></script>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     <link href="/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <!-- Favicons -->
@@ -49,7 +39,7 @@ session_start();
             echo "<div class='alert alert-success align-item-center'>Logout Successfully</div>";
         } elseif ($error == "session_expired") {
             echo "<div class='alert alert-danger align-item-center'>Access Denied (Session Expired)</div>";
-        } elseif ($error != ""){
+        } elseif ($error != "") {
             echo "<div class='alert alert-danger align-item-center'>Unknown error happened</div>";
         }
 
@@ -139,7 +129,10 @@ session_start();
                 <label for="password">Password</label>
             </div>
             <input type='submit' value='Save' class='w-100 btn btn-lg btn-primary' />
-            <div><p class="mt-5">Don't have accout yet ?<a href="register.php"> Register Now</a><p> </div>
+            <div>
+                <p class="mt-5">Don't have accout yet ?<a href="register.php"> Register Now</a>
+                <p>
+            </div>
             <p class="mt-5 mb-3 text-muted">&copy; 2022 Chia Yeu Shyang</p>
         </form>
     </main>
