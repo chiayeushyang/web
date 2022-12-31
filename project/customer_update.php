@@ -201,7 +201,7 @@ ob_start();
                         <input type='hidden' name='delete_image' value='No'>
                         <?php if ($old_image != "") {
                             echo "<tr>";
-                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'>";
+                            echo "<td colspan='2' class='text-center'><img src='uploads_customer/$old_image'alt='Image not found' width='250px'>";
                             echo "<div class='form-check form-switch mt-2 d-flex justify-content-center'>";
                             echo "<input class='form-check-input me-3' type='checkbox' role='switch' name='delete_image' value='Yes' id='delete_image'>";
                             echo "<label class='form-check-label fw-bold' for='delete_image'>";
