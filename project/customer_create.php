@@ -113,6 +113,7 @@ ob_start();
                 }
 
                 if (!empty($_FILES["image"]["name"])) {
+                    $target_directory = "uploads_customer/";
                     include "image_upload.php";
                 } else {
                     $image = "";

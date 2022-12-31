@@ -102,7 +102,7 @@ catch (PDOException $exception) {
                     <li class="nav-item align-self-md-center">
                         <?php 
                         if ($customer_image != NULL) {
-                            echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='uploads/$customer_image' width='50px' /></a>";
+                            echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='uploads_customer/$customer_image' width='50px' /></a>";
                         } else if ($nav_gender == "Male") {
                             echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male.png' width='50px' /></a>";
                         } else if ($nav_gender == "Female") {

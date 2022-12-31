@@ -95,7 +95,7 @@ include 'check_session.php';
                     echo "<td>{$CustomerID}</td>";
                     echo "<td>";
                     if ($customer_image !== "") {
-                        echo "<div class='text-center'><img src='uploads/$customer_image' width='50px'/></div>";
+                        echo "<div class='text-center'><img src='uploads_customer/$customer_image' width='50px'/></div>";
                     } else if ($gender == "Male") {
                         echo "<a href='customer_read_one.php?id={$CustomerID}'><img class='ms-3 rounded' src='images/male.png' width='50px' /></a>";
                     } else if ($gender == "Female") {

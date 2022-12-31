@@ -133,14 +133,15 @@ ob_start();
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Cannot upload image if want to delete image.</div>";
                         $validation = false;
                     } else if ($validation == true && $delete_image == "Yes") {
-                        unlink("uploads/$old_image");
+                        unlink("uploads_customer/$old_image");
                         $new_image = "";
                     } else if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
                     } else {
+                        $target_directory = "uploads_customer/";
                         include "image_upload.php";
                         if ($validation == true && $old_image != "" && getimagesize($target_file) !== false) {
-                            unlink("uploads/$old_image");
+                            unlink("uploads_customer/$old_image");
                         }
                         $new_image = $image;
                     }

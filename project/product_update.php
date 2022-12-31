@@ -128,14 +128,15 @@ ob_start();
                         $file_upload_error_messages .= "<div class='alert alert-danger'>Cannot upload image if want to delete image.</div>";
                         $validation = false;
                     } else if ($validation == true && $delete_image == "Yes") {
-                        unlink("uploads/$old_image");
+                        unlink("uploads_product/$old_image");
                         $new_image = "";
                     } else if (empty($_FILES["image"]["name"])) {
                         $new_image = $old_image;
                     } else {
+                        $target_directory = "uploads_product/";
                         include "image_upload.php";
                         if ($validation == true && $old_image != "" && getimagesize($target_file) !== false) {
-                            unlink("uploads/$old_image");
+                            unlink("uploads_product/$old_image");
                         }
                         $new_image = $image;
                     }
@@ -199,7 +200,7 @@ ob_start();
                         <input type='hidden' name='delete_image' value='No'>
                         <?php if ($old_image != "") {
                             echo "<tr>";
-                            echo "<td colspan='2' class='text-center'><img src='uploads/$old_image'alt='Image not found' width='250px'>";
+                            echo "<td colspan='2' class='text-center'><img src='uploads_product/$old_image'alt='Image not found' width='250px'>";
                             echo "<div class='form-check form-switch mt-2 d-flex justify-content-center'>";
                             echo "<input class='form-check-input me-3' type='checkbox' role='switch' name='delete_image' value='Yes' id='delete_image'>";
                             echo "<label class='form-check-label fw-bold' for='delete_image'>";

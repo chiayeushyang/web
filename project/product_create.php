@@ -81,6 +81,7 @@ ob_start();
                 }
 
                 if (!empty($_FILES["image"]["name"])) {
+                    $target_directory = "uploads_product/";
                     include "image_upload.php";
                 } else {
                     $image = "";

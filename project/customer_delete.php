@@ -32,7 +32,7 @@ try {
         $stmt->bindParam(1, $id);
 
         if ($stmt->execute()) {
-            unlink("uploads/$customer_image");
+            unlink("uploads_customer/$customer_image");
             // redirect to read records page and
             // tell the user record was deleted
             header('Location: customer_read.php?message=deleted');

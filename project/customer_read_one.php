@@ -101,7 +101,7 @@ include 'check_session.php';
             <table class='table table-hover table-bordered'>
                 <?php if ($customer_image != "") {
                     echo "<tr>";
-                    echo "<td colspan='2' class='text-center'><img src='uploads/$customer_image'alt='Image not found' width='250px'></td>";
+                    echo "<td colspan='2' class='text-center'><img src='uploads_customer/$customer_image'alt='Image not found' width='250px'></td>";
                     echo "</tr>";
                 }
                 ?>

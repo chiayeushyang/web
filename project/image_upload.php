@@ -13,7 +13,6 @@ $image = htmlspecialchars(strip_tags($image));
 if ($image) {
 
     // upload to file to folder
-    $target_directory = "uploads/";
     $target_file = $target_directory . $image;
     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
