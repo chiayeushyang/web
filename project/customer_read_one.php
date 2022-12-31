@@ -36,22 +36,18 @@ include 'check_session.php';
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save' class='btn btn-primary' />
+                        <input type='submit' value='Search' class='btn btn-primary' />
                     </td>
                 </tr>
             </table>
         </form>
 
-        <hr class="featurette-divider">
-
-        <div class="page-header">
-            <h1>Read Customers</h1>
-        </div>
-
         <?php
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $CustomerID = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $CustomerID = isset($_GET['id']) ? $_GET['id'] : die();
+
+        echo "<hr class='featurette-divider'>";
 
         //include database connection
         include 'config/database.php';
@@ -74,6 +70,10 @@ include 'check_session.php';
                 // store retrieved row to a variable
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                echo "<div class='page-header'>";
+                echo "<h1>Read Customer</h1>";
+                echo "</div>";
+
                 // values to fill up our form
                 $username = $row['username'];
                 // $password = $row['password'];
@@ -86,7 +86,7 @@ include 'check_session.php';
                 $account_status = $row['account_status'];
                 // shorter way to do that is extract($row)
             } else {
-                die('ERROR: Record ID not found.');
+                die("<p>Cannot Find the Customer with CustomerID = <b>$CustomerID</b></p>");
             }
         }
 

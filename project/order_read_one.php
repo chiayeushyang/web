@@ -36,22 +36,18 @@ include 'check_session.php';
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save' class='btn btn-primary' />
+                        <input type='submit' value='Search' class='btn btn-primary' />
                     </td>
                 </tr>
             </table>
         </form>
 
-        <hr class="featurette-divider">
-
-        <div class="page-header">
-            <h1>Read Order Details</h1>
-        </div>
-
         <?php
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $OrderID = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $OrderID = isset($_GET['id']) ? $_GET['id'] : die();
+
+        echo "<hr class='featurette-divider'>";
 
         //include database connection
         include 'config/database.php';
@@ -77,9 +73,13 @@ include 'check_session.php';
                 // store retrieved row to a variable
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                echo "<div class='page-header'>";
+                echo "<h1>Read Order Details</h1>";
+                echo "</div>";
+
                 extract($row);
             } else {
-                die('ERROR: Record ID not found.');
+                die("<p>Cannot Find the Order with OrderID = <b>$OrderID</b></p>");
             }
 
             $num_customer = $stmt_customer->rowCount();
@@ -177,7 +177,7 @@ include 'check_session.php';
                         <th colspan="3" class="text-end">
                             <p class="me-3 my-2">Rounded</p>
                         </th>
-                        <td><?php echo "<p class='my-2 text-end'>" . number_format(number_format(round($total_amount, 1), 2) - number_format($total_amount, 2),2) . "</p>" ?></td>
+                        <td><?php echo "<p class='my-2 text-end'>" . number_format(round($total_amount, 1) - $total_amount, 2) . "</p>" ?></td>
                     </tr>
                     <tr>
                         <th colspan="3" class="text-end">

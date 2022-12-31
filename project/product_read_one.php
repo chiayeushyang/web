@@ -36,7 +36,7 @@ include 'check_session.php';
                     <tr>
                         <td></td>
                         <td>
-                            <input type='submit' value='Save' class='btn btn-primary' />
+                            <input type='submit' value='Search' class='btn btn-primary' />
                         </td>
                     </tr>
                 </table>
